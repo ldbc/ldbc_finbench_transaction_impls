@@ -1,11 +1,11 @@
 package org.ldbcouncil.finbench.impls.common.operationhandlers;
 
-import org.ldbcouncil.snb.driver.DbConnectionState;
-import org.ldbcouncil.snb.driver.DbException;
-import org.ldbcouncil.snb.driver.Operation;
-import org.ldbcouncil.snb.driver.OperationHandler;
-import org.ldbcouncil.snb.driver.ResultReporter;
-import org.ldbcouncil.snb.driver.workloads.interactive.queries.LdbcNoResult;
+import org.ldbcouncil.finbench.driver.DbConnectionState;
+import org.ldbcouncil.finbench.driver.DbException;
+import org.ldbcouncil.finbench.driver.Operation;
+import org.ldbcouncil.finbench.driver.OperationHandler;
+import org.ldbcouncil.finbench.driver.ResultReporter;
+import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcNoResult;
 
 public interface UpdateOperationHandler<
         TOperation extends Operation<LdbcNoResult>,

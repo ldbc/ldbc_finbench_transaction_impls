@@ -107,24 +107,24 @@ public abstract class QueryStore {
         }
     }
 
-    /**
-     * Get prepared Query1 string
-     * @param operation LdbcQuery1 operation containing parameter values
-     * @return Prepared Query1 string
-     */
-    public String getQuery1(LdbcQuery1 operation) {
-        return prepare(QueryType.InteractiveComplexQuery1, getQuery1Map(operation));
-    }
-
-    /**
-     * Get Query1 Map. This map contain the name of the parameter and the value as string.
-     * @param operation LdbcQuery1 operation containing parameter values
-     * @return Map with parameters and values as string.
-     */
-    public Map<String, Object> getQuery1Map(LdbcQuery1 operation) {
-        return new ImmutableMap.Builder<String, Object>()
-                .put(LdbcQuery1.PERSON_ID, getConverter().convertId(operation.getPersonIdQ1()))
-                .put(LdbcQuery1.FIRST_NAME, getConverter().convertString(operation.getFirstName()))
-                .build();
-    }
+//    /**
+//     * Get prepared Query1 string
+//     * @param operation LdbcQuery1 operation containing parameter values
+//     * @return Prepared Query1 string
+//     */
+//    public String getQuery1(LdbcQuery1 operation) {
+//        return prepare(QueryType.InteractiveComplexQuery1, getQuery1Map(operation));
+//    }
+//
+//    /**
+//     * Get Query1 Map. This map contain the name of the parameter and the value as string.
+//     * @param operation LdbcQuery1 operation containing parameter values
+//     * @return Map with parameters and values as string.
+//     */
+//    public Map<String, Object> getQuery1Map(LdbcQuery1 operation) {
+//        return new ImmutableMap.Builder<String, Object>()
+//                .put(LdbcQuery1.PERSON_ID, getConverter().convertId(operation.getPersonIdQ1()))
+//                .put(LdbcQuery1.FIRST_NAME, getConverter().convertString(operation.getFirstName()))
+//                .build();
+//    }
 }

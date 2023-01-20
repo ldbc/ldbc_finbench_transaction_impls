@@ -30,17 +30,17 @@ for i in $(seq 1 ${TCR_STEPS}); do
     scripts/restore-database.sh
 
     # Conduct benchmark run, save output
-    driver/benchmark.sh | tee /tmp/ldbc_snb_interactive_driver_output
+    driver/benchmark.sh | tee /tmp/ldbc_finbench_transaction_driver_output
 
     # grep for SCHEDULE AUDIT PASSED, looking for 2 lines
-    grep 'SCHEDULE AUDIT' /tmp/ldbc_snb_interactive_driver_output > /tmp/ldbc_snb_schedule_audit
-    if [ "$(wc -l < /tmp/ldbc_snb_schedule_audit)" != "2" ]; then
+    grep 'SCHEDULE AUDIT' /tmp/ldbc_finbench_transaction_driver_output > /tmp/ldbc_finbench_schedule_audit
+    if [ "$(wc -l < /tmp/ldbc_finbench_schedule_audit)" != "2" ]; then
         echo "[determine-best-tcr.sh] Error: Driver output should contain two lines with SCHEDULE AUDIT" | tee -a tcr.log
         break
     fi
 
     # check the 2nd line (the benchmark run result) to see whether the run passed, adjust TCR accordingly
-    if tail -n +2 /tmp/ldbc_snb_schedule_audit | grep 'PASSED SCHEDULE AUDIT'; then
+    if tail -n +2 /tmp/ldbc_finbench_schedule_audit | grep 'PASSED SCHEDULE AUDIT'; then
         echo "[determine-best-tcr.sh] Passed schedule audit for TCR value: ${TCR_CURRENT}" | tee -a tcr.log
 
         if [ ${TCR_CURRENT} = ${TCR_MIN} ]; then

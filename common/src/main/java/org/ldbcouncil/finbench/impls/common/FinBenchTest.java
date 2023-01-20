@@ -1,18 +1,18 @@
 package org.ldbcouncil.finbench.impls.common;
 
-import org.ldbcouncil.snb.driver.Db;
-import org.ldbcouncil.snb.driver.DbException;
-import org.ldbcouncil.snb.driver.Operation;
-import org.ldbcouncil.snb.driver.OperationHandlerRunnableContext;
-import org.ldbcouncil.snb.driver.ResultReporter;
-import org.ldbcouncil.snb.driver.Workload;
+import org.ldbcouncil.finbench.driver.Db;
+import org.ldbcouncil.finbench.driver.DbException;
+import org.ldbcouncil.finbench.driver.Operation;
+import org.ldbcouncil.finbench.driver.OperationHandlerRunnableContext;
+import org.ldbcouncil.finbench.driver.ResultReporter;
+import org.ldbcouncil.finbench.driver.Workload;
 import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
 import java.util.Map;
 
-public abstract class SnbTest<D extends Db>
+public abstract class FinBenchTest<D extends Db>
 {
 
     protected final D db;
@@ -20,7 +20,7 @@ public abstract class SnbTest<D extends Db>
 
     protected final int LIMIT = 100;
 
-    public SnbTest( D db, Workload workload )
+    public FinBenchTest(D db, Workload workload )
     {
         this.db = db;
         this.workload = workload;
