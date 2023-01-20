@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.ldbcouncil.finbench</groupId>
         <artifactId>impls</artifactId>
-        <version>0.1.0-rc</version>
+        <version>0.1.0-alpha</version>
     </parent>
 
     <artifactId>common</artifactId>
-    <version>0.1.0-rc</version>
+    <version>0.1.0-alpha</version>
     <name>Common classes</name>
     <description>Common classes for FinBench transaction workload driver</description>
 
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.ldbcouncil.finbench</groupId>
             <artifactId>driver</artifactId>
-            <version>0.1.0-rc</version>
+            <version>0.1.0-alpha</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
