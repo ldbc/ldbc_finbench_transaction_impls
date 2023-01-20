@@ -1,10 +1,9 @@
 # FinBench Transaction Reference Implementation
 
-TODO
+![Build status](https://github.com/ldbc/ldbc_finbench_transaction_impls/actions/workflows/ci.yml/badge.svg?branch=main)
 
-## Design Doc
+This is the alpha version of FinBench transaction workload reference implementation, which is under alpha test.
 
-TODO
 
 ## Quick Start
 

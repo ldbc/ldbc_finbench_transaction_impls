@@ -6,7 +6,7 @@
     <groupId>org.ldbcouncil.finbench</groupId>
     <artifactId>impls</artifactId>
     <name>Reference Implementation</name>
-    <version>0.1.0-rc</version>
+    <version>0.1.0-alpha</version>
     <description>Reference implementations for LDBC FinBench Transaction Workload</description>
     <packaging>pom</packaging>
 
