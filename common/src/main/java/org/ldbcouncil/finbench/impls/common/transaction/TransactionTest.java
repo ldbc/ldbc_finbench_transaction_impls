@@ -1,20 +1,48 @@
 package org.ldbcouncil.finbench.impls.common.transaction;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.ldbcouncil.finbench.driver.Db;
+import org.ldbcouncil.finbench.driver.*;
 import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
 import org.ldbcouncil.finbench.driver.workloads.transaction.ComplexRead1;
 import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcFinBenchTransactionWorkload;
-import org.ldbcouncil.finbench.impls.common.FinBenchTest;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
-public abstract class TransactionTest<D extends Db> extends FinBenchTest<D> {
+public abstract class TransactionTest<D extends Db> {
+    protected final D db;
+    protected final Workload workload;
+    protected final int LIMIT = 100;
 
     public TransactionTest(D db) {
-        super(db, new LdbcFinBenchTransactionWorkload());
+        this.db = db;
+        this.workload = new LdbcFinBenchTransactionWorkload();
     }
+
+    protected abstract Map<String, String> getProperties();
+
+    @Before
+    public void init() throws DbException {
+        Map<Integer, Class<? extends Operation>> mapping = workload.operationTypeToClassMapping();
+        db.init(getProperties(), null, mapping);
+    }
+
+    @After
+    public void cleanup() throws IOException {
+        db.close();
+    }
+
+    protected void run(D db, Operation op) throws DbException {
+        OperationHandlerRunnableContext handler = db.getOperationHandlerRunnableContext(op);
+        ResultReporter reporter = new ResultReporter.SimpleResultReporter(null);
+        handler.operationHandler().executeOperation(op, handler.dbConnectionState(), reporter);
+        handler.cleanup();
+    }
+
 
     @Test
     public void testQuery1() throws Exception {
