@@ -4,26 +4,48 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.ldbcouncil.finbench</groupId>
         <artifactId>impls</artifactId>
+        <groupId>org.ldbcouncil.finbench</groupId>
         <version>0.1.0-alpha</version>
     </parent>
 
-    <artifactId>common</artifactId>
+    <artifactId>tugraph</artifactId>
+    <name>tugraph</name>
     <version>0.1.0-alpha</version>
-    <name>common</name>
-    <description>Common classes for FinBench transaction workload driver</description>
+    <description>A TuGraph implementation for reference</description>
+
+    <properties>
+        <driver.version>0.1.0-alpha</driver.version>
+        <junit.version>4.11</junit.version>
+        <log4j.version>2.19.0</log4j.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.ldbcouncil.finbench</groupId>
             <artifactId>driver</artifactId>
-            <version>0.1.0-alpha</version>
+            <version>${driver.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.antgroup.tugraph</groupId>
+            <artifactId>tugraph-java-rpc-client</artifactId>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

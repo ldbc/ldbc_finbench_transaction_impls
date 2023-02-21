@@ -385,5 +385,4 @@ public class DummyDb extends Db {
             DummyDb.logger.info(rw3.toString());
         }
     }
-
 }
