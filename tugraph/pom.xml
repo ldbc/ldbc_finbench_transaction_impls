@@ -9,10 +9,10 @@
         <version>0.1.0-alpha</version>
     </parent>
 
-    <artifactId>dummy</artifactId>
-    <name>dummy</name>
+    <artifactId>tugraph</artifactId>
+    <name>tugraph</name>
     <version>0.1.0-alpha</version>
-    <description>A dummy implementation to help debug queries</description>
+    <description>A TuGraph implementation for reference</description>
 
     <properties>
         <driver.version>0.1.0-alpha</driver.version>
@@ -41,6 +41,11 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.antgroup.tugraph</groupId>
+            <artifactId>tugraph-java-rpc-client</artifactId>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

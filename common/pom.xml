@@ -11,7 +11,7 @@
 
     <artifactId>common</artifactId>
     <version>0.1.0-alpha</version>
-    <name>Common classes</name>
+    <name>common</name>
     <description>Common classes for FinBench transaction workload driver</description>
 
     <dependencies>
@@ -28,7 +28,6 @@
     </dependencies>
 
     <build>
-        <!--put this in parent pom file-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
