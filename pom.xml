@@ -6,14 +6,6 @@
     <groupId>org.ldbcouncil.finbench</groupId>
     <artifactId>impls</artifactId>
     <name>Reference Implementation</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.ldbcouncil.finbench</groupId>
-            <artifactId>driver</artifactId>
-            <version>0.1.0-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
     <version>0.1.0-alpha</version>
     <description>Reference implementations for LDBC FinBench Transaction Workload</description>
     <packaging>pom</packaging>
@@ -93,6 +85,7 @@
             <modules>
                 <module>common</module>
                 <module>dummy</module>
+                <module>tugraph</module>
             </modules>
         </profile>
     </profiles>

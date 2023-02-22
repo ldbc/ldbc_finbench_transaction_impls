@@ -50,7 +50,6 @@
     </dependencies>
 
     <build>
-        <!--put this in parent pom file-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
