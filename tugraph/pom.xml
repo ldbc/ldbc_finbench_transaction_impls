@@ -18,6 +18,7 @@
         <driver.version>0.1.0-alpha</driver.version>
         <junit.version>4.11</junit.version>
         <log4j.version>2.19.0</log4j.version>
+        <tugraph.client.version>1.2.1</tugraph.client.version>
     </properties>
 
     <dependencies>
@@ -44,8 +45,8 @@
         </dependency>
         <dependency>
             <groupId>com.antgroup.tugraph</groupId>
-            <artifactId>tugraph-java-rpc-client</artifactId>
-            <version>0.0.1</version>
+            <artifactId>tugraph-db-java-rpc-client</artifactId>
+            <version>${tugraph.client.version}</version>
         </dependency>
     </dependencies>
 

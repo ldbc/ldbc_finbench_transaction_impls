@@ -1,6 +1,6 @@
 package org.ldbcouncil.finbench.impls.tugraph;
 
-import com.antgroup.tugraph.TuGraphRpcClient;
+import com.antgroup.tugraph.TuGraphDbRpcClient;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,7 +100,7 @@ public class TuGraphTransactionDb extends Db {
                 cdos.writeByte(encodeTruncationOrder(cr1.getTruncationOrder()));
                 // TODO: call procedure
                 String input = Base64.encodeBase64String(cdos.toByteArray());
-                TuGraphRpcClient client = dbConnectionState.popClient();
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
                 dbConnectionState.pushClient(client);
             } catch (IOException e) {
                 e.printStackTrace();
