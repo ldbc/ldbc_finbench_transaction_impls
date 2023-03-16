@@ -15,13 +15,51 @@ package org.ldbcouncil.finbench.impls.common;
 
 import com.google.common.collect.ImmutableMap;
 import org.ldbcouncil.finbench.driver.DbException;
-import org.ldbcouncil.finbench.driver.workloads.transaction.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead9;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write9;
 
 
 public abstract class QueryStore {

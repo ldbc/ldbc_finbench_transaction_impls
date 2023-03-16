@@ -1,13 +1,57 @@
 package org.ldbcouncil.finbench.impls.dummy;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ldbcouncil.finbench.driver.*;
 import org.ldbcouncil.finbench.driver.log.LoggingService;
-import org.ldbcouncil.finbench.driver.workloads.transaction.*;
 
 import java.io.IOException;
 import java.util.Map;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1Result;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead9;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead1Result;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write9;
 
 public class DummyDb extends Db {
     static Logger logger = LogManager.getLogger("DummyDb");
@@ -79,6 +123,26 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead1 cr1, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr1.toString());
+            List<ComplexRead1Result> complexRead1Results = new ArrayList<>();
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "101"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "102"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "103"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "104"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "105"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "106"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "107"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "108"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "109"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1010"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1011"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1012"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1013"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1014"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1015"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1016"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1017"));
+            complexRead1Results.add(new ComplexRead1Result(0, "a", "1018"));
+            resultReporter.report(complexRead1Results.size(), complexRead1Results, cr1);
         }
     }
 
@@ -183,6 +247,9 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead1 sr1, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr1.toString());
+            List<SimpleRead1Result> simpleRead1Results = new ArrayList<>();
+            simpleRead1Results.add(new SimpleRead1Result(new Date(), true, "a"));
+            resultReporter.report(1, simpleRead1Results, sr1);
         }
     }
 
@@ -191,6 +258,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead2 sr2, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr2.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr2);
         }
     }
 
@@ -199,6 +267,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead3 sr3, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr3.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr3);
         }
     }
 
@@ -207,6 +276,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead4 sr4, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr4.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr4);
         }
     }
 
@@ -215,6 +285,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead5 sr5, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr5.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr5);
         }
     }
 
@@ -223,6 +294,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead6 sr6, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr6.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr6);
         }
     }
 
@@ -231,6 +303,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead7 sr7, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr7.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr7);
         }
     }
 
@@ -239,6 +312,7 @@ public class DummyDb extends Db {
         public void executeOperation(SimpleRead8 sr8, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr8.toString());
+            resultReporter.report(0, Collections.EMPTY_LIST, sr8);
         }
     }
 
