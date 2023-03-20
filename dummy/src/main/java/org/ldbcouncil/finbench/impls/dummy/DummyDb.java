@@ -83,6 +83,9 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead1 cr1, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr1.toString());
+
+            //The output of ComplexReads is the input of SimpleReads,
+            // so ComplexRead1 outputs some results for verify that SimpleReads are correct.
             List<ComplexRead1Result> complexRead1Results = new ArrayList<>();
             complexRead1Results.add(new ComplexRead1Result(0, "a", "101"));
             complexRead1Results.add(new ComplexRead1Result(0, "a", "102"));
