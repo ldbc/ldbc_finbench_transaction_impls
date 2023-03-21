@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.ldbcouncil.finbench.driver.*;
 import org.ldbcouncil.finbench.driver.log.LoggingService;
 import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
-import org.ldbcouncil.finbench.driver.workloads.transaction.*;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
 
 import java.io.IOException;
 import java.util.Map;

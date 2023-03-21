@@ -15,13 +15,13 @@ package org.ldbcouncil.finbench.impls.common;
 
 import com.google.common.collect.ImmutableMap;
 import org.ldbcouncil.finbench.driver.DbException;
-import org.ldbcouncil.finbench.driver.workloads.transaction.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
 
 
 public abstract class QueryStore {
