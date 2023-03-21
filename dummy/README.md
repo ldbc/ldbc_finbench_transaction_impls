@@ -1,8 +1,4 @@
-# README
-
-Here are some resources for example use including,
-- the example configuration for driver (file)
-- the example data
+# Dummy Module @ FinBench Transaction Reference Implementation
 
 You can execute the driver with three modes, and you should update the mode in the properties file.
 - CREATE_VALIDATION
