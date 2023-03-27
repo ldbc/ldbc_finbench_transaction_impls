@@ -1,17 +1,59 @@
 package org.ldbcouncil.finbench.impls.common.transaction;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.ldbcouncil.finbench.driver.*;
-import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
-import org.ldbcouncil.finbench.driver.workloads.transaction.*;
-import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcFinBenchTransactionWorkload;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.ldbcouncil.finbench.driver.Db;
+import org.ldbcouncil.finbench.driver.DbException;
+import org.ldbcouncil.finbench.driver.Operation;
+import org.ldbcouncil.finbench.driver.OperationHandlerRunnableContext;
+import org.ldbcouncil.finbench.driver.ResultReporter;
+import org.ldbcouncil.finbench.driver.Workload;
+import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
+import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcFinBenchTransactionWorkload;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead9;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ReadWrite3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write1;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write10;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write11;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write12;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write13;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write2;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write3;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write4;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write5;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write6;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write7;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write8;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write9;
 
 public abstract class TransactionTest<D extends Db> {
     protected final D db;
@@ -46,60 +88,61 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testComplexRead1() throws Exception {
         run(db, new ComplexRead1(30786325579101L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead2() throws Exception {
         run(db, new ComplexRead2(62042209056869L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead3() throws Exception {
         run(db, new ComplexRead3(23727037716838L, 97461814013107L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead4() throws Exception {
         run(db, new ComplexRead4(39947851855474L, 19680024852898L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead5() throws Exception {
         run(db, new ComplexRead5(67406588910829L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead6() throws Exception {
         run(db, new ComplexRead6(51078788755688L, 1000L, 2000L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead7() throws Exception {
         run(db, new ComplexRead7(19469276863548L, 1000L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead8() throws Exception {
-        run(db, new ComplexRead8(78332612970031L, 0.8f, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+        run(db, new ComplexRead8(78332612970031L, 100, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead9() throws Exception {
-        run(db, new ComplexRead9(44670770561919L, 0.2f, 0.8f, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+        run(db, new ComplexRead9(44670770561919L, 100, 0.2f, 0.8f, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead10() throws Exception {
-        run(db, new ComplexRead10(23457164342167L, 60624749497937L));
+        run(db, new ComplexRead10(23457164342167L, 60624749497937L, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
@@ -110,13 +153,13 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testComplexRead12() throws Exception {
         run(db, new ComplexRead12(19908707033524L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead13() throws Exception {
         run(db, new ComplexRead13(30924040035422L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
@@ -126,54 +169,54 @@ public abstract class TransactionTest<D extends Db> {
 
     @Test
     public void testSimpleRead2() throws Exception {
-        run(db, new SimpleRead2(44240260404892L, 73377118594155L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2)));
+        run(db, new SimpleRead2(44240260404892L, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
     public void testSimpleRead3() throws Exception {
-        run(db, new SimpleRead3(82663727934233L));
+        run(db, new SimpleRead3(82663727934233L, 10, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
     public void testSimpleRead4() throws Exception {
         run(db, new SimpleRead4(42004037637436L, 10000L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2)));
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
     public void testSimpleRead5() throws Exception {
-        run(db, new SimpleRead5(16486343708978L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2)));
+        run(db, new SimpleRead5(16486343708978L, 10, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
     public void testSimpleRead6() throws Exception {
-        run(db, new SimpleRead6(49955856898317L));
+        run(db, new SimpleRead6(49955856898317L, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2)));
     }
 
     @Test
     public void testSimpleRead7() throws Exception {
-        run(db, new SimpleRead7(43300558283249L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2)));
+        run(db, new SimpleRead7(43300558283249L));
     }
 
     @Test
     public void testSimpleRead8() throws Exception {
-        run(db, new SimpleRead8(14392749787777L, 10000L, new Date(2023, Calendar.JANUARY, 1),
-                new Date(2023, Calendar.JANUARY, 2)));
+        run(db, new SimpleRead8(14392749787777L));
     }
 
     @Test
     public void testWrite1() throws Exception {
         run(db, new Write1(46661186336351L, "Alice", 33636683819864L,
-                new Date(2023, Calendar.FEBRUARY, 1), false, "Credit"));
+            new Date(2023, Calendar.FEBRUARY, 1), false, "Credit"));
     }
 
     @Test
     public void testWrite2() throws Exception {
         run(db, new Write2(10988200445031L, "LDBC", 46661186336351L,
-                new Date(2023, Calendar.FEBRUARY, 1), false, "Credit"));
+            new Date(2023, Calendar.FEBRUARY, 1), false, "Credit"));
     }
 
     @Test
@@ -244,19 +287,22 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testReadWrite1() throws Exception {
         run(db, new ReadWrite1(10988200445031L, 71195197152144L,
-                new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
+            new Date(2023, Calendar.FEBRUARY, 1), 10,
+            new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
     }
 
     @Test
     public void testReadWrite2() throws Exception {
-        run(db, new ReadWrite2(10988200445031L, 71195197152144L, 10000L,
-                new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
+        run(db, new ReadWrite2(10988200445031L, 71195197152144L,
+            new Date(2023, Calendar.FEBRUARY, 1), 10, 10000L,
+            new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
     }
 
     @Test
     public void testReadWrite3() throws Exception {
-        run(db, new ReadWrite3(10988200445031L, 71195197152144L, 10000L,
-                new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
+        run(db, new ReadWrite3(10988200445031L, 71195197152144L,
+            new Date(2023, Calendar.FEBRUARY, 1), 10000L,
+            new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
     }
 }
 
