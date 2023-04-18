@@ -114,6 +114,7 @@
                 <module>common</module>
                 <module>dummy</module>
                 <module>tugraph</module>
+                <module>galaxybase</module>
             </modules>
         </profile>
     </profiles>
