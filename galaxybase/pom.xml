@@ -14,11 +14,6 @@
     <version>0.1.0-alpha</version>
     <description>A Galaxybase implementation for reference</description>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.galaxybase</groupId>
