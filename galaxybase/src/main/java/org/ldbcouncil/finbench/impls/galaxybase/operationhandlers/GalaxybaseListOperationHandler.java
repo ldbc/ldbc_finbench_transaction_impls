@@ -1,6 +1,8 @@
 package org.ldbcouncil.finbench.impls.galaxybase.operationhandlers;
 
 
+import com.galaxybase.client.driver.Graph;
+import com.galaxybase.client.driver.v1.StatementResult;
 import java.util.ArrayList;
 import java.util.List;
 import org.ldbcouncil.finbench.driver.DbException;
@@ -16,9 +18,26 @@ public abstract class GalaxybaseListOperationHandler<
     implements OperationHandler<TOperation, GalaxybaseDbConnectionState> {
 
     @Override
-    public void executeOperation(TOperation operation, GalaxybaseDbConnectionState state,
+    public void executeOperation(TOperation operation,
+                                 GalaxybaseDbConnectionState state,
                                  ResultReporter resultReporter) throws DbException {
-        // TODO add galaxybase dependency
+        Graph graph = state.getGraph();
+        List<TOperationResult> results = new ArrayList<>();
+        int resultCount = 0;
+
+        String queryName = getQueryName();
+        String queryParams = getQueryParam(state, operation);
+
+        StatementResult statementResult = graph.plugin("ldbc.finbench." + queryName, queryParams);
+        while (statementResult.hasNext()) {
+            String next = statementResult.next();
+            resultCount++;
+            TOperationResult tuple;
+            tuple = convertSingleResult(state, GalaxybaseConverter.getValues(next));
+            results.add(tuple);
+        }
+
+        resultReporter.report(resultCount, results, operation);
     }
 
     protected abstract String getQueryName();
