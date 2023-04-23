@@ -1,0 +1,1 @@
+java --class-path ../../../target/galaxybase-0.1.0-alpha.jar;../../../lib/galaxybase-socket-client-1.0.0.jar org.ldbcouncil.finbench.driver.driver.Driver -P galaxybase_example.properties
