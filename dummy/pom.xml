@@ -15,33 +15,9 @@
     <description>A dummy implementation to help debug queries</description>
 
     <properties>
-        <driver.version>0.1.0-alpha</driver.version>
-        <junit.version>4.11</junit.version>
-        <log4j.version>2.19.0</log4j.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.ldbcouncil.finbench</groupId>
-            <artifactId>driver</artifactId>
-            <version>${driver.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
     </dependencies>
 
     <build>

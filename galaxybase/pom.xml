@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <artifactId>impls</artifactId>
         <groupId>org.ldbcouncil.finbench</groupId>
         <version>0.1.0-alpha</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tugraph</artifactId>
-    <name>tugraph</name>
+    <artifactId>galaxybase</artifactId>
+    <name>galaxybase</name>
     <version>0.1.0-alpha</version>
-    <description>A TuGraph implementation for reference</description>
-
-    <properties>
-        <tugraph.client.version>1.2.1</tugraph.client.version>
-    </properties>
+    <description>A Galaxybase implementation for reference</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.antgroup.tugraph</groupId>
-            <artifactId>tugraph-db-java-rpc-client</artifactId>
-            <version>${tugraph.client.version}</version>
+            <groupId>com.galaxybase</groupId>
+            <artifactId>galaxybase-socket-client</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/galaxybase-socket-client-1.0.0.jar</systemPath>
         </dependency>
     </dependencies>
 
