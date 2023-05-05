@@ -97,7 +97,7 @@ public abstract class TransactionTest<D extends Db> {
 
     @Test
     public void testComplexRead9() throws Exception {
-        run(db, new ComplexRead9(44670770561919L, 100, 0.2f, 0.8f, new Date(2023, Calendar.JANUARY, 1),
+        run(db, new ComplexRead9(44670770561919L, 100, new Date(2023, Calendar.JANUARY, 1),
             new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
