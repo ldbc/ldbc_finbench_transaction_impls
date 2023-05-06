@@ -33,7 +33,6 @@ public class DummyDb extends Db {
         registerOperationHandler(ComplexRead10.class, ComplexRead10Handler.class);
         registerOperationHandler(ComplexRead11.class, ComplexRead11Handler.class);
         registerOperationHandler(ComplexRead12.class, ComplexRead12Handler.class);
-        registerOperationHandler(ComplexRead13.class, ComplexRead13Handler.class);
 
         // simple reads
         registerOperationHandler(SimpleRead1.class, SimpleRead1Handler.class);
@@ -42,8 +41,6 @@ public class DummyDb extends Db {
         registerOperationHandler(SimpleRead4.class, SimpleRead4Handler.class);
         registerOperationHandler(SimpleRead5.class, SimpleRead5Handler.class);
         registerOperationHandler(SimpleRead6.class, SimpleRead6Handler.class);
-        registerOperationHandler(SimpleRead7.class, SimpleRead7Handler.class);
-        registerOperationHandler(SimpleRead8.class, SimpleRead8Handler.class);
 
         // writes
         registerOperationHandler(Write1.class, Write1Handler.class);
@@ -59,8 +56,6 @@ public class DummyDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
-        registerOperationHandler(Write14.class, Write14Handler.class);
-        registerOperationHandler(Write15.class, Write15Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -197,14 +192,6 @@ public class DummyDb extends Db {
         }
     }
 
-    public static class ComplexRead13Handler implements OperationHandler<ComplexRead13, DummyDbConnectionState> {
-        @Override
-        public void executeOperation(ComplexRead13 cr13, DummyDbConnectionState dummyDbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            DummyDb.logger.info(cr13.toString());
-        }
-    }
-
     public static class SimpleRead1Handler implements OperationHandler<SimpleRead1, DummyDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead1 sr1, DummyDbConnectionState dummyDbConnectionState,
@@ -258,24 +245,6 @@ public class DummyDb extends Db {
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(sr6.toString());
             resultReporter.report(0, Collections.EMPTY_LIST, sr6);
-        }
-    }
-
-    public static class SimpleRead7Handler implements OperationHandler<SimpleRead7, DummyDbConnectionState> {
-        @Override
-        public void executeOperation(SimpleRead7 sr7, DummyDbConnectionState dummyDbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            DummyDb.logger.info(sr7.toString());
-            resultReporter.report(0, Collections.EMPTY_LIST, sr7);
-        }
-    }
-
-    public static class SimpleRead8Handler implements OperationHandler<SimpleRead8, DummyDbConnectionState> {
-        @Override
-        public void executeOperation(SimpleRead8 sr8, DummyDbConnectionState dummyDbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            DummyDb.logger.info(sr8.toString());
-            resultReporter.report(0, Collections.EMPTY_LIST, sr8);
         }
     }
 
@@ -380,22 +349,6 @@ public class DummyDb extends Db {
         public void executeOperation(Write13 w13, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w13.toString());
-        }
-    }
-
-    public static class Write14Handler implements OperationHandler<Write14, DummyDbConnectionState> {
-        @Override
-        public void executeOperation(Write14 w14, DummyDbConnectionState dummyDbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            DummyDb.logger.info(w14.toString());
-        }
-    }
-
-    public static class Write15Handler implements OperationHandler<Write15, DummyDbConnectionState> {
-        @Override
-        public void executeOperation(Write15 w15, DummyDbConnectionState dummyDbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            DummyDb.logger.info(w15.toString());
         }
     }
 

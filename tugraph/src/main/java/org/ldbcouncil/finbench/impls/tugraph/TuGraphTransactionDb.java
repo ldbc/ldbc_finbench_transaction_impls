@@ -40,7 +40,6 @@ public class TuGraphTransactionDb extends Db {
         registerOperationHandler(ComplexRead10.class, ComplexRead10Handler.class);
         registerOperationHandler(ComplexRead11.class, ComplexRead11Handler.class);
         registerOperationHandler(ComplexRead12.class, ComplexRead12Handler.class);
-        registerOperationHandler(ComplexRead13.class, ComplexRead13Handler.class);
 
         // simple reads
         registerOperationHandler(SimpleRead1.class, SimpleRead1Handler.class);
@@ -49,8 +48,6 @@ public class TuGraphTransactionDb extends Db {
         registerOperationHandler(SimpleRead4.class, SimpleRead4Handler.class);
         registerOperationHandler(SimpleRead5.class, SimpleRead5Handler.class);
         registerOperationHandler(SimpleRead6.class, SimpleRead6Handler.class);
-        registerOperationHandler(SimpleRead7.class, SimpleRead7Handler.class);
-        registerOperationHandler(SimpleRead8.class, SimpleRead8Handler.class);
 
         // writes
         registerOperationHandler(Write1.class, Write1Handler.class);
@@ -66,8 +63,6 @@ public class TuGraphTransactionDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
-        registerOperationHandler(Write14.class, Write14Handler.class);
-        registerOperationHandler(Write15.class, Write15Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -197,14 +192,6 @@ public class TuGraphTransactionDb extends Db {
         }
     }
 
-    public static class ComplexRead13Handler implements OperationHandler<ComplexRead13, TuGraphDbConnectionState> {
-        @Override
-        public void executeOperation(ComplexRead13 cr13, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
-        }
-    }
-
     public static class SimpleRead1Handler implements OperationHandler<SimpleRead1, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead1 sr1, TuGraphDbConnectionState dbConnectionState,
@@ -248,22 +235,6 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead6Handler implements OperationHandler<SimpleRead6, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead6 sr6, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
-        }
-    }
-
-    public static class SimpleRead7Handler implements OperationHandler<SimpleRead7, TuGraphDbConnectionState> {
-        @Override
-        public void executeOperation(SimpleRead7 sr7, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
-        }
-    }
-
-    public static class SimpleRead8Handler implements OperationHandler<SimpleRead8, TuGraphDbConnectionState> {
-        @Override
-        public void executeOperation(SimpleRead8 sr8, TuGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
@@ -368,22 +339,6 @@ public class TuGraphTransactionDb extends Db {
     public static class Write13Handler implements OperationHandler<Write13, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write13 w13, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
-        }
-    }
-
-    public static class Write14Handler implements OperationHandler<Write14, TuGraphDbConnectionState> {
-        @Override
-        public void executeOperation(Write14 w14, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
-        }
-    }
-
-    public static class Write15Handler implements OperationHandler<Write15, TuGraphDbConnectionState> {
-        @Override
-        public void executeOperation(Write15 w15, TuGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }

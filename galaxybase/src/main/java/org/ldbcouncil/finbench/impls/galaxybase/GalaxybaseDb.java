@@ -17,8 +17,6 @@ import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead11Result;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead12;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead12Result;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead13;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead13Result;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead1Result;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead2;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.ComplexRead2Result;
@@ -51,17 +49,11 @@ import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead5;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead5Result;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead6;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead6Result;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead7;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead7Result;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead8;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.SimpleRead8Result;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write1;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write10;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write11;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write12;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write13;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
-import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write2;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write3;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write4;
@@ -96,7 +88,6 @@ public class GalaxybaseDb extends Db {
         registerOperationHandler(ComplexRead10.class, ComplexRead10Handler.class);
         registerOperationHandler(ComplexRead11.class, ComplexRead11Handler.class);
         registerOperationHandler(ComplexRead12.class, ComplexRead12Handler.class);
-        registerOperationHandler(ComplexRead13.class, ComplexRead13Handler.class);
 
         // simple reads
         registerOperationHandler(SimpleRead1.class, SimpleRead1Handler.class);
@@ -105,8 +96,6 @@ public class GalaxybaseDb extends Db {
         registerOperationHandler(SimpleRead4.class, SimpleRead4Handler.class);
         registerOperationHandler(SimpleRead5.class, SimpleRead5Handler.class);
         registerOperationHandler(SimpleRead6.class, SimpleRead6Handler.class);
-        registerOperationHandler(SimpleRead7.class, SimpleRead7Handler.class);
-        registerOperationHandler(SimpleRead8.class, SimpleRead8Handler.class);
 
         // writes
         registerOperationHandler(Write1.class, Write1Handler.class);
@@ -122,8 +111,6 @@ public class GalaxybaseDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
-        registerOperationHandler(Write14.class, Write14Handler.class);
-        registerOperationHandler(Write15.class, Write15Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -389,8 +376,6 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getId(),
                 operation.getThreshold(),
-                operation.getLowerBound(),
-                operation.getUpperBound(),
                 operation.getStartTime(),
                 operation.getEndTime(),
                 operation.getTruncationLimit(),
@@ -418,8 +403,8 @@ public class GalaxybaseDb extends Db {
         @Override
         protected String getQueryParam(GalaxybaseDbConnectionState state, ComplexRead10 operation) {
             return GalaxybaseConverter.getParams(
-                operation.getId1(),
-                operation.getId2(),
+                operation.getPid1(),
+                operation.getPid2(),
                 operation.getStartTime(),
                 operation.getEndTime());
         }
@@ -444,15 +429,17 @@ public class GalaxybaseDb extends Db {
         protected String getQueryParam(GalaxybaseDbConnectionState state, ComplexRead11 operation) {
             return GalaxybaseConverter.getParams(
                 operation.getId(),
-                operation.getK());
+                operation.getStartTime(),
+                operation.getEndTime(),
+                operation.getTruncationLimit(),
+                operation.getTruncationOrder());
         }
 
         @Override
         protected ComplexRead11Result convertSingleResult(GalaxybaseDbConnectionState state, String[] results) {
             ComplexRead11Result result = new ComplexRead11Result(
                 Long.parseLong(results[0]),
-                results[1],
-                Float.parseFloat(results[2]));
+                Integer.parseInt(results[1]));
             return result;
         }
     }
@@ -478,33 +465,6 @@ public class GalaxybaseDb extends Db {
         @Override
         protected ComplexRead12Result convertSingleResult(GalaxybaseDbConnectionState state, String[] results) {
             ComplexRead12Result result = new ComplexRead12Result(
-                Long.parseLong(results[0]),
-                Integer.parseInt(results[1]));
-            return result;
-        }
-    }
-
-    public static class ComplexRead13Handler extends
-        GalaxybaseListOperationHandler<ComplexRead13Result, ComplexRead13> {
-
-        @Override
-        protected String getQueryName() {
-            return "ComplexRead13";
-        }
-
-        @Override
-        protected String getQueryParam(GalaxybaseDbConnectionState state, ComplexRead13 operation) {
-            return GalaxybaseConverter.getParams(
-                operation.getId(),
-                operation.getStartTime(),
-                operation.getEndTime(),
-                operation.getTruncationLimit(),
-                operation.getTruncationOrder());
-        }
-
-        @Override
-        protected ComplexRead13Result convertSingleResult(GalaxybaseDbConnectionState state, String[] results) {
-            ComplexRead13Result result = new ComplexRead13Result(
                 Long.parseLong(results[0]),
                 Long.parseLong(results[1]));
             return result;
@@ -667,54 +627,6 @@ public class GalaxybaseDb extends Db {
         }
     }
 
-    public static class SimpleRead7Handler extends
-        GalaxybaseListOperationHandler<SimpleRead7Result, SimpleRead7> {
-
-        @Override
-        protected String getQueryName() {
-            return "SimpleRead7";
-        }
-
-        @Override
-        protected String getQueryParam(GalaxybaseDbConnectionState state, SimpleRead7 operation) {
-            return GalaxybaseConverter.getParams(
-                operation.getId());
-        }
-
-        @Override
-        protected SimpleRead7Result convertSingleResult(GalaxybaseDbConnectionState state, String[] results) {
-            SimpleRead7Result result = new SimpleRead7Result(
-                Long.parseLong(results[0]));
-            return result;
-        }
-    }
-
-    public static class SimpleRead8Handler extends
-        GalaxybaseListOperationHandler<SimpleRead8Result, SimpleRead8> {
-
-        @Override
-        protected String getQueryName() {
-            return "SimpleRead8";
-        }
-
-        @Override
-        protected String getQueryParam(GalaxybaseDbConnectionState state, SimpleRead8 operation) {
-            return GalaxybaseConverter.getParams(
-                operation.getId());
-        }
-
-        @Override
-        protected SimpleRead8Result convertSingleResult(GalaxybaseDbConnectionState state, String[] results) {
-            SimpleRead8Result result = new SimpleRead8Result(
-                Long.parseLong(results[0]),
-                Long.parseLong(results[1]),
-                Long.parseLong(results[2]),
-                Long.parseLong(results[3]),
-                Long.parseLong(results[4]));
-            return result;
-        }
-    }
-
     public static class Write1Handler extends
         GalaxybaseUpdateOperationHandler<Write1> {
 
@@ -729,7 +641,7 @@ public class GalaxybaseDb extends Db {
                 operation.getPersonId(),
                 operation.getPersonName(),
                 operation.getAccountId(),
-                operation.getCurrentTime(),
+                operation.timeStamp(),
                 operation.getAccountBlocked(),
                 operation.getAccountType());
         }
@@ -749,7 +661,7 @@ public class GalaxybaseDb extends Db {
                 operation.getCompanyId(),
                 operation.getCompanyName(),
                 operation.getAccountId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getAccountBlocked(),
                 operation.getAccountType());
         }
@@ -768,7 +680,7 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getSrcId(),
                 operation.getDstId(),
-                operation.getTimestamp(),
+                operation.getTime(),
                 operation.getAmount());
         }
     }
@@ -786,7 +698,7 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getSrcId(),
                 operation.getDstId(),
-                operation.getTimestamp(),
+                operation.getTime(),
                 operation.getAmount());
         }
     }
@@ -803,9 +715,9 @@ public class GalaxybaseDb extends Db {
         protected String getQueryParam(GalaxybaseDbConnectionState state, Write5 operation) {
             return GalaxybaseConverter.getParams(
                 operation.getPersonId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getLoanId(),
-                operation.getLoanAmount());
+                operation.getAmount());
         }
     }
 
@@ -821,9 +733,9 @@ public class GalaxybaseDb extends Db {
         protected String getQueryParam(GalaxybaseDbConnectionState state, Write6 operation) {
             return GalaxybaseConverter.getParams(
                 operation.getCompanyId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getLoanId(),
-                operation.getLoanAmount());
+                operation.getTime());
         }
     }
 
@@ -841,7 +753,7 @@ public class GalaxybaseDb extends Db {
                 operation.getAccountId(),
                 operation.getMediumId(),
                 operation.getMediumBlocked(),
-                operation.getCurrentTime());
+                operation.getTime());
         }
     }
 
@@ -858,7 +770,7 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getAccountId(),
                 operation.getLoanId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getAmount());
         }
     }
@@ -876,7 +788,7 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getAccountId(),
                 operation.getLoanId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getAmount());
         }
     }
@@ -922,7 +834,9 @@ public class GalaxybaseDb extends Db {
         @Override
         protected String getQueryParam(GalaxybaseDbConnectionState state, Write12 operation) {
             return GalaxybaseConverter.getParams(
-                operation.getMediumId());
+                operation.getPid1(),
+                operation.getPid2(),
+                operation.getTime());
         }
     }
 
@@ -936,38 +850,6 @@ public class GalaxybaseDb extends Db {
 
         @Override
         protected String getQueryParam(GalaxybaseDbConnectionState state, Write13 operation) {
-            return GalaxybaseConverter.getParams(
-                operation.getPid1(),
-                operation.getPid2(),
-                operation.getCurrentTime());
-        }
-    }
-
-    public static class Write14Handler extends
-        GalaxybaseUpdateOperationHandler<Write14> {
-
-        @Override
-        protected String getQueryName() {
-            return "Write14";
-        }
-
-        @Override
-        protected String getQueryParam(GalaxybaseDbConnectionState state, Write14 operation) {
-            return GalaxybaseConverter.getParams(
-                operation.getId());
-        }
-    }
-
-    public static class Write15Handler extends
-        GalaxybaseUpdateOperationHandler<Write15> {
-
-        @Override
-        protected String getQueryName() {
-            return "Write15";
-        }
-
-        @Override
-        protected String getQueryParam(GalaxybaseDbConnectionState state, Write15 operation) {
             return GalaxybaseConverter.getParams(
                 operation.getId());
         }
@@ -986,8 +868,8 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getSrcId(),
                 operation.getDstId(),
-                operation.getCurrentTime(),
-                operation.getAmt(),
+                operation.getTime(),
+                operation.getAmount(),
                 operation.getStartTime(),
                 operation.getEndTime());
         }
@@ -1006,8 +888,8 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getSrcId(),
                 operation.getDstId(),
-                operation.getCurrentTime(),
-                operation.getAmt(),
+                operation.getTime(),
+                operation.getAmount(),
                 operation.getThreshold(),
                 operation.getStartTime(),
                 operation.getEndTime());
@@ -1027,7 +909,7 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getSrcId(),
                 operation.getDstId(),
-                operation.getCurrentTime(),
+                operation.getTime(),
                 operation.getThreshold(),
                 operation.getStartTime(),
                 operation.getEndTime());

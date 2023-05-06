@@ -97,7 +97,7 @@ public abstract class TransactionTest<D extends Db> {
 
     @Test
     public void testComplexRead9() throws Exception {
-        run(db, new ComplexRead9(44670770561919L, 100, 0.2f, 0.8f, new Date(2023, Calendar.JANUARY, 1),
+        run(db, new ComplexRead9(44670770561919L, 100, new Date(2023, Calendar.JANUARY, 1),
             new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
@@ -109,18 +109,13 @@ public abstract class TransactionTest<D extends Db> {
 
     @Test
     public void testComplexRead11() throws Exception {
-        run(db, new ComplexRead11(85673929253143L, 3));
+        run(db, new ComplexRead11(19908707033524L, new Date(2023, Calendar.JANUARY, 1),
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
     @Test
     public void testComplexRead12() throws Exception {
         run(db, new ComplexRead12(19908707033524L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
-    }
-
-    @Test
-    public void testComplexRead13() throws Exception {
-        run(db, new ComplexRead13(30924040035422L, new Date(2023, Calendar.JANUARY, 1),
             new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
     }
 
@@ -157,16 +152,6 @@ public abstract class TransactionTest<D extends Db> {
     public void testSimpleRead6() throws Exception {
         run(db, new SimpleRead6(49955856898317L, new Date(2023, Calendar.JANUARY, 1),
             new Date(2023, Calendar.JANUARY, 2)));
-    }
-
-    @Test
-    public void testSimpleRead7() throws Exception {
-        run(db, new SimpleRead7(43300558283249L));
-    }
-
-    @Test
-    public void testSimpleRead8() throws Exception {
-        run(db, new SimpleRead8(14392749787777L));
     }
 
     @Test
@@ -228,22 +213,12 @@ public abstract class TransactionTest<D extends Db> {
 
     @Test
     public void testWrite12() throws Exception {
-        run(db, new Write12(10988200445031L));
+        run(db, new Write12(71195197152144L, 10988200445031L, new Date(2023, Calendar.FEBRUARY, 1)));
     }
 
     @Test
     public void testWrite13() throws Exception {
-        run(db, new Write13(71195197152144L, 10988200445031L, new Date(2023, Calendar.FEBRUARY, 1)));
-    }
-
-    @Test
-    public void testWrite14() throws Exception {
-        run(db, new Write14(71195197152144L));
-    }
-
-    @Test
-    public void testWrite15() throws Exception {
-        run(db, new Write15(10988200445031L));
+        run(db, new Write13(71195197152144L));
     }
 
     @Test
