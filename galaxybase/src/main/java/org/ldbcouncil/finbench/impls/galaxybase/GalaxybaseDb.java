@@ -890,9 +890,10 @@ public class GalaxybaseDb extends Db {
                 operation.getDstId(),
                 operation.getTime(),
                 operation.getAmount(),
-                operation.getThreshold(),
+                operation.getAmountThreshold(),
                 operation.getStartTime(),
-                operation.getEndTime());
+                operation.getEndTime(),
+                operation.getRatioThreshold());
         }
     }
 
