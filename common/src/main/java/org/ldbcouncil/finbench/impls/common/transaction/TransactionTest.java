@@ -232,7 +232,8 @@ public abstract class TransactionTest<D extends Db> {
     public void testReadWrite2() throws Exception {
         run(db, new ReadWrite2(10988200445031L, 71195197152144L,
             new Date(2023, Calendar.FEBRUARY, 1), 10, 10000L,
-            new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2)));
+            new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2),
+            0.5f));
     }
 
     @Test

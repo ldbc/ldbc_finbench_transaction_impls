@@ -405,9 +405,10 @@ public abstract class QueryStore {
                 .put(ReadWrite2.DST_ID, Long.toString(operation.getDstId()))
                 .put(ReadWrite2.TIME, operation.getTime().toString())
                 .put(ReadWrite2.AMOUNT, Long.toString(operation.getAmount()))
-                .put(ReadWrite2.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(ReadWrite2.AMOUNT_THRESHOLD, Long.toString(operation.getAmountThreshold()))
                 .put(ReadWrite2.START_TIME, operation.getStartTime().toString())
                 .put(ReadWrite2.END_TIME, operation.getEndTime().toString())
+                .put(ReadWrite2.RATIO_THRESHOLD, Float.toString(operation.getRatioThreshold()))
                 .build());
     }
 
