@@ -192,8 +192,6 @@ public abstract class QueryStore {
         return prepare(QueryType.TransactionComplexRead9, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead9.ID, Long.toString(operation.getId()))
                 .put(ComplexRead9.THRESHOLD, Long.toString(operation.getThreshold()))
-                .put(ComplexRead9.LOWER_BOUND, Float.toString(operation.getLowerBound()))
-                .put(ComplexRead9.UPPER_BOUND, Float.toString(operation.getUpperBound()))
                 .put(ComplexRead9.START_TIME, operation.getStartTime().toString())
                 .put(ComplexRead9.END_TIME, operation.getEndTime().toString())
                 .put(ComplexRead9.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))

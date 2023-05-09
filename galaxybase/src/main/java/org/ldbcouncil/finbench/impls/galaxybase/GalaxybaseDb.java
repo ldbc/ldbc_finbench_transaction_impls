@@ -376,8 +376,6 @@ public class GalaxybaseDb extends Db {
             return GalaxybaseConverter.getParams(
                 operation.getId(),
                 operation.getThreshold(),
-                operation.getLowerBound(),
-                operation.getUpperBound(),
                 operation.getStartTime(),
                 operation.getEndTime(),
                 operation.getTruncationLimit(),
