@@ -136,7 +136,7 @@ public abstract class QueryStore {
     public String getComplexRead4(ComplexRead4 operation) {
         return prepare(QueryType.TransactionComplexRead4, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead4.ID1, Long.toString(operation.getId1()))
-                .put(ComplexRead4.ID2, Long.toString(operation.getId1()))
+                .put(ComplexRead4.ID2, Long.toString(operation.getId2()))
                 .put(ComplexRead4.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead4.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ComplexRead4.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
