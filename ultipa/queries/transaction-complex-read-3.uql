@@ -1,0 +1,2 @@
+ab().src({@Account && _id==$id1}).dest({@Account && _id==$id2}).depth(15).shortest().edge_filter({@Transfer.timestamp <> [$startTime,$endTime]}).direction(right) as path
+return table(length(path))

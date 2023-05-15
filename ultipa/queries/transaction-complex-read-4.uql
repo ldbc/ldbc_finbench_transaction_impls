@@ -1,0 +1,5 @@
+n({@Account && _id==$id1} as src).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge1).n({@Account && _id==$id2} as dst).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge3).n({@Account} as other).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge2).n({@Account && _id==$id1}) as path
+group by other._id
+with other._id as otherid,count(edge2) as edge2count,sum(edge2.amount) as edge2sum,max(edge2.amount)as edge2max,count(edge3) as edge3count,sum(edge3.amount) as edge3sum,max(edge3.amount) as edge3max
+order by edge2sum desc,edge3sum desc,otherid asc
+return table(otherid,edge2count,edge2sum,edge2max,edge3count,edge3sum,edge3max)

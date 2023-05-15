@@ -1,0 +1,4 @@
+n({@Account}).re({(@Transfer) && timestamp <> [$startTime,$endTime] && amount > $threshold} as edge1).n({@Account && _id==$id}) as path1
+n({@Account && _id==$id}).re({(@Transfer) && timestamp <> [$startTime,$endTime]  && amount > $threshold} as edge2).n({@Account}) as path2
+with count(path1) as path1count,count(path2) as path2count
+return table(path1count,path2count,path1count/path2count)
