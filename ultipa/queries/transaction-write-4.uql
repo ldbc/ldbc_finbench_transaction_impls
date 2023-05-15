@@ -1,0 +1,1 @@
+insert().into(@Withdraw).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount})

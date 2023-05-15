@@ -1,0 +1,4 @@
+n({@Person && _id==$id}).re({@Guarantee && timestamp <> [$startTime,$endTime]})[:10].n({@Person} as person)
+with collect(distinct(person)) as person1
+n(person1).re({@Apply}).n({@Loan} as loan)
+return table(sum(loan.loan_amount),count(loan))

@@ -1,0 +1,10 @@
+find().nodes({@Account && _id in [$srcId,$dstId]}) as nodes return nodes.is_blocked as is_blocked;
+
+insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount});
+
+n({@Account}).re({(@Transfer) && timestamp <> [$startTime,$endTime] && amount>$amountThreshold}} as edge1).n({@Account && _id in [$srcId,$dstId]}) as path1
+n({@Account && _id in [$srcId,$dstId]}).re({(@Transfer) && timestamp <> [$startTime,$endTime]  && amount>$amountThreshold} as edge2).n({@Account}) as path2
+with count(path1) as path1count,count(path2) as path2count
+return table(path1count/path2count);
+
+update().nodes({@Account && _id in [$srcId,$dstId]}).set({is_blocked:'True'})

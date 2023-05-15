@@ -1,0 +1,1 @@
+insert().into(@Guarantee).edges({_from:$pid1,_to:$pid2,timestamp:$time})

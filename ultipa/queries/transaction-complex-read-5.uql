@@ -1,0 +1,4 @@
+n({@Person && _id==$id}).re({@Own}).n({@Account} as account)
+n(account).re({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp>prev_e.@Transfer.timestamp})[1:3].n({@Account}).no_circle() as path
+order by length(path) desc
+return path{*}

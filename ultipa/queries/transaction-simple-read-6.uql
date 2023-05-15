@@ -1,0 +1,2 @@
+n({@Account && _id==$id}).re({@Transfer && timestamp <> [$startTime,$endTime]}).n({@Account} as mid).le({@Transfer && timestamp <> [$startTime,$endTime]}).n({@Account && is_blocked=='True'} as dest)
+return return table(dest._id)

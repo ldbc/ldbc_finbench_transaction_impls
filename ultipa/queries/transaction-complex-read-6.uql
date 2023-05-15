@@ -1,0 +1,5 @@
+n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime] && amount > $threshold1} as edge1).n({@Account} as mid).re({@Withdraw && timestamp <> [$startTime,$endTime] && amount> $threshold2} as edge2).n({@Account && _id==$id && type=='Card'} as dstcard)
+group by mid
+with mid._id as midid,sum(edge1.amount) as sume1,sum(edge2.amount) as sume2
+return table(midid,sume1,sume2)
+order by sume2 desc,midid asc

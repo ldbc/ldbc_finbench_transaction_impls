@@ -1,0 +1,2 @@
+insert().into(@Loan).nodes({_id:$loanId});
+insert().into(@Repay).edges({_from:$accountId,_to:$loanId,timestamp:$time,amount:$amount})
