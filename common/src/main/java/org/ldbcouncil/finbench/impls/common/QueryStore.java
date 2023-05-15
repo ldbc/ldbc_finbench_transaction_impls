@@ -157,8 +157,8 @@ public abstract class QueryStore {
     public String getComplexRead6(ComplexRead6 operation) {
         return prepare(QueryType.TransactionComplexRead6, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead6.ID, Long.toString(operation.getId()))
-                .put(ComplexRead6.THRESHOLD1, Long.toString(operation.getThreshold1()))
-                .put(ComplexRead6.THRESHOLD2, Long.toString(operation.getThreshold2()))
+                .put(ComplexRead6.THRESHOLD1, Double.toString(operation.getThreshold1()))
+                .put(ComplexRead6.THRESHOLD2, Double.toString(operation.getThreshold2()))
                 .put(ComplexRead6.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead6.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ComplexRead6.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
@@ -169,7 +169,7 @@ public abstract class QueryStore {
     public String getComplexRead7(ComplexRead7 operation) {
         return prepare(QueryType.TransactionComplexRead7, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead7.ID, Long.toString(operation.getId()))
-                .put(ComplexRead7.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(ComplexRead7.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(ComplexRead7.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead7.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ComplexRead7.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
@@ -180,7 +180,7 @@ public abstract class QueryStore {
     public String getComplexRead8(ComplexRead8 operation) {
         return prepare(QueryType.TransactionComplexRead8, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead8.ID, Long.toString(operation.getId()))
-                .put(ComplexRead8.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(ComplexRead8.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(ComplexRead8.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead8.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ComplexRead8.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
@@ -191,7 +191,7 @@ public abstract class QueryStore {
     public String getComplexRead9(ComplexRead9 operation) {
         return prepare(QueryType.TransactionComplexRead9, new ImmutableMap.Builder<String, Object>()
                 .put(ComplexRead9.ID, Long.toString(operation.getId()))
-                .put(ComplexRead9.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(ComplexRead9.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(ComplexRead9.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead9.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ComplexRead9.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
@@ -245,7 +245,7 @@ public abstract class QueryStore {
     public String getSimpleRead3(SimpleRead3 operation) {
         return prepare(QueryType.TransactionSimpleRead3, new ImmutableMap.Builder<String, Object>()
                 .put(SimpleRead3.ID, Long.toString(operation.getId()))
-                .put(SimpleRead3.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(SimpleRead3.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(SimpleRead3.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(SimpleRead3.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .build());
@@ -254,7 +254,7 @@ public abstract class QueryStore {
     public String getSimpleRead4(SimpleRead4 operation) {
         return prepare(QueryType.TransactionSimpleRead4, new ImmutableMap.Builder<String, Object>()
                 .put(SimpleRead4.ID, Long.toString(operation.getId()))
-                .put(SimpleRead4.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(SimpleRead4.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(SimpleRead4.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(SimpleRead4.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .build());
@@ -263,7 +263,7 @@ public abstract class QueryStore {
     public String getSimpleRead5(SimpleRead5 operation) {
         return prepare(QueryType.TransactionSimpleRead5, new ImmutableMap.Builder<String, Object>()
                 .put(SimpleRead5.ID, Long.toString(operation.getId()))
-                .put(SimpleRead5.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(SimpleRead5.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(SimpleRead5.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(SimpleRead5.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .build());
@@ -303,7 +303,7 @@ public abstract class QueryStore {
         return prepare(QueryType.TransactionWrite3, new ImmutableMap.Builder<String, Object>()
                 .put(Write3.SRC_ID, Long.toString(operation.getSrcId()))
                 .put(Write3.DST_ID, Long.toString(operation.getDstId()))
-                .put(Write3.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write3.AMOUNT, Double.toString(operation.getAmount()))
                 .put(Write3.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
@@ -312,7 +312,7 @@ public abstract class QueryStore {
         return prepare(QueryType.TransactionWrite4, new ImmutableMap.Builder<String, Object>()
                 .put(Write4.SRC_ID, Long.toString(operation.getSrcId()))
                 .put(Write4.DST_ID, Long.toString(operation.getDstId()))
-                .put(Write4.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write4.AMOUNT, Double.toString(operation.getAmount()))
                 .put(Write4.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
@@ -322,7 +322,7 @@ public abstract class QueryStore {
                 .put(Write5.PERSON_ID, Long.toString(operation.getPersonId()))
                 .put(Write5.TIME, Long.toString(operation.getTime().getTime()))
                 .put(Write5.LOAN_ID, Long.toString(operation.getLoanId()))
-                .put(Write5.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write5.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
     }
 
@@ -331,7 +331,7 @@ public abstract class QueryStore {
                 .put(Write6.COMPANY_ID, Long.toString(operation.getCompanyId()))
                 .put(Write6.TIME, Long.toString(operation.getTime().getTime()))
                 .put(Write6.LOAN_ID, Long.toString(operation.getLoanId()))
-                .put(Write6.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write6.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
     }
 
@@ -349,7 +349,7 @@ public abstract class QueryStore {
                 .put(Write8.ACCOUNT_ID, Long.toString(operation.getAccountId()))
                 .put(Write8.LOAN_ID, Long.toString(operation.getLoanId()))
                 .put(Write8.TIME, Long.toString(operation.getTime().getTime()))
-                .put(Write8.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write8.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
     }
 
@@ -358,7 +358,7 @@ public abstract class QueryStore {
                 .put(Write9.ACCOUNT_ID, Long.toString(operation.getAccountId()))
                 .put(Write9.LOAN_ID, Long.toString(operation.getLoanId()))
                 .put(Write9.TIME, Long.toString(operation.getTime().getTime()))
-                .put(Write9.AMOUNT, Long.toString(operation.getAmount()))
+                .put(Write9.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
     }
 
@@ -393,7 +393,7 @@ public abstract class QueryStore {
                 .put(ReadWrite1.SRC_ID, Long.toString(operation.getSrcId()))
                 .put(ReadWrite1.DST_ID, Long.toString(operation.getDstId()))
                 .put(ReadWrite1.TIME, Long.toString(operation.getTime().getTime()))
-                .put(ReadWrite1.AMOUNT, Long.toString(operation.getAmount()))
+                .put(ReadWrite1.AMOUNT, Double.toString(operation.getAmount()))
                 .put(ReadWrite1.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite1.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .build());
@@ -404,8 +404,8 @@ public abstract class QueryStore {
                 .put(ReadWrite2.SRC_ID, Long.toString(operation.getSrcId()))
                 .put(ReadWrite2.DST_ID, Long.toString(operation.getDstId()))
                 .put(ReadWrite2.TIME, Long.toString(operation.getTime().getTime()))
-                .put(ReadWrite2.AMOUNT, Long.toString(operation.getAmount()))
-                .put(ReadWrite2.AMOUNT_THRESHOLD, Long.toString(operation.getAmountThreshold()))
+                .put(ReadWrite2.AMOUNT, Double.toString(operation.getAmount()))
+                .put(ReadWrite2.AMOUNT_THRESHOLD, Double.toString(operation.getAmountThreshold()))
                 .put(ReadWrite2.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite2.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ReadWrite2.RATIO_THRESHOLD, Float.toString(operation.getRatioThreshold()))
@@ -417,7 +417,7 @@ public abstract class QueryStore {
                 .put(ReadWrite3.SRC_ID, Long.toString(operation.getSrcId()))
                 .put(ReadWrite3.DST_ID, Long.toString(operation.getDstId()))
                 .put(ReadWrite2.TIME, Long.toString(operation.getTime().getTime()))
-                .put(ReadWrite3.THRESHOLD, Long.toString(operation.getThreshold()))
+                .put(ReadWrite3.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(ReadWrite3.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite3.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .build());
