@@ -25,6 +25,7 @@
         <module>dummy</module>
         <module>tugraph</module>
         <module>galaxybase</module>
+        <module>galaxybase-cypher</module>
     </modules>
 
     <dependencies>
