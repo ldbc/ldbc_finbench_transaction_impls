@@ -26,6 +26,7 @@
         <module>tugraph</module>
         <module>galaxybase</module>
         <module>galaxybase-cypher</module>
+        <module>ultipa</module>
     </modules>
 
     <dependencies>

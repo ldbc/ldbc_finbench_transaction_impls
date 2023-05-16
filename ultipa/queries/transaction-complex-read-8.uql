@@ -1,0 +1,3 @@
+n({@Loan && _id==$id}).re({@Deposit && timestamp <> [$startTime,$endTime]}).n({@Account}).re({(@Transfer||@Withdraw) && amount > $threshold && timestamp <> [$startTime,$endTime]})[1:3].n({@Account} as dst) as path
+order by length(path) desc
+return table(dst._id,length(path))
