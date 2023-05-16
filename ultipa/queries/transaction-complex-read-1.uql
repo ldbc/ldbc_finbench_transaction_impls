@@ -1,0 +1,3 @@
+n({@Account && _id==$id} as account).re({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp>prev_e.@Transfer.timestamp})[1:3].n({@Account} as other).le({@SignIn}).n({@Medium.is_blocked=='True'} as medium) as p
+return table(other._id,length(p)-1,medium._id,medium.name)
+order by other._id asc,length(p)-1 asc

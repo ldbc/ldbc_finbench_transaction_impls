@@ -1,0 +1,1 @@
+insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount})

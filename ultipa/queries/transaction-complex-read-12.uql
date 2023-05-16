@@ -1,0 +1,6 @@
+n({@Person && _id==$id}).re({@Own}).n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime]} as edge2).n({@Account} as compacc).le({@Own}).n({@Company}) as path
+group by compacc._id
+with compacc._id as compaccid,sum(edge2.amount) as sume2
+order by sume2 desc
+return table(compaccid,sume2)
+order by sume2 desc,compaccid asc
