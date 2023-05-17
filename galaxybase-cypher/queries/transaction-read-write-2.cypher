@@ -1,7 +1,7 @@
 BEGIN
 QUERY
 MATCH (src:Account {id: '$srcId'}), (dst:Account {id: '$dstId'})
-RETURN CASE WHEN src.isBlocked = true OR dst.isBlocked = true THEN true ELSE false END AS isSuccess
+RETURN CASE WHEN src.isBlocked = true OR dst.isBlocked = true THEN false ELSE true END AS isSuccess
 QUERY
 MATCH (src:Account {id: '$srcId'}), (dst:Account {id: '$dstId'})
 CREATE (dst)<-[:AccountTransferAccount {timestamp: $time, amount: $amount}]-(src)
