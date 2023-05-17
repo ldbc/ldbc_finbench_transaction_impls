@@ -2,5 +2,5 @@ MATCH (src:Account {id: '$id'})<-[e1:AccountTransferAccount]-(mid:Account)-[e2:A
 WHERE src.id <> dst.id
   AND $startTime < e1.timestamp < $endTime
   AND $startTime < e2.timestamp < $endTime
-RETURN dst.id AS dstId
+RETURN DISTINCT dst.id AS dstId
 ORDER BY dstId
