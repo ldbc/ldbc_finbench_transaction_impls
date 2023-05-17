@@ -32,6 +32,7 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
             }
             GraphTransaction tx = graph.beginTransaction();
             String[] queries = txn.split("QUERY", 1000);
+            int successNum = 0;
             try {
                 for (String query : queries) {
                     if (query.trim().isEmpty()) {
@@ -44,13 +45,22 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
                         tx.failure();
                         break;
                     }
+                    successNum++;
                 }
-            } catch (Exception e) {
-                tx.failure();
-                e.printStackTrace();
-            } finally {
+                tx.success();
                 tx.close();
+            } catch (Exception e) {
+                System.out.println("txn is abort");
             }
+            // Whether to do step 4
+            // step 1 is success
+            // step 2 is success
+            // step 3 is failure
+            System.out.println(successNum);
+            if (successNum != 2) {
+                break;
+            }
+
 
         }
         resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
