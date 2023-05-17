@@ -8,10 +8,11 @@ CREATE (dst)<-[:PersonGuaranteePerson {timestamp: $time}]-(src)
 RETURN true AS isSuccess
 QUERY
 MATCH (src:Person {id: '$srcId'})
-OPTIONAL MATCH p=(src)-[:PersonGuaranteePerson*5]->(pX:Person)
+OPTIONAL MATCH p=(src)-[:PersonGuaranteePerson*1..5]->(pX:Person)
 WHERE all(e IN relationships(p) WHERE $startTime < e.timestamp < $endTime)
 UNWIND nodes(p)[1..] AS person
 MATCH (person)-[:PersonApplyLoan]->(loan:Loan)
+WITH DISTINCT loan
 WITH sum(loan.loanAmount) AS sumLoanAmount
 RETURN CASE WHEN sumLoanAmount <= $threshold THEN true ELSE false END AS isSuccess
 COMMIT

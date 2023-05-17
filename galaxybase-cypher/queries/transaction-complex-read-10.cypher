@@ -1,11 +1,15 @@
-MATCH (p1:Person {id: '$pid1'}), (p2:Person {id: '$pid2'})
-WITH 
-    size((p1)-[:PersonInvestCompany]->()) AS p1Neighbors, 
-    size((p2)-[:PersonInvestCompany]->()) AS p2Neighbors,
-    size((p1)-[:PersonInvestCompany]->(:Company)<-[:PersonInvestCompany]-(p2)) AS p12Neighbors
+MATCH (p1:Person {id: '$pid1'}), (p2:Person {id: '$pid2'}), (p1)-[edge1:PersonInvestCompany]->(p1Neighbor), (p2)-[edge2:PersonInvestCompany]->(p2Neighbor), (p1)-[edge3:PersonInvestCompany]->(midNeighbor:Company)<-[edge4:PersonInvestCompany]-(p2)
+WHERE $startTime < edge1.timestamp < $endTime
+AND $startTime < edge2.timestamp < $endTime
+AND $startTime < edge3.timestamp < $endTime
+AND $startTime < edge4.timestamp < $endTime
+WITH
+    count(DISTINCT p1Neighbor) AS p1Neighbors,
+    count(DISTINCT p2Neighbor) AS p2Neighbors,
+    count(DISTINCT midNeighbor) AS p12Neighbors
 WITH p12Neighbors AS intersection, p1Neighbors + p2Neighbors - p12Neighbors AS union
 RETURN
 CASE union = 0
   WHEN true THEN 0
-  ELSE round(1000 * intersection / union) / 1000
+  ELSE apoc.math.round(1.0 * intersection / union, 3)
 END AS jaccardSimilarity
