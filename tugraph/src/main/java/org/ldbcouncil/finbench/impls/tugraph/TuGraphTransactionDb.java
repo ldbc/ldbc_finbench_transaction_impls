@@ -7,11 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.ldbcouncil.finbench.driver.*;
 import org.ldbcouncil.finbench.driver.log.LoggingService;
 import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
+import org.ldbcouncil.finbench.driver.result.Path;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.ArrayList;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
-
+import com.alibaba.fastjson.*;
 
 public class TuGraphTransactionDb extends Db {
     static Logger logger = LogManager.getLogger("TuGraph");
@@ -26,6 +28,12 @@ public class TuGraphTransactionDb extends Db {
     @Override
     protected void onInit(Map<String, String> properties, LoggingService loggingService) throws DbException {
         logger.info("TuGraphTransactionDb initialized");
+
+        try {
+            dcs = new TuGraphDbConnectionState(properties);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // complex reads
         registerOperationHandler(ComplexRead1.class, ComplexRead1Handler.class);
@@ -84,18 +92,36 @@ public class TuGraphTransactionDb extends Db {
     public static class ComplexRead1Handler implements OperationHandler<ComplexRead1, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead1 cr1, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-
+                ResultReporter resultReporter) throws DbException {
             try {
-                CustomDataOutputStream cdos = new CustomDataOutputStream();
-                cdos.writeInt64(cr1.getId());
-                cdos.writeInt64(cr1.getStartTime().getTime());
-                cdos.writeInt64(cr1.getEndTime().getTime());
-                cdos.writeInt64(cr1.getTruncationLimit());
-                cdos.writeByte(encodeTruncationOrder(cr1.getTruncationOrder()));
-                // TODO: call procedure
-                String input = Base64.encodeBase64String(cdos.toByteArray());
+                // CustomDataOutputStream cdos = new CustomDataOutputStream();
+                // cdos.writeInt64(cr1.getId());
+                // cdos.writeInt64(cr1.getStartTime().getTime());
+                // cdos.writeInt64(cr1.getEndTime().getTime());
+                // cdos.writeInt64(cr1.getTruncationLimit());
+                // cdos.writeByte(encodeTruncationOrder(cr1.getTruncationOrder()));
+                // String input = Base64.encodeBase64String(cdos.toByteArray());
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH p = (acc:Account {id:%d})-[e1:transfer *1..3]->(other:Account)<-[e2:signIn]-(medium) WHERE isAsc(relationships(e1, 'timestamp'))=true AND head(relationships(e1, 'timestamp')) > %d AND last(relationships(e1, 'timestamp')) < %d AND e2.timestamp > %d AND e2.timestamp < %d AND medium.isBlocked = true RETURN DISTINCT other.id as otherId, length(p)-1 as accountDistance, medium.id as mediumId, medium.type as mediumType ORDER BY accountDistance, otherId, mediumId;";
+                long startTime = cr1.getStartTime().getTime();
+                long endTime = cr1.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr1.getId(), startTime, endTime, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead1Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead1Result result = new ComplexRead1Result(
+                            ob.getLongValue("otherId"),
+                            ob.getIntValue("accountDistance"),
+                            ob.getLongValue("mediumId"),
+                            ob.getString("mediumType"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr1);
                 dbConnectionState.pushClient(client);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -107,95 +133,369 @@ public class TuGraphTransactionDb extends Db {
     public static class ComplexRead2Handler implements OperationHandler<ComplexRead2, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead2 cr2, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d RETURN other.id AS otherId, sum(loan.loanAmount) as sumLoanAmount, sum(loan.balance) as sumLoanBalance ORDER BY sumLoanAmount DESC;";
+                long startTime = cr2.getStartTime().getTime();
+                long endTime = cr2.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr2.getId(), endTime, startTime, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead2Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead2Result result = new ComplexRead2Result(
+                            ob.getLongValue("otherId"),
+                            ob.getLongValue("sumLoanAmount"),
+                            ob.getLongValue("sumLoanBalance"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr2);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead3Handler implements OperationHandler<ComplexRead3, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead3 cr3, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (src:Account{id:%d}), (dst:Account{id:%d}) CALL algo.shortestPath( src, dst, { relationshipQuery:'transfer', edgeFilter: { timestamp: { smaller_than: %d, greater_than: %d } } } ) YIELD nodeCount RETURN nodeCount - 1 AS len;";
+                long startTime = cr3.getStartTime().getTime();
+                long endTime = cr3.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr3.getId1(), cr3.getId2(), endTime, startTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead3Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead3Result result = new ComplexRead3Result(
+                            ob.getLongValue("len"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr3);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead4Handler implements OperationHandler<ComplexRead4, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead4 cr4, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (src:Account {id:%d})-[e1:transfer]->(dst:Account {id:%d}) WHERE e1.timestamp > %d AND e1.timestamp < %d WITH src, dst MATCH (src)<-[e2:transfer]-(other:Account)<-[e3:transfer]-(dst) WHERE e2.timestamp > %d AND e2.timestamp < %d AND e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT src, other, dst MATCH (src)<-[e2:transfer]-(other) WHERE e2.timestamp > %d AND e2.timestamp < %d WITH src, other, dst, count(e2) as numEdge2, sum(e2.amount) as sumEdge2Amount, max(e2.amount) as maxEdge2Amount MATCH (other)<-[e3:transfer]-(dst) WHERE e3.timestamp > %d AND e3.timestamp < %d RETURN other.id as otherId, numEdge2, sumEdge2Amount, maxEdge2Amount, count(e3) as numEdge3, sum(e3.amount) as sumEdge3Amount, max(e3.amount) as maxEdge3Amount ORDER BY sumEdge2Amount, sumEdge3Amount DESC;";
+                long startTime = cr4.getStartTime().getTime();
+                long endTime = cr4.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr4.getId1(), cr4.getId2(), startTime, endTime, startTime, endTime, startTime, endTime,
+                        startTime, endTime, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead4Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead4Result result = new ComplexRead4Result(
+                            ob.getLongValue("otherId"),
+                            ob.getLongValue("numEdge2Amount"),
+                            ob.getDoubleValue("sumEdge2Amount"),
+                            ob.getDoubleValue("maxEdge2Amount"),
+                            ob.getLongValue("numEdge2Amount"),
+                            ob.getDoubleValue("sumEdge2Amount"),
+                            ob.getDoubleValue("maxEdge2Amount"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr4);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead5Handler implements OperationHandler<ComplexRead5, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead5 cr5, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (person:Person {id:%d})-[e1:own]->(src:Account) WITH src MATCH p=(src)-[e2:transfer*1..3]->(dst:Account) WHERE isAsc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) > %d AND last(relationships(e2, 'timestamp')) < %d WITH DISTINCT nodes(p, 'id') as path, length(p) as len ORDER BY len DESC WHERE hasDuplicates(path)=false RETURN path;";
+                long startTime = cr5.getStartTime().getTime();
+                long endTime = cr5.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr5.getId(), startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead5Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONArray json_path = array.getJSONObject(i).getJSONArray("path");
+                    Path path = new Path();
+                    for (int j = 0; j < json_path.size(); j++) {
+                        path.addId(json_path.getLongValue(j));
+                    }
+                    ComplexRead5Result result = new ComplexRead5Result(path);
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr5);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead6Handler implements OperationHandler<ComplexRead6, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead6 cr6, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (dstCard:Account {id:%d} )<-[edge2:withdraw]-(mid:Account) WHERE dstCard.type = 'tp2' AND edge2.timestamp > %d AND edge2.timestamp < %d AND edge2.amount > %f WITH mid, sum(edge2.amount) as sumEdge2Amount, count(edge2.amount) as t MATCH (mid)<-[edge1:transfer]-(src:Account) WHERE edge1.timestamp > %d AND edge1.timestamp < %d AND edge1.amount > %f WITH mid.id AS midId, count(edge1) AS edge1Count, sum(edge1.amount) AS sumEdge1Amount, sumEdge2Amount WHERE edge1Count > 3 RETURN midId, sumEdge1Amount, sumEdge2Amount ORDER BY sumEdge2Amount DESC;";
+                long startTime = cr6.getStartTime().getTime();
+                long endTime = cr6.getEndTime().getTime();
+                double threshold1 = cr6.getThreshold1();
+                double threshold2 = cr6.getThreshold2();
+                cypher = String.format(
+                        cypher,
+                        cr6.getId(), startTime, endTime, threshold2, startTime, endTime, threshold1);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead6Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead6Result result = new ComplexRead6Result(
+                            ob.getLongValue("midId"),
+                            ob.getDoubleValue("sumEdge1Amount"),
+                            ob.getDoubleValue("sumEdge2Amount"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr6);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead7Handler implements OperationHandler<ComplexRead7, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead7 cr7, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (mid:Account {id:%d}) WITH mid OPTIONAL MATCH (mid)-[edge2:transfer]->(dst:Account) WHERE edge2.timestamp > %d AND edge2.timestamp < %d AND edge2.amount > %f WITH mid, count(distinct dst) as numDst, sum(edge2.amount) as amountDst OPTIONAL MATCH (mid)<-[edge1:transfer]-(src:Account) WHERE edge1.timestamp > %d AND edge1.timestamp < %d AND edge1.amount > %f WITH count(distinct src) as numSrc, sum(edge1.amount) as amountSrc, numDst, amountDst RETURN numSrc, numDst, CASE WHEN amountDst=0 THEN -1 ELSE round(1000.0 * amountSrc / amountDst) / 1000 END AS inOutRatio;";
+                long startTime = cr7.getStartTime().getTime();
+                long endTime = cr7.getEndTime().getTime();
+                double threshold = cr7.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        cr7.getId(), startTime, endTime, threshold, startTime, endTime, threshold);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead7Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead7Result result = new ComplexRead7Result(
+                            ob.getIntValue("numSrc"),
+                            ob.getIntValue("numDst"),
+                            ob.getFloatValue("inOutRatio"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr7);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead8Handler implements OperationHandler<ComplexRead8, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead8 cr8, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CALL plugin.cpp.tcr8({ id:%d, threshold: %f, startTime: %d, endTime: %d });";
+                long startTime = cr8.getStartTime().getTime();
+                long endTime = cr8.getEndTime().getTime();
+                double threshold = cr8.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        cr8.getId(), threshold, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead8Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONArray jsonArray = array.getJSONObject(i).getJSONArray("plugin.cpp.tcr8");
+                    for (int j = 0; j < jsonArray.size(); j++) {
+                        JSONArray item = jsonArray.getJSONArray(j);
+                        ComplexRead8Result result = new ComplexRead8Result(
+                            item.getLongValue(2),
+                            item.getFloatValue(0),
+                            item.getIntValue(1));
+                        results.add(result);
+                    }
+                }
+                resultReporter.report(results.size(), results, cr8);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead9Handler implements OperationHandler<ComplexRead9, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead9 cr9, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (mid:Account{id:%d}) WITH mid OPTIONAL MATCH (mid)-[edge2:repay]->(loan:Loan) WHERE edge2.amount > %f AND edge2.timestamp > %d AND edge2.timestamp < %d WITH mid, sum(edge2.amount) AS edge2Amount OPTIONAL MATCH (mid)<-[edge1:deposit]-(loan:Loan) WHERE edge1.amount > %f AND edge1.timestamp > %d AND edge1.timestamp < %d WITH mid, sum(edge1.amount) AS edge1Amount, edge2Amount OPTIONAL MATCH (mid)-[edge4:transfer]->(down:Account) WHERE edge4.timestamp > %d AND edge4.timestamp < %d WITH mid, edge1Amount, edge2Amount, sum(edge4.amount) AS edge4Amount OPTIONAL MATCH (mid)<-[edge3:transfer]-(up:Account) WHERE edge3.timestamp > %d AND edge3.timestamp < %d WITH edge1Amount, edge2Amount, sum(edge3.amount) AS edge3Amount, edge4Amount RETURN CASE WHEN edge2Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge2Amount) / 1000 END AS ratioRepay, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge4Amount) / 1000 END AS ratioDeposit, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge3Amount / edge4Amount) / 1000 END AS ratioTransfer;";
+                long startTime = cr9.getStartTime().getTime();
+                long endTime = cr9.getEndTime().getTime();
+                double threshold = cr9.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        cr9.getId(), threshold, startTime, endTime, threshold, startTime, endTime, startTime, endTime,
+                        startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead9Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead9Result result = new ComplexRead9Result(
+                            ob.getFloatValue("ratioRepay"),
+                            ob.getFloatValue("ratioDeposit"),
+                            ob.getFloatValue("ratioTransfer"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr9);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead10Handler implements OperationHandler<ComplexRead10, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead10 cr10, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p1:Person {id:%d})-[edge1:invest]->(m1:Company) WHERE edge1.timestamp > %d AND edge1.timestamp < %d WITH collect(distinct id(m1)) as m1_vids MATCH (p2:Person {id:%d})-[edge2:invest]->(m2:Company) WHERE edge2.timestamp > %d AND edge2.timestamp < %d WITH collect(distinct id(m2)) as m2_vids, m1_vids CALL algo.jaccard(m1_vids, m2_vids) YIELD similarity RETURN round(similarity*1000)/1000 AS similarity;";
+                long startTime = cr10.getStartTime().getTime();
+                long endTime = cr10.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr10.getPid1(), startTime, endTime,
+                        cr10.getPid2(), startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead10Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead10Result result = new ComplexRead10Result(
+                            ob.getFloatValue("similarity"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr10);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead11Handler implements OperationHandler<ComplexRead11, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead11 cr11, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p1:Person {id:%d})-[edge:guarantee*1..5]->(pN:Person) -[:apply]->(loan:Loan) WHERE minInList(relationships(edge, 'timestamp')) > %d AND maxInList(relationships(edge, 'timestamp')) < %d WITH DISTINCT loan RETURN sum(loan.loanAmount) as sumLoanAmount, count(distinct loan) as numLoans;";
+                long startTime = cr11.getStartTime().getTime();
+                long endTime = cr11.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr11.getId(), startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead11Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead11Result result = new ComplexRead11Result(
+                            ob.getDoubleValue("sumLoanAmount"),
+                            ob.getIntValue("numLoans"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr11);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class ComplexRead12Handler implements OperationHandler<ComplexRead12, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead12 cr12, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (person:Person {id:%d})-[edge1:own]->(pAcc:Account) -[edge2:transfer]->(compAcc:Account) <-[edge3:own]-(com:Company) WHERE edge2.timestamp > %d AND edge2.timestamp < %d RETURN compAcc.id AS compAccountId, sum(edge2.amount) AS sumEdge2Amount ORDER BY sumEdge2Amount DESC;";
+                long startTime = cr12.getStartTime().getTime();
+                long endTime = cr12.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        cr12.getId(), startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<ComplexRead12Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    ComplexRead12Result result = new ComplexRead12Result(
+                            ob.getLongValue("compAccountId"),
+                            ob.getDoubleValue("sumEdge2Amount"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, cr12);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static class SimpleRead1Handler implements OperationHandler<SimpleRead1, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead1 sr1, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -203,7 +503,7 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead2Handler implements OperationHandler<SimpleRead2, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead2 sr2, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -211,7 +511,7 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead3Handler implements OperationHandler<SimpleRead3, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead3 sr3, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -219,7 +519,7 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead4Handler implements OperationHandler<SimpleRead4, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead4 sr4, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -227,7 +527,7 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead5Handler implements OperationHandler<SimpleRead5, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead5 sr5, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -235,7 +535,7 @@ public class TuGraphTransactionDb extends Db {
     public static class SimpleRead6Handler implements OperationHandler<SimpleRead6, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(SimpleRead6 sr6, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -243,7 +543,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write1Handler implements OperationHandler<Write1, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write1 w1, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -251,7 +551,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write2Handler implements OperationHandler<Write2, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write2 w2, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -259,7 +559,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write3Handler implements OperationHandler<Write3, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write3 w3, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -267,7 +567,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write4Handler implements OperationHandler<Write4, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write4 w4, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -275,7 +575,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write5Handler implements OperationHandler<Write5, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write5 w5, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -283,7 +583,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write6Handler implements OperationHandler<Write6, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write6 w6, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -291,7 +591,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write7Handler implements OperationHandler<Write7, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write7 w7, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -299,7 +599,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write8Handler implements OperationHandler<Write8, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write8 w8, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -307,7 +607,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write9Handler implements OperationHandler<Write9, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write9 w9, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -315,7 +615,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write10Handler implements OperationHandler<Write10, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write10 w10, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -323,7 +623,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write11Handler implements OperationHandler<Write11, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write11 w11, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -331,7 +631,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write12Handler implements OperationHandler<Write12, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write12 w12, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -339,7 +639,7 @@ public class TuGraphTransactionDb extends Db {
     public static class Write13Handler implements OperationHandler<Write13, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(Write13 w13, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -347,7 +647,7 @@ public class TuGraphTransactionDb extends Db {
     public static class ReadWrite1Handler implements OperationHandler<ReadWrite1, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ReadWrite1 rw1, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -355,7 +655,7 @@ public class TuGraphTransactionDb extends Db {
     public static class ReadWrite2Handler implements OperationHandler<ReadWrite2, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ReadWrite2 rw2, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
@@ -363,7 +663,7 @@ public class TuGraphTransactionDb extends Db {
     public static class ReadWrite3Handler implements OperationHandler<ReadWrite3, TuGraphDbConnectionState> {
         @Override
         public void executeOperation(ReadWrite3 rw3, TuGraphDbConnectionState dbConnectionState,
-                                     ResultReporter resultReporter) throws DbException {
+                ResultReporter resultReporter) throws DbException {
             // TODO: do as above
         }
     }
