@@ -10,6 +10,7 @@ import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
 import org.ldbcouncil.finbench.driver.result.Path;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.ArrayList;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
@@ -351,9 +352,9 @@ public class TuGraphTransactionDb extends Db {
                     for (int j = 0; j < jsonArray.size(); j++) {
                         JSONArray item = jsonArray.getJSONArray(j);
                         ComplexRead8Result result = new ComplexRead8Result(
-                            item.getLongValue(2),
-                            item.getFloatValue(0),
-                            item.getIntValue(1));
+                                item.getLongValue(2),
+                                item.getFloatValue(0),
+                                item.getIntValue(1));
                         results.add(result);
                     }
                 }
@@ -496,7 +497,29 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead1 sr1, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (n:Account{id:%d}) RETURN n.createTime as createTime, n.isBlocked as isBlocked, n.type as type;";
+                cypher = String.format(
+                        cypher,
+                        sr1.getId());
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead1Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead1Result result = new SimpleRead1Result(
+                            new Date(ob.getLongValue("createTime")),
+                            ob.getBooleanValue("isBlocked"),
+                            ob.getString("type"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr1);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -504,7 +527,34 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead2 sr2, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (n:Account{id:%d}) WITH n OPTIONAL MATCH (n)-[e]->(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH n, sum(e.amount) as sumEdge1Amount, max(e.amount) as maxEdge1Amount, count(e) as numEdge1 OPTIONAL MATCH (n)<-[e]-(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH sumEdge1Amount, maxEdge1Amount, numEdge1, sum(e.amount) as sumEdge2Amount, max(e.amount) as maxEdge2Amount, count(e) as numEdge2 RETURN sumEdge1Amount, CASE WHEN maxEdge1Amount < 0 THEN -1 ELSE maxEdge1Amount END as maxEdge1Amount, numEdge1, sumEdge2Amount, CASE WHEN maxEdge2Amount < 0 THEN -1 ELSE maxEdge2Amount END as maxEdge2Amount, numEdge2;";
+                long startTime = sr2.getStartTime().getTime();
+                long endTime = sr2.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        sr2.getId(), startTime, endTime, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead2Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead2Result result = new SimpleRead2Result(
+                            ob.getDoubleValue("sumEdge1Amount"),
+                            ob.getDoubleValue("maxEdge1Amount"),
+                            ob.getLongValue("numEdge1"),
+                            ob.getDoubleValue("sumEdge2Amount"),
+                            ob.getDoubleValue("maxEdge2Amount"),
+                            ob.getLongValue("numEdge2"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr2);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -512,7 +562,30 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead3 sr3, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (n:Account{id:%d}) WITH n OPTIONAL MATCH (n)<-[e:transfer]-(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d AND m.isBlocked=true WITH count(m) * 1.0 as numM MATCH (n:Account{id:%d}) WITH n, numM OPTIONAL MATCH (n)<-[e:transfer]-(m:Account) RETURN numM / count(m) as blockRatio;";
+                long startTime = sr3.getStartTime().getTime();
+                long endTime = sr3.getEndTime().getTime();
+                double threshold = sr3.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        sr3.getId(), threshold, startTime, endTime, sr3.getId());
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead3Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead3Result result = new SimpleRead3Result(
+                            ob.getFloatValue("blockRatio"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr3);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -520,7 +593,32 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead4 sr4, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (n:Account{id:%d}) WITH n MATCH (n)-[e:transfer]->(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d RETURN m.id as dstId, count(e) as numEdges, sum(e.amount) as sumAmount ORDER BY dstId;";
+                long startTime = sr4.getStartTime().getTime();
+                long endTime = sr4.getEndTime().getTime();
+                double threshold = sr4.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        sr4.getId(), threshold, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead4Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead4Result result = new SimpleRead4Result(
+                            ob.getLongValue("dstId"),
+                            ob.getIntValue("numEdges"),
+                            ob.getDoubleValue("sumAmount"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr4);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -528,7 +626,32 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead5 sr5, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (n:Account{id:%d})<-[e:transfer]-(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d RETURN m.id as srcId, count(e) as numEdges, sum(e.amount) as sumAmount ORDER BY sumAmount DESC, srcId ASC;";
+                long startTime = sr5.getStartTime().getTime();
+                long endTime = sr5.getEndTime().getTime();
+                double threshold = sr5.getThreshold();
+                cypher = String.format(
+                        cypher,
+                        sr5.getId(), threshold, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead5Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead5Result result = new SimpleRead5Result(
+                            ob.getLongValue("srcId"),
+                            ob.getIntValue("numEdges"),
+                            ob.getDoubleValue("sumAmount"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr5);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -536,7 +659,29 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead6 sr6, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (src:Account{id:%d})<-[e1:transfer]-(m:Account) -[e2:transfer]->(dst:Account) WHERE dst.isBlocked = true AND src.id <> dst.id AND e1.timestamp > %d AND e1.timestamp < %d AND e2.timestamp > %d AND e2.timestamp < %d RETURN DISTINCT dst.id as dstId ORDER BY dstId ASC;";
+                long startTime = sr6.getStartTime().getTime();
+                long endTime = sr6.getEndTime().getTime();
+                cypher = String.format(
+                        cypher,
+                        sr6.getId(), startTime, endTime, startTime, endTime);
+                String graph = "default";
+                String res = client.callCypher(cypher, graph, 0);
+                ArrayList<SimpleRead6Result> results = new ArrayList<>();
+                JSONArray array = JSONObject.parseArray(res);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject ob = array.getJSONObject(i);
+                    SimpleRead6Result result = new SimpleRead6Result(
+                            ob.getLongValue("dstId"));
+                    results.add(result);
+                }
+                resultReporter.report(results.size(), results, sr6);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
