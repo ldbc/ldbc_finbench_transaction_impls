@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.ArrayList;
+
+import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcNoResult;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
 import com.alibaba.fastjson.*;
 
@@ -793,7 +795,21 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite1 rw1, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CALL plugin.cpp.trw1({srcId: %d, dstId: %d, time: %d, amt: %f, startTime: %d, endTime: %d});";
+                cypher = String.format(
+                        cypher,
+                        rw1.getSrcId(), rw1.getDstId(),
+                        rw1.getTime().getTime(), rw1.getAmount(),
+                        rw1.getStartTime().getTime(), rw1.getEndTime().getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, rw1);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -801,7 +817,22 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite2 rw2, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CALL plugin.cpp.trw2({ srcId: %d, dstId: %d, time: %d, amt: %f, threshold: %f, startTime: %d, endTime: %d});";
+                cypher = String.format(
+                        cypher,
+                        rw2.getSrcId(), rw2.getDstId(),
+                        rw2.getTime().getTime(), rw2.getAmount(),
+                        rw2.getAmountThreshold(),
+                        rw2.getStartTime().getTime(), rw2.getEndTime().getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, rw2);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -809,7 +840,21 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite3 rw3, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CALL plugin.cpp.trw3({ srcId: %d, dstId: %d, time: %d, threshold: %f, startTime: %d, endTime: %d});";
+                cypher = String.format(
+                        cypher,
+                        rw3.getSrcId(), rw3.getDstId(),
+                        rw3.getTime().getTime(), rw3.getThreshold(),
+                        rw3.getStartTime().getTime(), rw3.getEndTime().getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, rw3);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
