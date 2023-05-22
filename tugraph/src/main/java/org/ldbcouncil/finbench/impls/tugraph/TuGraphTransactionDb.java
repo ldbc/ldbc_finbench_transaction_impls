@@ -139,7 +139,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d RETURN other.id AS otherId, sum(loan.loanAmount) as sumLoanAmount, sum(loan.balance) as sumLoanBalance ORDER BY sumLoanAmount DESC;";
+                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT other.id AS otherId, loan.loanAmount AS loanAmount, loan.balance AS loanBalance RETURN otherId AS otherId, sum(loanAmount) as sumLoanAmount, sum(loanBalance) as sumLoanBalance ORDER BY sumLoanAmount DESC;";
                 long startTime = cr2.getStartTime().getTime();
                 long endTime = cr2.getEndTime().getTime();
                 cypher = String.format(
