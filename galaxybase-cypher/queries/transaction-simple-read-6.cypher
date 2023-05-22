@@ -3,4 +3,4 @@ WHERE src.id <> dst.id
   AND $startTime < e1.timestamp < $endTime
   AND $startTime < e2.timestamp < $endTime
 RETURN DISTINCT dst.id AS dstId
-ORDER BY dstId
+ORDER BY toInteger(dstId)

@@ -10,4 +10,4 @@ WITH DISTINCT dst.id AS dstId, loan, collect(DISTINCT relationships(p)[-1]) AS e
 RETURN dstId,
 apoc.math.round(1.0 * apoc.coll.sum([e in edges| e.amount]) / loan.loanAmount, 3) AS ratio,
 minDistanceFromLoan
-ORDER BY minDistanceFromLoan DESC, ratio DESC, dstId
+ORDER BY minDistanceFromLoan DESC, ratio DESC, toInteger(dstId)

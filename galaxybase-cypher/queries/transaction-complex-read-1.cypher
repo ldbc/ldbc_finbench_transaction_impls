@@ -7,4 +7,4 @@ AND all(e IN transfer WHERE e.timestamp > $startTime AND e.timestamp < $endTime)
 AND signIn.timestamp > $startTime AND signIn.timestamp < $endTime
 WITH DISTINCT [ other.id, length(p) , medium.id, medium.type] AS list, other.id AS otherId, length(p) AS accountDistance, medium.id AS mediumId, medium.type AS mediumType
 RETURN otherId, accountDistance, mediumId, mediumType
-ORDER BY accountDistance, otherId
+ORDER BY accountDistance, toInteger(otherId), toInteger(mediumId)
