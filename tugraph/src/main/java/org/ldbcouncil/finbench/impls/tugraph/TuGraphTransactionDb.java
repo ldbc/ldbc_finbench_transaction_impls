@@ -374,14 +374,17 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (mid:Account{id:%d}) WITH mid OPTIONAL MATCH (mid)-[edge2:repay]->(loan:Loan) WHERE edge2.amount > %f AND edge2.timestamp > %d AND edge2.timestamp < %d WITH mid, sum(edge2.amount) AS edge2Amount OPTIONAL MATCH (mid)<-[edge1:deposit]-(loan:Loan) WHERE edge1.amount > %f AND edge1.timestamp > %d AND edge1.timestamp < %d WITH mid, sum(edge1.amount) AS edge1Amount, edge2Amount OPTIONAL MATCH (mid)-[edge4:transfer]->(down:Account) WHERE edge4.timestamp > %d AND edge4.timestamp < %d WITH mid, edge1Amount, edge2Amount, sum(edge4.amount) AS edge4Amount OPTIONAL MATCH (mid)<-[edge3:transfer]-(up:Account) WHERE edge3.timestamp > %d AND edge3.timestamp < %d WITH edge1Amount, edge2Amount, sum(edge3.amount) AS edge3Amount, edge4Amount RETURN CASE WHEN edge2Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge2Amount) / 1000 END AS ratioRepay, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge4Amount) / 1000 END AS ratioDeposit, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge3Amount / edge4Amount) / 1000 END AS ratioTransfer;";
+                String cypher = "MATCH (mid:Account {id:%d}) WITH mid OPTIONAL MATCH (mid)-[edge2:repay]->(loan:Loan) WHERE edge2.amount > %f AND edge2.timestamp > %d AND edge2.timestamp < %d WITH mid, sum(edge2.amount) AS edge2Amount OPTIONAL MATCH (mid)<-[edge1:deposit]-(loan:Loan) WHERE edge1.amount > %f AND edge1.timestamp > %d AND edge1.timestamp < %d WITH mid, sum(edge1.amount) AS edge1Amount, edge2Amount OPTIONAL MATCH (mid)-[edge4:transfer]->(down:Account) WHERE edge4.amount > %f AND edge4.timestamp > %d AND edge4.timestamp < %d WITH mid, edge1Amount, edge2Amount, sum(edge4.amount) AS edge4Amount OPTIONAL MATCH (mid)<-[edge3:transfer]-(up:Account) WHERE edge3.amount > %f AND edge3.timestamp > %d AND edge3.timestamp < %d WITH edge1Amount, edge2Amount, sum(edge3.amount) AS edge3Amount, edge4Amount RETURN CASE WHEN edge2Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge2Amount) / 1000 END AS ratioRepay, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge1Amount / edge4Amount) / 1000 END AS ratioDeposit, CASE WHEN edge4Amount=0 THEN -1 ELSE round(1000.0 * edge3Amount / edge4Amount) / 1000 END AS ratioTransfer;";
                 long startTime = cr9.getStartTime().getTime();
                 long endTime = cr9.getEndTime().getTime();
                 double threshold = cr9.getThreshold();
                 cypher = String.format(
                         cypher,
-                        cr9.getId(), threshold, startTime, endTime, threshold, startTime, endTime, startTime, endTime,
-                        startTime, endTime);
+                        cr9.getId(),
+                        threshold, startTime, endTime,
+                        threshold, startTime, endTime,
+                        threshold, startTime, endTime,
+                        threshold, startTime, endTime);
                 String graph = "default";
                 String res = client.callCypher(cypher, graph, 0);
                 ArrayList<ComplexRead9Result> results = new ArrayList<>();
