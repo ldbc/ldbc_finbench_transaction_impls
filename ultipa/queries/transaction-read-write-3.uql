@@ -1,10 +1,30 @@
-find().nodes({@Person && _id in [$srcId,$dstId]}) as nodes return nodes.is_blocked as is_blocked;
+find().nodes({@Person && _id==$srcId}) as nodes return nodes.isBlocked as isBlocked;
+
+find().nodes({@Person && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
 insert().into(@Guarantee).edges({_from:$srcId,_to:$dstId,timestamp:$time});
 
-n({@Person && _id==$srcId}).re({@Guarantee && timestamp <> $startTime,$endTime})[:10].n({@Person} as person)
-with collect(distinct(person)) as person1
-n(person1).re({@Apply}).n({@Loan} as loan)
-return table(sum(loan.loan_amount));
+find().nodes({@Person && _id==$srcId}) as start
+exta(complex_read).params({
+	srcs:start,
+	edgeDirection:"out",
+	depth:5,
+	limit:10000000,
+	edge_schema:"Guarantee",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:-1,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:0
+}).stream() as rest
+find().nodes({@Person && _uuid in rest}) as node
+with distinct(node) as pn
+n(pn).re({@Apply}).n({@Loan} as loan)
+return table(sum(loan.loanAmount),count(loan));
 
-update().nodes({@Person && _id in[$srcId,$dstId]}).set({is_blocked:'True'})
+update().nodes({@Person && _id in[$srcId,$dstId]}).set({isBlocked:'true'})

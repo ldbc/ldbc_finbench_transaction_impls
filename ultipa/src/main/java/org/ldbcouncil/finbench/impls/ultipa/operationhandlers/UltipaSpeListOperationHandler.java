@@ -2,7 +2,6 @@ package org.ldbcouncil.finbench.impls.ultipa.operationhandlers;
 
 import com.ultipa.sdk.connect.Connection;
 import com.ultipa.sdk.operate.response.Response;
-import com.ultipa.sdk.utils.StringUtils;
 import org.ldbcouncil.finbench.driver.DbException;
 import org.ldbcouncil.finbench.driver.Operation;
 import org.ldbcouncil.finbench.driver.ResultReporter;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class UltipaListOperationHandler<TOperation extends Operation<List<TOperationResult>>, TOperationResult>
+public abstract class UltipaSpeListOperationHandler<TOperation extends Operation<List<TOperationResult>>, TOperationResult>
         implements ListOperationHandler<TOperationResult,TOperation,UltipaDbConnectionState> {
 
     @Override
@@ -33,8 +32,8 @@ public abstract class UltipaListOperationHandler<TOperation extends Operation<Li
         try {
             Response resp = conn.uql(uql);
             if(resp.getItems().size()>0) {
-                resultCount = resp.get(0).asTable().getRows().size();
-                results = toResult(resp);
+                resultCount = resp.getItems().get("rest").asAttr().getValues().size();
+                results = toResult(resp,conn);
             }else{
                 resultCount = 0;
                 results = new ArrayList<>();
@@ -45,7 +44,7 @@ public abstract class UltipaListOperationHandler<TOperation extends Operation<Li
         resultReporter.report(resultCount, results, operation);
     }
 
-    public abstract List<TOperationResult> toResult(Response resp) throws ParseException;
+    public abstract List<TOperationResult> toResult(Response resp,Connection conn) throws ParseException;
 
     public abstract Map<String, Object> getParameters(UltipaDbConnectionState state, TOperation operation );
 

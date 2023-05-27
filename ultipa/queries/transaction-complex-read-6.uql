@@ -1,5 +1,22 @@
-n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime] && amount > $threshold1} as edge1).n({@Account} as mid).re({@Withdraw && timestamp <> [$startTime,$endTime] && amount> $threshold2} as edge2).n({@Account && _id==$id && type=='Card'} as dstcard)
-group by mid
-with mid._id as midid,sum(edge1.amount) as sume1,sum(edge2.amount) as sume2
+n({@Account && _id==$id && type contains 'card'} as dstcard).le({@Withdraw && timestamp <> [$startTime,$endTime] && amount>$threshold2} as edge2).n({@Account} as mid)
+with mid,edge2
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"in",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold1,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest
+with mid._id as midid,sum(rest.amount) as sume1,sum(edge2.amount) as sume2
 return table(midid,sume1,sume2)
 order by sume2 desc,midid asc

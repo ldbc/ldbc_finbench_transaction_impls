@@ -1,6 +1,39 @@
-n({@Account && _id==$id} as midn).le({@Deposit && amount > $threshold && timestamp <> [$startTime,$endTime]} as edge1).n({@Loan}).le({@Repay && amount > $threshold  && timestamp <> [$startTime,$endTime]} as edge2).n({@Account && _id==$id}) as path1
-with midn as mid,sum(edge1.amount) as sume1,sum(edge2.amount) as sume2
-where sume1/sume2 > $lowerBound and sume1/sume2 < $upperBound
-n({@Account} as up).re({@Transfer && timestamp <> [$startTime,$endTime] && amount > $threshold} as edge3).n(mid).re({@Transfer && timestamp <> [$startTime,$endTime] && amount > $threshold } as edge4).n({@Account} as down) as path2
-with sum(edge3.amount) as sume3,sum(edge4.amount) as sume4
+n({@Account && _id==$id} as mid).le({@Deposit && amount > $threshold && timestamp <> [$startTime,$endTime]} as edge1).n({@Loan}).le({@Repay && amount > $threshold  && timestamp <> [$startTime,$endTime]} as edge2).n({@Account && _id==$id})
+with mid ,sum(edge1.amount) as sume1,sum(edge2.amount) as sume2
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"in",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:10000,
+	order:"asc",
+	return_type:1
+}).stream() as rest3
+with sum(rest3.amount) as sume3
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"out",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest4
+with sum(rest4.amount) as sume4
 return table(sume1/sume2,sume1/sume4,sume3/sume4)

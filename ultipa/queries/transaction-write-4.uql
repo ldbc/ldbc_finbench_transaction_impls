@@ -1,1 +1,2 @@
-insert().into(@Withdraw).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount})
+find().nodes({@Account && _id==$dstId && type=='card'}) as node
+insert().into(@Withdraw).edges({_from:$srcId,_to:node._id,timestamp:$time,amount:$amount})
