@@ -1,4 +1,3 @@
 n({@Account && _id==$id}).re({@Transfer && timestamp <> [$startTime,$endTime]} as edge1).n({@Account}) as path1
 n({@Account && _id==$id}).le({@Transfer && timestamp <> [$startTime,$endTime]} as edge2).n({@Account}) as path2
-with edge1,edge2
 return table(sum(edge1.amount),max(edge1.amount),count(edge1),sum(edge2.amount),max(edge2.amount),count(edge2))

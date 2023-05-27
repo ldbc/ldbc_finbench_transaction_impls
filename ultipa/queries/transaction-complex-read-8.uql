@@ -1,3 +1,26 @@
-n({@Loan && _id==$id}).re({@Deposit && timestamp <> [$startTime,$endTime]}).n({@Account}).re({(@Transfer||@Withdraw) && amount > $threshold && timestamp <> [$startTime,$endTime]})[1:3].n({@Account} as dst) as path
-order by length(path) desc
-return table(dst._id,length(path))
+n({@Loan && _id==$id} as loan).re({@Deposit && timestamp <> [$startTime,$endTime]}).n({@Account} as src)
+with src,loan.loanAmount as loanAmount
+exta(complex_read).params({
+	srcs:src,
+	edgeDirection:"out",
+	depth:3,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest
+with distinct(rest) as rr
+group by rr.dest
+with rr.dest as rd,rr.length as length,sum(rr.amount)/loanAmount as ratio
+find().nodes(rd) as dd
+with dd._id as destid,ratio,length
+return table(destid,ratio,length)
+order by length desc,ratio desc,destid asc

@@ -1,6 +1,24 @@
-n({@Person && _id==$id}).re({@Own}).n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime]} as edge2).n({@Account} as compacc).le({@Own}).n({@Company}) as path
-group by compacc._id
-with compacc._id as compaccid,sum(edge2.amount) as sume2
-order by sume2 desc
+n({@Person && _id==$id}).re({@Own}).n({@Account} as paccount)
+exta(complex_read).params({
+	srcs:paccount,
+	edgeDirection:"out",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:-1,
+    pre:0,
+	range_begin:$startTime,
+    range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest
+with distinct(rest) as disrest
+n({disrest.dest}).le({@Own}).n({@Company} as compacc)
+group by disrest.dest
+with compacc._id as compaccid,sum(disrest.amount) as sume2
 return table(compaccid,sume2)
 order by sume2 desc,compaccid asc
