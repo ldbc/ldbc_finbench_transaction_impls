@@ -1,1 +1,1 @@
-update().nodes({@Account && _id==$accountId}).set({is_blocked:'True'})
+update().nodes({@Account && _id==$accountId}).set({isBlocked:'true'})

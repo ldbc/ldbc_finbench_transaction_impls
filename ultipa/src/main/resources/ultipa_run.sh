@@ -1,0 +1,1 @@
+java --class-path ../../../target/ultipa-0.1.0-alpha.jar;../../../lib/ultipa-java-sdk-4.3.0-SNAPSHOT-package.jar org.ldbcouncil.finbench.driver.driver.Driver -P ultipa_example.properties

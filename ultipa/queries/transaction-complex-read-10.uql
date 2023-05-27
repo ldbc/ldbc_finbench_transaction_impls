@@ -1,5 +1,5 @@
-n({@Person && _id==$id1}).re({@Invest && timestamp <> [$startTime,$endTime]}).n({@Company} as company1)
-n({@Person && _id==$id2}).re({@Invest && timestamp <> [$startTime,$endTime]}).n({@Company} as company2)
+n({@Person && _id==$pid1}).re({@Invest && timestamp <> [$startTime,$endTime]}).n({@Company} as company1)
+n({@Person && _id==$pid2}).re({@Invest && timestamp <> [$startTime,$endTime]}).n({@Company} as company2)
 with collect(company1) as company1c,collect(company2) as company2c
 with intersection(company1c,company2c) as aa,listUnion(company1c,company2c) as bb
 return table(size(aa)/size(bb))
