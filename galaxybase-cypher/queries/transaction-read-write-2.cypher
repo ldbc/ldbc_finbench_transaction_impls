@@ -7,6 +7,7 @@ MATCH (src:Account {id: '$srcId'}), (dst:Account {id: '$dstId'})
 CREATE (dst)<-[:AccountTransferAccount {timestamp: $time, amount: $amount}]-(src)
 RETURN true AS isSuccess
 QUERY
+CYPHER EXPANDCONFIG = ([edge2, edge1], timestamp, $truncationOrder, $truncationLimit)
 MATCH (src:Account)-[edge1:AccountTransferAccount]->(mid:Account {id: '$srcId'})
 OPTIONAL MATCH (mid)-[edge2:AccountTransferAccount]->(dst:Account)
 WHERE edge1.timestamp > $startTime AND edge1.timestamp < $endTime AND edge1.amount > $amountThreshold

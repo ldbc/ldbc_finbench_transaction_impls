@@ -7,8 +7,9 @@ MATCH (src:Person {id: '$srcId'}), (dst:Person {id: '$dstId'})
 CREATE (dst)<-[:PersonGuaranteePerson {timestamp: $time}]-(src)
 RETURN true AS isSuccess
 QUERY
+CYPHER EXPANDCONFIG = ([guarantee], timestamp, $truncationOrder, $truncationLimit)
 MATCH (src:Person {id: '$srcId'})
-OPTIONAL MATCH p=(src)-[:PersonGuaranteePerson*1..5]->(pX:Person)
+OPTIONAL MATCH p=(src)-[guarantee:PersonGuaranteePerson*1..5]->(pX:Person)
 WHERE all(e IN relationships(p) WHERE $startTime < e.timestamp < $endTime)
 UNWIND nodes(p)[1..] AS person
 MATCH (person)-[:PersonApplyLoan]->(loan:Loan)
