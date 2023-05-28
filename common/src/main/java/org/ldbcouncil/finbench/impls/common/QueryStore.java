@@ -396,6 +396,8 @@ public abstract class QueryStore {
                 .put(ReadWrite1.AMOUNT, Double.toString(operation.getAmount()))
                 .put(ReadWrite1.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite1.END_TIME, Long.toString(operation.getEndTime().getTime()))
+                .put(ReadWrite1.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
+                .put(ReadWrite1.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 
@@ -409,6 +411,8 @@ public abstract class QueryStore {
                 .put(ReadWrite2.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite2.END_TIME, Long.toString(operation.getEndTime().getTime()))
                 .put(ReadWrite2.RATIO_THRESHOLD, Float.toString(operation.getRatioThreshold()))
+                .put(ReadWrite2.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
+                .put(ReadWrite2.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 
@@ -420,6 +424,8 @@ public abstract class QueryStore {
                 .put(ReadWrite3.THRESHOLD, Double.toString(operation.getThreshold()))
                 .put(ReadWrite3.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite3.END_TIME, Long.toString(operation.getEndTime().getTime()))
+                .put(ReadWrite3.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
+                .put(ReadWrite3.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 }
