@@ -19,6 +19,6 @@ exta(complex_read).params({
 with distinct(rest.dest) as dd
 n({dd} as other).le({@Deposit.timestamp <> [$startTime,$endTime]} as deposit).n({@Loan} as loan) as path
 group by other._id
-with other._id as otherId,sum(loan.loanAmount) as sumLoanAmount,sum(loan.balance) as sumLoanBalance
+with other._id as otherId,round(sum(loan.loanAmount),3) as sumLoanAmount,round(sum(loan.balance),3) as sumLoanBalance
 return table(otherId,sumLoanAmount,sumLoanBalance)
 order by sumLoanAmount desc,otherId asc

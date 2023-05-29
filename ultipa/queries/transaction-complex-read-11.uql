@@ -19,4 +19,4 @@ exta(complex_read).params({
 find().nodes({@Person && _uuid in rest}) as node
 with distinct(node) as pn
 n(pn).re({@Apply}).n({@Loan} as loan)
-return table(sum(loan.loanAmount),count(loan))
+return table(round(sum(loan.loanAmount),3),count(loan))

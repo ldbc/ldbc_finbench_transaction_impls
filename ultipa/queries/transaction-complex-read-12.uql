@@ -19,6 +19,6 @@ exta(complex_read).params({
 with distinct(rest) as disrest
 n({disrest.dest}).le({@Own}).n({@Company} as compacc)
 group by disrest.dest
-with compacc._id as compaccid,sum(disrest.amount) as sume2
+with compacc._id as compaccid,round(sum(disrest.amount),3) as sume2
 return table(compaccid,sume2)
 order by sume2 desc,compaccid asc

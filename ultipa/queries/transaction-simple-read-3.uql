@@ -2,4 +2,4 @@ n({@Account && isBlocked=='true'}).re({@Transfer && timestamp <> [$startTime,$en
 with count(path1) as countp1
 n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime] && amount>$threshold}).n({@Account && _id==$id}) as path2
 with count(path2) as countp2
-return table(countp1/countp2)
+return table(round(countp1/countp2,3))

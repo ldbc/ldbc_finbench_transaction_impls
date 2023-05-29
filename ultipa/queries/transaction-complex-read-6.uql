@@ -17,6 +17,6 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:1
 }).stream() as rest
-with mid._id as midid,sum(rest.amount) as sume1,sum(edge2.amount) as sume2
+with mid._id as midid,round(sum(rest.amount),3) as sume1,round(sum(edge2.amount),3) as sume2
 return table(midid,sume1,sume2)
 order by sume2 desc,midid asc

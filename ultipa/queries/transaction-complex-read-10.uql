@@ -2,4 +2,4 @@ n({@Person && _id==$pid1}).re({@Invest && timestamp <> [$startTime,$endTime]}).n
 n({@Person && _id==$pid2}).re({@Invest && timestamp <> [$startTime,$endTime]}).n({@Company} as company2)
 with collect(company1) as company1c,collect(company2) as company2c
 with intersection(company1c,company2c) as aa,listUnion(company1c,company2c) as bb
-return table(size(aa)/size(bb))
+return table(round(size(aa)/size(bb),3))

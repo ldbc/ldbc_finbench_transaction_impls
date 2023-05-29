@@ -36,4 +36,4 @@ exta(complex_read).params({
 	return_type:1
 }).stream() as rest2
 with count(rest2.dest) as path2count
-return table(path1count,path2count,path1count/path2count)
+return table(path1count,path2count,round(path1count/path2count,3))
