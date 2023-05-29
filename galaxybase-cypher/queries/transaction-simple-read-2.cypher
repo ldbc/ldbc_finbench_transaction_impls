@@ -4,15 +4,15 @@ WHERE $startTime < edge1.timestamp < $endTime
 OPTIONAL MATCH (src)<-[edge2:AccountTransferAccount]->(dst2:Account)
 WHERE $startTime < edge2.timestamp < $endTime
 RETURN
-    sum(edge1.amount) AS sumEdge1Amount, 
+    apoc.math.round(sum(edge1.amount), 3) AS sumEdge1Amount,
 	CASE edge1 IS NULL
 	  WHEN true THEN -1
-	  ELSE max(edge1.amount)
+	  ELSE apoc.math.round(max(edge1.amount), 3)
 	END AS maxEdge1Amount,
 	count(edge1) AS numEdge1,
-    sum(edge2.amount) AS sumEdge2Amount, 
+    apoc.math.round(sum(edge2.amount), 3) AS sumEdge2Amount,
 	CASE edge2 IS NULL
 	  WHEN true THEN -1
-	  ELSE max(edge2.amount)
+	  ELSE apoc.math.round(max(edge2.amount), 3)
 	END AS maxEdge2Amount,
 	count(edge2) AS numEdge2

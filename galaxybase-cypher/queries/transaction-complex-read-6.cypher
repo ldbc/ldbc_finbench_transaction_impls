@@ -7,5 +7,5 @@ WITH mid.id AS midId, collect(DISTINCT transfer1) AS transfer1s, collect(DISTINC
 WITH midId, apoc.coll.sum([e in transfer1s | e.amount]) AS sumEdge1Amount,
 apoc.coll.sum([e in transfer2s | e.amount]) AS sumEdge2Amount, size(transfer1s) AS edgeCount
 WHERE edgeCount > 3
-RETURN midId, sumEdge1Amount, sumEdge2Amount
+RETURN midId, apoc.math.round(sumEdge1Amount, 3), apoc.math.round(sumEdge2Amount, 3)
 ORDER BY sumEdge2Amount DESC, toInteger(midId)

@@ -7,5 +7,5 @@ AND all(e IN transfer WHERE e.timestamp > $startTime AND e.timestamp < $endTime)
 WITH DISTINCT other
 MATCH (other)<-[deposit:LoanDepositAccount]-(loan:Loan)
 WHERE deposit.timestamp > $startTime AND deposit.timestamp < $endTime
-RETURN other.id AS otherId, sum(DISTINCT loan.loanAmount) AS sumLoanAmount, sum(DISTINCT loan.balance) AS sumLoanBalance
+RETURN other.id AS otherId, apoc.math.round(sum(DISTINCT loan.loanAmount), 3) AS sumLoanAmount, apoc.math.round(sum(DISTINCT loan.balance), 3) AS sumLoanBalance
 ORDER BY sumLoanAmount DESC, toInteger(otherId)
