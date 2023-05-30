@@ -350,15 +350,12 @@ public class TuGraphTransactionDb extends Db {
                 ArrayList<ComplexRead8Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
-                    JSONArray jsonArray = array.getJSONObject(i).getJSONArray("plugin.cpp.tcr8");
-                    for (int j = 0; j < jsonArray.size(); j++) {
-                        JSONArray item = jsonArray.getJSONArray(j);
-                        ComplexRead8Result result = new ComplexRead8Result(
-                                item.getLongValue(2),
-                                item.getFloatValue(0),
-                                item.getIntValue(1));
-                        results.add(result);
-                    }
+                    JSONObject item = array.getJSONObject(i);
+                    ComplexRead8Result result = new ComplexRead8Result(
+                            item.getLongValue("i"),
+                            item.getFloatValue("r"),
+                            item.getIntValue("d"));
+                    results.add(result);
                 }
                 resultReporter.report(results.size(), results, cr8);
                 dbConnectionState.pushClient(client);
