@@ -14,13 +14,13 @@ WITH edge1Amount, edge2Amount, edge3Amount, sum(edge4.amount) AS edge4Amount
 RETURN
 CASE edge2Amount = 0
   WHEN true THEN -1
-  ELSE apoc.math.round(1.0 * edge1Amount/edge2Amount, 3)
+  ELSE round(1.0 * edge1Amount/edge2Amount * 1000) / 1000
 END AS ratioRepay,
 CASE edge4Amount = 0
   WHEN true THEN -1
-  ELSE apoc.math.round(1.0 * edge1Amount/edge4Amount, 3)
+  ELSE round(1.0 * edge1Amount/edge4Amount * 1000) / 1000
 END AS ratioDeposit,
 CASE edge4Amount = 0
   WHEN true THEN -1
-  ELSE apoc.math.round(1.0 * edge3Amount/edge4Amount, 3)
+  ELSE round(1.0 * edge3Amount/edge4Amount * 1000) / 1000
 END AS ratioTransfer

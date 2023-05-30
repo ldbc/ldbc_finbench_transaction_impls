@@ -4,4 +4,4 @@ WHERE all(e IN relationships(p) WHERE $startTime < e.timestamp < $endTime)
 UNWIND nodes(p)[1..] AS person
 MATCH (person)-[:PersonApplyLoan]->(loan:Loan)
 WITH DISTINCT loan
-RETURN apoc.math.round(sum(loan.loanAmount), 3) AS sumLoanAmount, count(loan) AS numLoans
+RETURN round(sum(loan.loanAmount) * 1000) / 1000 AS sumLoanAmount, count(loan) AS numLoans

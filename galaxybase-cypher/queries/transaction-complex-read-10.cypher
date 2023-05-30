@@ -11,5 +11,5 @@ WITH p12Neighbors AS intersection, p1Neighbors + p2Neighbors - p12Neighbors AS u
 RETURN
 CASE union = 0
   WHEN true THEN 0
-  ELSE apoc.math.round(1.0 * intersection / union, 3)
+  ELSE round(1.0 * intersection / union * 1000) / 1000
 END AS jaccardSimilarity

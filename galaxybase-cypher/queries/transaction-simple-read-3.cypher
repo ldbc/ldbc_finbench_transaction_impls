@@ -9,5 +9,5 @@ WITH count(edge1) AS edge1Num, edge2Num
 RETURN 
 CASE edge2Num=0
   WHEN true THEN -1
-  ELSE apoc.math.round(1.0 * edge1Num/edge2Num, 3)
+  ELSE round(1.0 * edge1Num/edge2Num * 1000) / 1000
 END AS blockRatio
