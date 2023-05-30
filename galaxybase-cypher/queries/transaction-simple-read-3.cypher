@@ -1,6 +1,8 @@
-MATCH (src:Account)-[edge2:AccountTransferAccount]->(dst:Account {id: '$id'})
-WITH count(edge2) AS edge2Num
-OPTIONAL MATCH (blockedSrc:Account {isBlocked: true})-[edge1:AccountTransferAccount]->(dst {id: '$id'})
+OPTIONAL MATCH (dst:Account {id: '$id'})
+WITH dst
+OPTIONAL MATCH (src:Account)-[edge2:AccountTransferAccount]->(dst)
+WITH dst, count(edge2) AS edge2Num
+OPTIONAL MATCH (blockedSrc:Account {isBlocked: true})-[edge1:AccountTransferAccount]->(dst)
 WHERE $startTime < edge1.timestamp < $endTime
   AND edge1.amount > $threshold
 WITH count(edge1) AS edge1Num, edge2Num
