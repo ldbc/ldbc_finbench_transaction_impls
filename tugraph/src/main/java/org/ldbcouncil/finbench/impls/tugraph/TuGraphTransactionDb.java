@@ -139,7 +139,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT other.id AS otherId, loan.loanAmount AS loanAmount, loan.balance AS loanBalance WITH otherId AS otherId, sum(loanAmount) as sumLoanAmount, sum(loanBalance) as sumLoanBalance RETURN otherId, round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, round(sumLoanBalance * 1000) / 1000 as sumLoanBalance ORDER BY sumLoanAmount DESC;";
+                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT other.id AS otherId, loan.loanAmount AS loanAmount, loan.balance AS loanBalance WITH otherId AS otherId, sum(loanAmount) as sumLoanAmount, sum(loanBalance) as sumLoanBalance RETURN otherId, round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, round(sumLoanBalance * 1000) / 1000 as sumLoanBalance ORDER BY sumLoanAmount DESC, otherId ASC;";
                 long startTime = cr2.getStartTime().getTime();
                 long endTime = cr2.getEndTime().getTime();
                 cypher = String.format(
@@ -153,8 +153,8 @@ public class TuGraphTransactionDb extends Db {
                     JSONObject ob = array.getJSONObject(i);
                     ComplexRead2Result result = new ComplexRead2Result(
                             ob.getLongValue("otherId"),
-                            ob.getLongValue("sumLoanAmount"),
-                            ob.getLongValue("sumLoanBalance"));
+                            ob.getDoubleValue("sumLoanAmount"),
+                            ob.getDoubleValue("sumLoanBalance"));
                     results.add(result);
                 }
                 resultReporter.report(results.size(), results, cr2);
@@ -201,7 +201,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (src:Account {id:%d})-[e1:transfer]->(dst:Account {id:%d}) WHERE e1.timestamp > %d AND e1.timestamp < %d WITH src, dst MATCH (src)<-[e2:transfer]-(other:Account)<-[e3:transfer]-(dst) WHERE e2.timestamp > %d AND e2.timestamp < %d AND e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT src, other, dst MATCH (src)<-[e2:transfer]-(other) WHERE e2.timestamp > %d AND e2.timestamp < %d WITH src, other, dst, count(e2) as numEdge2, sum(e2.amount) as sumEdge2Amount, max(e2.amount) as maxEdge2Amount MATCH (other)<-[e3:transfer]-(dst) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH other.id as otherId, numEdge2, sumEdge2Amount, maxEdge2Amount, count(e3) as numEdge3, sum(e3.amount) as sumEdge3Amount, max(e3.amount) as maxEdge3Amount RETURN otherId, numEdge2, round(sumEdge2Amount * 1000) / 1000 as sumEdge2Amount, round(maxEdge2Amount * 1000) / 1000 as maxEdge2Amount, numEdge3, round(sumEdge3Amount * 1000) / 1000 as sumEdge3Amount, round(maxEdge3Amount * 1000) / 1000 as maxEdge3Amount ORDER BY sumEdge2Amount, sumEdge3Amount DESC;";
+                String cypher = "MATCH (src:Account {id:%d})-[e1:transfer]->(dst:Account {id:%d}) WHERE e1.timestamp > %d AND e1.timestamp < %d WITH src, dst.id as dstid MATCH (src)<-[e2:transfer]-(other:Account)<-[e3:transfer]-(dst:Account) WHERE dst.id=dstid AND e2.timestamp > %d AND e2.timestamp < %d AND e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT src, other, dst MATCH (src)<-[e2:transfer]-(other) WHERE e2.timestamp > %d AND e2.timestamp < %d WITH src, other, dst, count(e2) as numEdge2, sum(e2.amount) as sumEdge2Amount, max(e2.amount) as maxEdge2Amount MATCH (other)<-[e3:transfer]-(dst) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH other.id as otherId, numEdge2, sumEdge2Amount, maxEdge2Amount, count(e3) as numEdge3, sum(e3.amount) as sumEdge3Amount, max(e3.amount) as maxEdge3Amount RETURN otherId, numEdge2, round(sumEdge2Amount * 1000) / 1000 as sumEdge2Amount, round(maxEdge2Amount * 1000) / 1000 as maxEdge2Amount, numEdge3, round(sumEdge3Amount * 1000) / 1000 as sumEdge3Amount, round(maxEdge3Amount * 1000) / 1000 as maxEdge3Amount ORDER BY sumEdge2Amount DESC, sumEdge3Amount DESC, otherId ASC;";
                 long startTime = cr4.getStartTime().getTime();
                 long endTime = cr4.getEndTime().getTime();
                 cypher = String.format(
@@ -534,7 +534,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (n:Account{id:%d}) WITH n OPTIONAL MATCH (n)-[e]->(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH n, sum(e.amount) as sumEdge1Amount, max(e.amount) as maxEdge1Amount, count(e) as numEdge1 OPTIONAL MATCH (n)<-[e]-(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH sumEdge1Amount, maxEdge1Amount, numEdge1, sum(e.amount) as sumEdge2Amount, max(e.amount) as maxEdge2Amount, count(e) as numEdge2 RETURN round(sumEdge1Amount * 1000) / 1000 as sumEdge1Amount, CASE WHEN maxEdge1Amount < 0 THEN -1 ELSE round(maxEdge1Amount * 1000) / 1000 END as maxEdge1Amount, numEdge1, round(sumEdge2Amount * 1000) / 1000 as sumEdge2Amount, CASE WHEN maxEdge2Amount < 0 THEN -1 ELSE round(maxEdge2Amount * 1000) / 1000 END as maxEdge2Amount, numEdge2;";
+                String cypher = "MATCH (n:Account{id:%d}) WITH n OPTIONAL MATCH (n)-[e:transfer]->(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH n, sum(e.amount) as sumEdge1Amount, max(e.amount) as maxEdge1Amount, count(e) as numEdge1 OPTIONAL MATCH (n)<-[e:transfer]-(m:Account) WHERE e.timestamp > %d AND e.timestamp < %d WITH sumEdge1Amount, maxEdge1Amount, numEdge1, sum(e.amount) as sumEdge2Amount, max(e.amount) as maxEdge2Amount, count(e) as numEdge2 RETURN round(sumEdge1Amount * 1000) / 1000 as sumEdge1Amount, CASE WHEN maxEdge1Amount < 0 THEN -1 ELSE round(maxEdge1Amount * 1000) / 1000 END as maxEdge1Amount, numEdge1, round(sumEdge2Amount * 1000) / 1000 as sumEdge2Amount, CASE WHEN maxEdge2Amount < 0 THEN -1 ELSE round(maxEdge2Amount * 1000) / 1000 END as maxEdge2Amount, numEdge2;";
                 long startTime = sr2.getStartTime().getTime();
                 long endTime = sr2.getEndTime().getTime();
                 cypher = String.format(
@@ -569,7 +569,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (n:Account{id:%d}) WITH n OPTIONAL MATCH (n)<-[e:transfer]-(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d AND m.isBlocked=true WITH count(m) * 1.0 as numM MATCH (n:Account{id:%d}) WITH n, numM OPTIONAL MATCH (n)<-[e:transfer]-(m:Account) WITH numM / count(m) as blockRatio RETURN round(blockRatio * 1000) / 1000 as blockRatio;";
+                String cypher = "OPTIONAL MATCH (n:Account{id:%d})<-[e:transfer]-(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d AND m.isBlocked=true WITH count(m) * 1.0 as numM OPTIONAL MATCH (n:Account{id:%d})<-[e:transfer]-(m:Account) WITH count(m) as numIn, numM RETURN CASE WHEN numIn = 0 THEN -1 ELSE round(numM / numIn * 1000) / 1000 END as blockRatio;";
                 long startTime = sr3.getStartTime().getTime();
                 long endTime = sr3.getEndTime().getTime();
                 double threshold = sr3.getThreshold();
@@ -600,7 +600,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (n:Account{id:%d}) WITH n MATCH (n)-[e:transfer]->(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d WITH m.id as dstId, count(e) as numEdges, sum(e.amount) as sumAmount RETURN dstId, numEdges, round(sumAmount * 1000) / 1000 as sumAmount ORDER BY dstId;";
+                String cypher = "MATCH (n:Account{id:%d}) WITH n MATCH (n)-[e:transfer]->(m:Account) WHERE e.amount > %f AND e.timestamp > %d AND e.timestamp < %d WITH m.id as dstId, count(e) as numEdges, sum(e.amount) as sumAmount RETURN dstId, numEdges, round(sumAmount * 1000) / 1000 as sumAmount ORDER BY sumAmount DESC, dstId ASC;";
                 long startTime = sr4.getStartTime().getTime();
                 long endTime = sr4.getEndTime().getTime();
                 double threshold = sr4.getThreshold();
