@@ -797,12 +797,12 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CALL plugin.cpp.trw1({srcId: %d, dstId: %d, time: %d, amt: %f, startTime: %d, endTime: %d, limit: %d});";
+                String cypher = "CALL plugin.cpp.trw1({srcId: %d, dstId: %d, time: %d, amt: %f, startTime: %d, endTime: %d});";
                 cypher = String.format(
                         cypher,
                         rw1.getSrcId(), rw1.getDstId(),
                         rw1.getTime().getTime(), rw1.getAmount(),
-                        rw1.getStartTime().getTime(), rw1.getEndTime().getTime(), rw1.getTruncationLimit());
+                        rw1.getStartTime().getTime(), rw1.getEndTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw1);
