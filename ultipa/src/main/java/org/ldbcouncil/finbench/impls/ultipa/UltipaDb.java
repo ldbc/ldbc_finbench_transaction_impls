@@ -296,7 +296,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
+                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
                     .build();
         }
     }
@@ -381,23 +381,91 @@ public class UltipaDb extends Db {
         }
 
         @Override
-        public List<ComplexRead9Result> toResult(Response resp) throws ParseException {
-            List<ComplexRead9Result> resultList = new ArrayList<>();
-            if(resp.getItems().size() > 0){
-                Table table = resp.get(0).asTable();
-                for(List<Object> dataList : table.getRows()){
-                    ComplexRead9Result result = new ComplexRead9Result(
-                            Float.parseFloat(dataList.get(0).toString()),
-                            Float.parseFloat(dataList.get(1).toString()),
-                            Float.parseFloat(dataList.get(2).toString())
-                    );
-                    resultList.add(result);
-                }
-            }else{
-                ComplexRead9Result result = new ComplexRead9Result(-1,-1,-1);
-                resultList.add(result);
+        public void executeOperation(ComplexRead9 operation,
+                                     UltipaDbConnectionState state,
+                                     ResultReporter resultReporter) throws DbException {
+            Connection conn = state.getConn();
+            //System.out.println(conn.sayHello("Hello"));
+            Map<String, Object> map = getParameters(state,operation);
+            String query = getQueryString(state,operation);
+
+            List<String> uqlList = new ArrayList<>();
+            String[] querys = query.split(";");
+            for (int i = 0; i < querys.length; i++) {
+                String uql = UltipaConverter.replaceVariables(querys[i],map);
+                uqlList.add(uql);
             }
-            return resultList;
+            List<ComplexRead9Result> resultList = new ArrayList<>();
+            try {
+                String ratioRepay = "0.0";
+                String ratioDeposit = "0.0";
+                String ratioTransfer = "0.0";
+
+                float sum1 = 0.0F;
+                float sum2 = 0.0F;
+                float sum3 = 0.0F;
+                float sum4 = 0.0F;
+                String uql0 = uqlList.get(0);
+                System.out.println(uql0);
+                Response resp0 = conn.uql(uql0);
+                if(resp0.getItems().size()>0){
+                    sum1 = Float.parseFloat(resp0.get(0).asTable().getRows().get(0).get(0).toString());
+                }
+
+                String uql1 = uqlList.get(1);
+                System.out.println(uql1);
+                Response resp1 = conn.uql(uql1);
+                if(resp1.getItems().size()>0){
+                    sum2 = Float.parseFloat(resp1.get(0).asTable().getRows().get(0).get(0).toString());
+                }else{
+                    ratioRepay = "-1";
+                }
+
+                String uql2 = uqlList.get(2);
+                System.out.println(uql2);
+                Response resp2 = conn.uql(uql2);
+                if(resp2.getItems().size()>0){
+                    sum3 = Float.parseFloat(resp2.get(0).asTable().getRows().get(0).get(0).toString());
+                }
+
+                String uql3 = uqlList.get(3);
+                System.out.println(uql3);
+                Response resp3 = conn.uql(uql3);
+                if(resp3.getItems().size()>0){
+                    sum4 = Float.parseFloat(resp3.get(0).asTable().getRows().get(0).get(0).toString());
+                }else{
+                    ratioDeposit = "-1";
+                    ratioTransfer = "-1";
+                }
+
+                System.out.println(sum1);
+                System.out.println(sum2);
+                System.out.println(sum3);
+                System.out.println(sum4);
+                if(!"-1".equals(ratioRepay)){
+                    ratioRepay = String.format("%.3f",sum1/sum2);
+                }
+                if(!"-1".equals(ratioDeposit)){
+                    ratioDeposit = String.format("%.3f",sum1/sum4);
+                }
+                if(!"-1".equals(ratioTransfer)){
+                    ratioTransfer = String.format("%.3f",sum3/sum4);
+                }
+                ComplexRead9Result result = new ComplexRead9Result(
+                        Float.parseFloat(ratioRepay),
+                        Float.parseFloat(ratioDeposit),
+                        Float.parseFloat(ratioTransfer)
+                );
+                resultList.add(result);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            resultReporter.report(1, resultList, operation);
+        }
+
+        @Override
+        public List<ComplexRead9Result> toResult(Response resp) throws ParseException {
+            return null;
         }
 
         @Override
@@ -408,7 +476,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
+                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
                     .build();
         }
     }
@@ -521,7 +589,7 @@ public class UltipaDb extends Db {
                 SimpleRead1Result result = new SimpleRead1Result(
                         new SimpleDateFormat("E MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(dataList.get(0).toString()),
                         Boolean.parseBoolean(dataList.get(1).toString()),
-                        dataList.get(1).toString()
+                        dataList.get(2).toString()
                 );
                 resultList.add(result);
             }

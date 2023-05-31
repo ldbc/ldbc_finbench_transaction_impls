@@ -16,7 +16,7 @@ exta(complex_read).params({
 	order:$truncationOrder,
 	return_type:1
 }).stream() as rest
-with distinct(rest.dest) as dd
+with rest.dest as dd,rest.length as length
 n({dd} as other).le({@SignIn}).n({@Medium.isBlocked=='true'} as medium) as p
-return distinct table(other._id,rest.length,medium._id,medium.type)
-order by other._id,rest.length asc
+return distinct table(other._id,length,medium._id,medium.type)
+order by other._id,length asc

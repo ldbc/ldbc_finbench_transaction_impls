@@ -1,22 +1,14 @@
 n({@Account && _id==$id && type contains 'card'} as dstcard).le({@Withdraw && timestamp <> [$startTime,$endTime] && amount>$threshold2} as edge2).n({@Account} as mid)
-with mid,edge2
-exta(complex_read).params({
-	srcs:mid,
-	edgeDirection:"in",
-	depth:1,
-	limit:10000000,
-	edge_schema:"Transfer",
-	edge_timestamp:"timestamp",
-	edge_amount:"amount",
-    amount:$threshold1,
-    pre:0,
-	range_begin:$startTime,
-	range_end:$endTime,
-	noCircle:0,
-	top_n:$truncationLimit,
-    order:$truncationOrder,
-	return_type:1
-}).stream() as rest
-with mid._id as midid,round(sum(rest.amount),3) as sume1,round(sum(edge2.amount),3) as sume2
-return table(midid,sume1,sume2)
-order by sume2 desc,midid asc
+group by mid
+with collect(mid) as midn,sum(edge2.amount) as sume2
+call {
+	with midn
+	uncollect(midn) as start
+	n(start).le({@Transfer && timestamp <> [$startTime,$endTime] && amount>$threshold1} as edge1).n({@Account}).limit($truncationLimit) as path
+	group by start
+	where count(edge1) > 3
+	order by edge1.timestamp $truncationOrder
+	return sum(edge1.amount) as sume1
+}
+return table(mid._id,round(sume1,3),round(sume2,3))
+order by sume2 desc,mid._id asc

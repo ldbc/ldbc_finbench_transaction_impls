@@ -23,7 +23,7 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:1
 }).stream() as rest1
-with count(rest1.dest) as path1count
+with count(distinct(rest1.dest)) as path1count,sum(rest1.amount) as amount1
 exta(complex_read).params({
 	srcs:mid,
 	edgeDirection:"out",
@@ -41,7 +41,7 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:1
 }).stream() as rest2
-with count(rest2.dest) as path2count
+with count(distinct(rest2.dest)) as path2count,sum(rest2.amount) as amount2
 return table(path1count/path2count);
 
 

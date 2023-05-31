@@ -5,7 +5,7 @@ exta(abpath).params({
 	src:srcId,
     dest:destId,
 	edgeDirection:"out",
-	depth:5,
+	depth:10,
 	limit:10000,
 	edge_schema:"Transfer",
 	edge_timestamp:"timestamp",
@@ -14,4 +14,4 @@ exta(abpath).params({
 	top_n:$truncationLimit,
     order:$truncationOrder
 }).stream() as ret
-return table(size(ret)-1) ;
+return distinct table(size(ret)-1) ;

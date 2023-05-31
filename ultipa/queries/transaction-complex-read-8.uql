@@ -19,7 +19,7 @@ exta(complex_read).params({
 }).stream() as rest
 with distinct(rest) as rr
 group by rr.dest
-with rr.dest as rd,rr.length as length,sum(rr.amount)/loanAmount as ratio
+with rr.dest as rd,(rr.length+1) as length,sum(rr.amount)/loanAmount as ratio
 find().nodes(rd) as dd
 with dd._id as destid,ratio,length
 return table(destid,round(ratio,3),length)

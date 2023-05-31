@@ -22,9 +22,9 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:0
 }).stream() as rest
-find().nodes({@Person && _uuid in rest}) as node
+find().nodes({@Person && _uuid in rest && _id!=$id}) as node
 with distinct(node) as pn
 n(pn).re({@Apply}).n({@Loan} as loan)
-return table(sum(loan.loanAmount),count(loan));
+return table(round(sum(loan.loanAmount),3),count(loan));
 
 update().nodes({@Person && _id in[$srcId,$dstId]}).set({isBlocked:'true'})

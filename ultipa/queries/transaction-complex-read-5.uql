@@ -16,5 +16,5 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:0
 }).stream() as rest
-return rest
+return distinct rest
 order by size(rest) desc

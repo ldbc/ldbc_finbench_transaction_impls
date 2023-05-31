@@ -23,7 +23,7 @@ public abstract class UltipaListOperationHandler<TOperation extends Operation<Li
                                  UltipaDbConnectionState state,
                                  ResultReporter resultReporter) throws DbException {
         Connection conn = state.getConn();
-        System.out.println(conn.sayHello("Hello"));
+        //System.out.println(conn.sayHello("Hello"));
         int resultCount;
         Map<String, Object> map = getParameters(state,operation);
         String query = getQueryString(state,operation);
