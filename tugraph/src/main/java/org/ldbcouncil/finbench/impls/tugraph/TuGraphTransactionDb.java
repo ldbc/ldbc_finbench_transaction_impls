@@ -112,7 +112,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr1.getId(), startTime, endTime, startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr1.getTruncationLimit());
                 ArrayList<ComplexRead1Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -146,7 +146,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr2.getId(), endTime, startTime, startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr2.getTruncationLimit());
                 ArrayList<ComplexRead2Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -245,7 +245,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr5.getId(), startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr5.getTruncationLimit());
                 ArrayList<ComplexRead5Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -280,7 +280,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr6.getId(), startTime, endTime, threshold2, startTime, endTime, threshold1);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr6.getTruncationLimit());
                 ArrayList<ComplexRead6Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -313,7 +313,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr7.getId(), startTime, endTime, threshold, startTime, endTime, threshold);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr7.getTruncationLimit());
                 ArrayList<ComplexRead7Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -338,15 +338,15 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CALL plugin.cpp.tcr8({ id:%d, threshold: %f, startTime: %d, endTime: %d });";
+                String cypher = "CALL plugin.cpp.tcr8({ id:%d, threshold: %f, startTime: %d, endTime: %d, limit: %d });";
                 long startTime = cr8.getStartTime().getTime();
                 long endTime = cr8.getEndTime().getTime();
                 double threshold = cr8.getThreshold();
                 cypher = String.format(
                         cypher,
-                        cr8.getId(), threshold, startTime, endTime);
+                        cr8.getId(), threshold, startTime, endTime, cr8.getTruncationLimit());
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr8.getTruncationLimit());
                 ArrayList<ComplexRead8Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -383,7 +383,7 @@ public class TuGraphTransactionDb extends Db {
                         threshold, startTime, endTime,
                         threshold, startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr9.getTruncationLimit());
                 ArrayList<ComplexRead9Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -446,7 +446,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr11.getId(), startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr11.getTruncationLimit());
                 ArrayList<ComplexRead11Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -477,7 +477,7 @@ public class TuGraphTransactionDb extends Db {
                         cypher,
                         cr12.getId(), startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
+                String res = client.callCypher(cypher, graph, 0, cr12.getTruncationLimit());
                 ArrayList<ComplexRead12Result> results = new ArrayList<>();
                 JSONArray array = JSONObject.parseArray(res);
                 for (int i = 0; i < array.size(); i++) {
@@ -797,12 +797,12 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CALL plugin.cpp.trw1({srcId: %d, dstId: %d, time: %d, amt: %f, startTime: %d, endTime: %d});";
+                String cypher = "CALL plugin.cpp.trw1({srcId: %d, dstId: %d, time: %d, amt: %f, startTime: %d, endTime: %d, limit: %d});";
                 cypher = String.format(
                         cypher,
                         rw1.getSrcId(), rw1.getDstId(),
                         rw1.getTime().getTime(), rw1.getAmount(),
-                        rw1.getStartTime().getTime(), rw1.getEndTime().getTime());
+                        rw1.getStartTime().getTime(), rw1.getEndTime().getTime(), rw1.getTruncationLimit());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw1);
@@ -819,13 +819,13 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CALL plugin.cpp.trw2({ srcId: %d, dstId: %d, time: %d, amt: %f, threshold: %f, startTime: %d, endTime: %d});";
+                String cypher = "CALL plugin.cpp.trw2({ srcId: %d, dstId: %d, time: %d, amt: %f, threshold: %f, startTime: %d, endTime: %d, limit: %d});";
                 cypher = String.format(
                         cypher,
                         rw2.getSrcId(), rw2.getDstId(),
                         rw2.getTime().getTime(), rw2.getAmount(),
                         rw2.getAmountThreshold(),
-                        rw2.getStartTime().getTime(), rw2.getEndTime().getTime());
+                        rw2.getStartTime().getTime(), rw2.getEndTime().getTime(), rw2.getTruncationLimit());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw2);
@@ -842,12 +842,12 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CALL plugin.cpp.trw3({ srcId: %d, dstId: %d, time: %d, threshold: %f, startTime: %d, endTime: %d});";
+                String cypher = "CALL plugin.cpp.trw3({ srcId: %d, dstId: %d, time: %d, threshold: %f, startTime: %d, endTime: %d, limit: %d});";
                 cypher = String.format(
                         cypher,
                         rw3.getSrcId(), rw3.getDstId(),
                         rw3.getTime().getTime(), rw3.getThreshold(),
-                        rw3.getStartTime().getTime(), rw3.getEndTime().getTime());
+                        rw3.getStartTime().getTime(), rw3.getEndTime().getTime(), rw3.getTruncationLimit());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw3);
