@@ -1,4 +1,3 @@
-CYPHER EXPANDCONFIG = ([transfer2, transfer3], timestamp, $truncationOrder, $truncationLimit)
 MATCH (src:Account {id: '$id1' })-[transfer1:AccountTransferAccount]->(dst:Account{id: '$id2' })
 WHERE transfer1.timestamp > $startTime AND transfer1.timestamp < $endTime
 WITH src, dst
