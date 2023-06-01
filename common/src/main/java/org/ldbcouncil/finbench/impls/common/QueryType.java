@@ -46,6 +46,10 @@ public enum QueryType {
     TransactionWrite13("transaction-write-13"),
     TransactionWrite14("transaction-write-14"),
     TransactionWrite15("transaction-write-15"),
+    TransactionWrite16("transaction-write-16"),
+    TransactionWrite17("transaction-write-17"),
+    TransactionWrite18("transaction-write-18"),
+    TransactionWrite19("transaction-write-19"),
 
     // transaction read write queries
     TransactionReadWrite1("transaction-read-write-1"),
