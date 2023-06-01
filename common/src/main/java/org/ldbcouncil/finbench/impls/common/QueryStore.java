@@ -128,8 +128,6 @@ public abstract class QueryStore {
                 .put(ComplexRead3.ID2, Long.toString(operation.getId2()))
                 .put(ComplexRead3.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead3.END_TIME, Long.toString(operation.getEndTime().getTime()))
-                .put(ComplexRead3.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
-                .put(ComplexRead3.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 
@@ -139,8 +137,6 @@ public abstract class QueryStore {
                 .put(ComplexRead4.ID2, Long.toString(operation.getId2()))
                 .put(ComplexRead4.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ComplexRead4.END_TIME, Long.toString(operation.getEndTime().getTime()))
-                .put(ComplexRead4.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
-                .put(ComplexRead4.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 
@@ -281,10 +277,7 @@ public abstract class QueryStore {
         return prepare(QueryType.TransactionWrite1, new ImmutableMap.Builder<String, Object>()
                 .put(Write1.PERSON_ID, Long.toString(operation.getPersonId()))
                 .put(Write1.PERSON_NAME, operation.getPersonName())
-                .put(Write1.ACCOUNT_ID, Long.toString(operation.getAccountId()))
-                .put(Write1.ACCOUNT_TYPE, operation.getAccountType())
-                .put(Write1.ACCOUNT_BLOCKED, Boolean.toString(operation.getAccountBlocked()))
-                .put(Write1.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write1.IS_BLOCKED, Boolean.toString(operation.getIsBlocked()))
                 .build());
     }
 
@@ -292,100 +285,152 @@ public abstract class QueryStore {
         return prepare(QueryType.TransactionWrite2, new ImmutableMap.Builder<String, Object>()
                 .put(Write2.COMPANY_ID, Long.toString(operation.getCompanyId()))
                 .put(Write2.COMPANY_NAME, operation.getCompanyName())
-                .put(Write2.ACCOUNT_ID, Long.toString(operation.getAccountId()))
-                .put(Write2.ACCOUNT_TYPE, operation.getAccountType())
-                .put(Write2.ACCOUNT_BLOCKED, Boolean.toString(operation.getAccountBlocked()))
-                .put(Write2.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write2.IS_BLOCKED, Boolean.toString(operation.getIsBlocked()))
                 .build());
     }
 
     public String getWrite3(Write3 operation) {
         return prepare(QueryType.TransactionWrite3, new ImmutableMap.Builder<String, Object>()
-                .put(Write3.SRC_ID, Long.toString(operation.getSrcId()))
-                .put(Write3.DST_ID, Long.toString(operation.getDstId()))
-                .put(Write3.AMOUNT, Double.toString(operation.getAmount()))
-                .put(Write3.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write3.MEDIUM_ID, Long.toString(operation.getMediumId()))
+                .put(Write3.MEDIUM_TYPE, operation.getMediumType())
+                .put(Write3.IS_BLOCKED, Boolean.toString(operation.getIsBlocked()))
                 .build());
     }
 
     public String getWrite4(Write4 operation) {
         return prepare(QueryType.TransactionWrite4, new ImmutableMap.Builder<String, Object>()
-                .put(Write4.SRC_ID, Long.toString(operation.getSrcId()))
-                .put(Write4.DST_ID, Long.toString(operation.getDstId()))
-                .put(Write4.AMOUNT, Double.toString(operation.getAmount()))
+                .put(Write4.PERSON_ID, Long.toString(operation.getPersonId()))
+                .put(Write4.ACCOUNT_ID, Long.toString(operation.getAccountId()))
                 .put(Write4.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write4.ACCOUNT_BLOCKED, Boolean.toString(operation.getAccountBlocked()))
+                .put(Write4.ACCOUNT_TYPE, operation.getAccountType())
                 .build());
     }
 
     public String getWrite5(Write5 operation) {
         return prepare(QueryType.TransactionWrite5, new ImmutableMap.Builder<String, Object>()
-                .put(Write5.PERSON_ID, Long.toString(operation.getPersonId()))
+                .put(Write5.COMPANY_ID, Long.toString(operation.getCompanyId()))
+                .put(Write5.ACCOUNT_ID, Long.toString(operation.getAccountId()))
                 .put(Write5.TIME, Long.toString(operation.getTime().getTime()))
-                .put(Write5.LOAN_ID, Long.toString(operation.getLoanId()))
-                .put(Write5.AMOUNT, Double.toString(operation.getAmount()))
+                .put(Write5.ACCOUNT_BLOCKED, Boolean.toString(operation.getAccountBlocked()))
+                .put(Write5.ACCOUNT_TYPE, operation.getAccountType())
                 .build());
     }
 
     public String getWrite6(Write6 operation) {
         return prepare(QueryType.TransactionWrite6, new ImmutableMap.Builder<String, Object>()
-                .put(Write6.COMPANY_ID, Long.toString(operation.getCompanyId()))
-                .put(Write6.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write6.PERSON_ID, Long.toString(operation.getPersonId()))
                 .put(Write6.LOAN_ID, Long.toString(operation.getLoanId()))
-                .put(Write6.AMOUNT, Double.toString(operation.getAmount()))
+                .put(Write6.LOAN_AMOUNT, Double.toString(operation.getLoanAmount()))
+                .put(Write6.BALANCE, Double.toString(operation.getBalance()))
+                .put(Write6.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
 
     public String getWrite7(Write7 operation) {
         return prepare(QueryType.TransactionWrite7, new ImmutableMap.Builder<String, Object>()
-                .put(Write7.ACCOUNT_ID, Long.toString(operation.getAccountId()))
-                .put(Write7.MEDIUM_ID, Long.toString(operation.getMediumId()))
-                .put(Write7.MEDIUM_BLOCKED, Boolean.toString(operation.getMediumBlocked()))
+                .put(Write7.COMPANY_ID, Long.toString(operation.getCompanyId()))
+                .put(Write7.LOAN_ID, Long.toString(operation.getLoanId()))
+                .put(Write7.LOAN_AMOUNT, Double.toString(operation.getLoanAmount()))
+                .put(Write7.BALANCE, Double.toString(operation.getBalance()))
                 .put(Write7.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
 
     public String getWrite8(Write8 operation) {
         return prepare(QueryType.TransactionWrite8, new ImmutableMap.Builder<String, Object>()
-                .put(Write8.ACCOUNT_ID, Long.toString(operation.getAccountId()))
-                .put(Write8.LOAN_ID, Long.toString(operation.getLoanId()))
+                .put(Write8.PERSON_ID, Long.toString(operation.getPersonId()))
+                .put(Write8.COMPANY_ID, Long.toString(operation.getCompanyId()))
                 .put(Write8.TIME, Long.toString(operation.getTime().getTime()))
-                .put(Write8.AMOUNT, Double.toString(operation.getAmount()))
+                .put(Write8.RATIO, Double.toString(operation.getRatio()))
                 .build());
     }
 
     public String getWrite9(Write9 operation) {
         return prepare(QueryType.TransactionWrite9, new ImmutableMap.Builder<String, Object>()
-                .put(Write9.ACCOUNT_ID, Long.toString(operation.getAccountId()))
-                .put(Write9.LOAN_ID, Long.toString(operation.getLoanId()))
+                .put(Write9.COMPANY_ID1, Long.toString(operation.getCompanyId1()))
+                .put(Write9.COMPANY_ID2, Long.toString(operation.getCompanyId2()))
                 .put(Write9.TIME, Long.toString(operation.getTime().getTime()))
-                .put(Write9.AMOUNT, Double.toString(operation.getAmount()))
+                .put(Write9.RATIO, Double.toString(operation.getRatio()))
                 .build());
     }
 
     public String getWrite10(Write10 operation) {
         return prepare(QueryType.TransactionWrite10, new ImmutableMap.Builder<String, Object>()
-                .put(Write10.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+                .put(Write10.PERSON_ID1, Long.toString(operation.getPersonId1()))
+                .put(Write10.PERSON_ID2, Long.toString(operation.getPersonId2()))
+                .put(Write10.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
 
     public String getWrite11(Write11 operation) {
         return prepare(QueryType.TransactionWrite11, new ImmutableMap.Builder<String, Object>()
-                .put(Write11.PERSON_ID, Long.toString(operation.getPersonId()))
+                .put(Write11.COMPANY_ID1, Long.toString(operation.getCompanyId1()))
+                .put(Write11.COMPANY_ID2, Long.toString(operation.getCompanyId2()))
+                .put(Write11.TIME, Long.toString(operation.getTime().getTime()))
                 .build());
     }
 
     public String getWrite12(Write12 operation) {
         return prepare(QueryType.TransactionWrite12, new ImmutableMap.Builder<String, Object>()
-                .put(Write12.PID1, Long.toString(operation.getPid1()))
-                .put(Write12.PID2, Long.toString(operation.getPid2()))
+                .put(Write12.ACCOUNT_ID1, Long.toString(operation.getAccountId1()))
+                .put(Write12.ACCOUNT_ID2, Long.toString(operation.getAccountId2()))
                 .put(Write12.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write12.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
     }
 
     public String getWrite13(Write13 operation) {
         return prepare(QueryType.TransactionWrite13, new ImmutableMap.Builder<String, Object>()
-                .put(Write13.ID, Long.toString(operation.getId()))
+                .put(Write13.ACCOUNT_ID1, Long.toString(operation.getAccountId1()))
+                .put(Write13.ACCOUNT_ID2, Long.toString(operation.getAccountId2()))
+                .put(Write13.TIME, Long.toString(operation.getTime().getTime()))
+                .put(Write13.AMOUNT, Double.toString(operation.getAmount()))
                 .build());
+    }
+
+    public String getWrite14(Write14 operation) {
+        return prepare(QueryType.TransactionWrite14, new ImmutableMap.Builder<String, Object>()
+            .put(Write14.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+            .put(Write14.LOAN_ID, Long.toString(operation.getLoanId()))
+            .put(Write14.TIME, Long.toString(operation.getTime().getTime()))
+            .put(Write14.AMOUNT, Double.toString(operation.getAmount()))
+            .build());
+    }
+
+    public String getWrite15(Write15 operation) {
+        return prepare(QueryType.TransactionWrite15, new ImmutableMap.Builder<String, Object>()
+            .put(Write15.LOAN_ID, Long.toString(operation.getLoanId()))
+            .put(Write15.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+            .put(Write15.TIME, Long.toString(operation.getTime().getTime()))
+            .put(Write15.AMOUNT, Double.toString(operation.getAmount()))
+            .build());
+    }
+
+    public String getWrite16(Write16 operation) {
+        return prepare(QueryType.TransactionWrite16, new ImmutableMap.Builder<String, Object>()
+            .put(Write16.MEDIUM_ID, Long.toString(operation.getMediumId()))
+            .put(Write16.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+            .put(Write16.TIME, Long.toString(operation.getTime().getTime()))
+            .build());
+    }
+
+    public String getWrite17(Write17 operation) {
+        return prepare(QueryType.TransactionWrite17, new ImmutableMap.Builder<String, Object>()
+            .put(Write17.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+            .build());
+    }
+
+    public String getWrite18(Write18 operation) {
+        return prepare(QueryType.TransactionWrite18, new ImmutableMap.Builder<String, Object>()
+            .put(Write18.ACCOUNT_ID, Long.toString(operation.getAccountId()))
+            .build());
+    }
+
+    public String getWrite19(Write19 operation) {
+        return prepare(QueryType.TransactionWrite19, new ImmutableMap.Builder<String, Object>()
+            .put(Write19.PERSON_ID, Long.toString(operation.getPersonId()))
+            .build());
     }
 
     public String getReadWrite1(ReadWrite1 operation) {
@@ -396,8 +441,6 @@ public abstract class QueryStore {
                 .put(ReadWrite1.AMOUNT, Double.toString(operation.getAmount()))
                 .put(ReadWrite1.START_TIME, Long.toString(operation.getStartTime().getTime()))
                 .put(ReadWrite1.END_TIME, Long.toString(operation.getEndTime().getTime()))
-                .put(ReadWrite1.TRUNCATION_LIMIT, Integer.toString(operation.getTruncationLimit()))
-                .put(ReadWrite1.TRUNCATION_ORDER, operation.getTruncationOrder().name())
                 .build());
     }
 
