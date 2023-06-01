@@ -50,13 +50,13 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testComplexRead1() throws Exception {
         run(db, new ComplexRead1(30786325579101L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead2() throws Exception {
         run(db, new ComplexRead2(62042209056869L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
@@ -74,31 +74,31 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testComplexRead5() throws Exception {
         run(db, new ComplexRead5(67406588910829L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead6() throws Exception {
         run(db, new ComplexRead6(51078788755688L, 1000L, 2000L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead7() throws Exception {
         run(db, new ComplexRead7(19469276863548L, 1000L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead8() throws Exception {
         run(db, new ComplexRead8(78332612970031L, 100, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead9() throws Exception {
         run(db, new ComplexRead9(44670770561919L, 100, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
@@ -110,13 +110,13 @@ public abstract class TransactionTest<D extends Db> {
     @Test
     public void testComplexRead11() throws Exception {
         run(db, new ComplexRead11(19908707033524L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
     public void testComplexRead12() throws Exception {
         run(db, new ComplexRead12(19908707033524L, new Date(2023, Calendar.JANUARY, 1),
-            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.DESC));
+            new Date(2023, Calendar.JANUARY, 2), 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
@@ -261,7 +261,7 @@ public abstract class TransactionTest<D extends Db> {
         run(db, new ReadWrite2(10988200445031L, 71195197152144L,
             new Date(2023, Calendar.FEBRUARY, 1), 10, 10000L,
             new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2),
-            0.5f, 10, TruncationOrder.DESC));
+            0.5f, 10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 
     @Test
@@ -269,7 +269,7 @@ public abstract class TransactionTest<D extends Db> {
         run(db, new ReadWrite3(10988200445031L, 71195197152144L,
             new Date(2023, Calendar.FEBRUARY, 1), 10000L,
             new Date(2023, Calendar.FEBRUARY, 1), new Date(2023, Calendar.FEBRUARY, 2),
-            10, TruncationOrder.DESC));
+            10, TruncationOrder.TIMESTAMP_DESCENDING));
     }
 }
 

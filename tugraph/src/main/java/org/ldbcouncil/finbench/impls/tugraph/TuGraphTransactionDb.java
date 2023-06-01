@@ -25,7 +25,7 @@ public class TuGraphTransactionDb extends Db {
 
     // Return byte type of 1 if it's ordered DESC
     private static byte encodeTruncationOrder(TruncationOrder truncationOrder) {
-        return (byte) (truncationOrder == TruncationOrder.DESC ? 1 : 0);
+        return (byte) (truncationOrder == TruncationOrder.TIMESTAMP_DESCENDING ? 1 : 0);
     }
 
     @Override
