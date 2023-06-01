@@ -74,6 +74,12 @@ public class TuGraphTransactionDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
+        registerOperationHandler(Write14.class, Write14Handler.class);
+        registerOperationHandler(Write15.class, Write15Handler.class);
+        registerOperationHandler(Write16.class, Write16Handler.class);
+        registerOperationHandler(Write17.class, Write17Handler.class);
+        registerOperationHandler(Write18.class, Write18Handler.class);
+        registerOperationHandler(Write19.class, Write19Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -691,7 +697,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write1 w1, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CREATE (p:Person{id:%d, name:'%s', isBlocked:%s});";
+                cypher = String.format(
+                        cypher,
+                        w1.getPersonId(), w1.getPersonName(), String.valueOf(w1.getIsBlocked()));
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w1);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -699,7 +717,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write2 w2, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CREATE (:Company {id:%d, name:'%s', isBlocked:%s});";
+                cypher = String.format(
+                        cypher,
+                        w2.getCompanyId(), w2.getCompanyName(), String.valueOf(w2.getIsBlocked()));
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w2);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -707,7 +737,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write3 w3, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "CREATE (:Medium {id: %d, isBlocked: %s, type: '%s'});";
+                cypher = String.format(
+                        cypher,
+                        w3.getMediumId(), String.valueOf(w3.getIsBlocked()), w3.getMediumType());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w3);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -715,7 +757,20 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write4 w4, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p:Person{id:%d}) WITH p CREATE(p)-[:own]->(a:Account{id:%d, createTime:%d, isBlocked:%s, type:'%s'});";
+                cypher = String.format(
+                        cypher,
+                        w4.getPersonId(), w4.getAccountId(), w4.getTime().getTime(),
+                        String.valueOf(w4.getAccountBlocked()), w4.getAccountType());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w4);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -723,7 +778,20 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write5 w5, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (c:Company {id:%d}) WITH c CREATE (c)-[:own]->(:Account {id: %d, createTime: %d, isBlocked: %s, type: '%s'});";
+                cypher = String.format(
+                        cypher,
+                        w5.getCompanyId(), w5.getAccountId(), w5.getTime().getTime(),
+                        String.valueOf(w5.getAccountBlocked()), w5.getAccountType());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w5);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -731,7 +799,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write6 w6, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p:Person {id: %d}) CREATE (:Loan {id: %d, loanAmount: %f, balance: %f})<-[:apply {timestamp: %d}]-(p);";
+                cypher = String.format(
+                        cypher,
+                        w6.getPersonId(), w6.getLoanId(), w6.getLoanAmount(), w6.getBalance(), w6.getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w6);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -739,7 +819,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write7 w7, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (c:Company {id: %d}) CREATE (:Loan {id: %d, loanAmount: %f, balance: %f})<-[:apply {timestamp: %d}]-(c);";
+                cypher = String.format(
+                        cypher,
+                        w7.getCompanyId(), w7.getLoanId(), w7.getLoanAmount(), w7.getBalance(), w7.getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w7);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -747,7 +839,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write8 w8, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p:Person{id:%d}), (c:Company{id:%d}) CREATE (p)-[:invest{timestamp: %d, ratio: %f}]->(c);";
+                cypher = String.format(
+                        cypher,
+                        w8.getPersonId(), w8.getCompanyId(), w8.getTime(), w8.getRatio());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w8);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -755,7 +859,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write9 w9, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (c1:Company{id:%d}), (c2:Company{id:%d}) CREATE (c1)-[:invest{timestamp: %d, ratio: %f}]->(c2);";
+                cypher = String.format(
+                        cypher,
+                        w9.getCompanyId1(), w9.getCompanyId2(), w9.getTime(), w9.getRatio());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w9);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -763,7 +879,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write10 w10, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p1:Person{id:%d}), (p2:Person{id:%d}) CREATE (p1)-[:guarantee{timestamp: %d}]->(p2);";
+                cypher = String.format(
+                        cypher,
+                        w10.getPersonId1(), w10.getPersonId2(), w10.getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w10);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -771,7 +899,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write11 w11, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (c1:Company{id:%d}), (c2:Company{id:%d}) CREATE (c1)-[:guarantee{timestamp: %d}]->(c2);";
+                cypher = String.format(
+                        cypher,
+                        w11.getCompanyId1(), w11.getCompanyId2(), w11.getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w11);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -779,7 +919,19 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write12 w12, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a1:Account{id:%d}), (a2:Account{id:%d}) CREATE (a1)-[:transfer{timestamp: %d, amount: %f}]->(a2);";
+                cypher = String.format(
+                        cypher,
+                        w12.getAccountId1(), w12.getAccountId2(), w12.getTime(), w12.getAmount());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w12);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -787,7 +939,139 @@ public class TuGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write13 w13, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
-            // TODO: do as above
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a1:Account{id:%d}), (a2:Account{id:%d}) CREATE (a1)-[:withdraw{timestamp: %d, amount: %f}]->(a2);";
+                cypher = String.format(
+                        cypher,
+                        w13.getAccountId1(), w13.getAccountId2(), w13.getTime(), w13.getAmount());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w13);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write14Handler implements OperationHandler<Write14, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write14 w14, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a:Account{id:%d}), (loan:Loan{id:%d}) CREATE (a)-[:repay{timestamp: %d, amount: %f}]->(loan);";
+                cypher = String.format(
+                        cypher,
+                        w14.getAccountId(), w14.getLoanId(), w14.getTime(), w14.getAmount());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w14);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write15Handler implements OperationHandler<Write15, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write15 w15, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a:Account{id:%d}), (loan:Loan{id:%d}) CREATE (a)<-[:deposit{timestamp: %d, amount: %f}]-(loan);";
+                cypher = String.format(
+                        cypher,
+                        w15.getAccountId(), w15.getLoanId(), w15.getTime(), w15.getAmount());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w15);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write16Handler implements OperationHandler<Write16, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write16 w16, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (acc:Account {id:%d}), (med:Medium {id:%d}) CREATE (acc)<-[:signIn {timestamp: %d}]-(med);";
+                cypher = String.format(
+                        cypher,
+                        w16.getAccountId(), w16.getMediumId(), w16.getTime());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w16);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write17Handler implements OperationHandler<Write17, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write17 w17, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a:Account {id:%d}) DELETE a;";
+                cypher = String.format(
+                        cypher,
+                        w17.getAccountId());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w17);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write18Handler implements OperationHandler<Write18, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write18 w18, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (a:Account {id:%d}) SET a.isBlocked = true;";
+                cypher = String.format(
+                        cypher,
+                        w18.getAccountId());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w18);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class Write19Handler implements OperationHandler<Write19, TuGraphDbConnectionState> {
+        @Override
+        public void executeOperation(Write19 w19, TuGraphDbConnectionState dbConnectionState,
+                ResultReporter resultReporter) throws DbException {
+            try {
+                TuGraphDbRpcClient client = dbConnectionState.popClient();
+                String cypher = "MATCH (p:Person {id:%d}) SET p.isBlocked = true;";
+                cypher = String.format(
+                        cypher,
+                        w19.getPersonId());
+                String graph = "default";
+                client.callCypher(cypher, graph, 0);
+                resultReporter.report(0, LdbcNoResult.INSTANCE, w19);
+                dbConnectionState.pushClient(client);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
