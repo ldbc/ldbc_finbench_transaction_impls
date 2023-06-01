@@ -1,3 +1,4 @@
+/*
 package org.ldbcouncil.finbench.impls.galaxybase;
 
 import java.io.IOException;
@@ -917,3 +918,4 @@ public class GalaxybaseDb extends Db {
         }
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package org.ldbcouncil.finbench.impls.ultipa;
 
 import com.google.common.collect.ImmutableMap;
@@ -1106,3 +1107,4 @@ public class UltipaDb extends Db {
 
 
 }
+*/
