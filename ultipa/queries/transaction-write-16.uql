@@ -1,0 +1,1 @@
+insert().into(@SignIn).edges({_from:$mediumId,_to:$accountId,timestamp:$time})

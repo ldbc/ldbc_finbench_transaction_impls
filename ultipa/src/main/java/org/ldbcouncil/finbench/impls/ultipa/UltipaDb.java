@@ -71,6 +71,12 @@ public class UltipaDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
+        registerOperationHandler(Write14.class, Write14Handler.class);
+        registerOperationHandler(Write15.class, Write15Handler.class);
+        registerOperationHandler(Write16.class, Write16Handler.class);
+        registerOperationHandler(Write17.class, Write17Handler.class);
+        registerOperationHandler(Write18.class, Write18Handler.class);
+        registerOperationHandler(Write19.class, Write19Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -185,8 +191,6 @@ public class UltipaDb extends Db {
                     .put(operation.ID2, UltipaConverter.convertIdStr(operation.getId2(),"Account|"))
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
-                    .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -223,8 +227,6 @@ public class UltipaDb extends Db {
                     .put(operation.ID2, UltipaConverter.convertIdStr(operation.getId2(),"Account|"))
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
-                    .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -570,7 +572,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
+                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
                     .build();
         }
     }
@@ -784,10 +786,7 @@ public class UltipaDb extends Db {
             return new ImmutableMap.Builder<String, Object>()
                     .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
                     .put(operation.PERSON_NAME, UltipaConverter.convertString(operation.getPersonName()))
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
-                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.ACCOUNT_BLOCKED, UltipaConverter.convertBool(operation.getAccountBlocked()))
-                    .put(operation.ACCOUNT_TYPE, UltipaConverter.convertString(operation.getAccountType()))
+                    .put(operation.IS_BLOCKED, UltipaConverter.convertBool(operation.getIsBlocked()))
                     .build();
         }
     }
@@ -803,10 +802,7 @@ public class UltipaDb extends Db {
             return new ImmutableMap.Builder<String, Object>()
                     .put(operation.COMPANY_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Company|"))
                     .put(operation.COMPANY_NAME, UltipaConverter.convertString(operation.getCompanyName()))
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
-                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.ACCOUNT_BLOCKED, UltipaConverter.convertBool(operation.getAccountBlocked()))
-                    .put(operation.ACCOUNT_TYPE, UltipaConverter.convertString(operation.getAccountType()))
+                    .put(operation.IS_BLOCKED, UltipaConverter.convertBool(operation.getIsBlocked()))
                     .build();
         }
     }
@@ -821,10 +817,9 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write3 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.SRC_ID, UltipaConverter.convertIdStr(operation.getSrcId(),"Account|"))
-                    .put(operation.DST_ID, UltipaConverter.convertIdStr(operation.getDstId(),"Account|"))
-                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.MEDIUM_ID, UltipaConverter.convertIdStr(operation.getMediumId(),"Medium|"))
+                    .put(operation.MEDIUM_TYPE, UltipaConverter.convertString(operation.getMediumType()))
+                    .put(operation.IS_BLOCKED, UltipaConverter.convertBool(operation.getIsBlocked()))
                     .build();
         }
     }
@@ -839,10 +834,11 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write4 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.SRC_ID, UltipaConverter.convertIdStr(operation.getSrcId(),"Account|"))
-                    .put(operation.DST_ID, UltipaConverter.convertIdStr(operation.getDstId(),"Account|"))
+                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Account|"))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.ACCOUNT_BLOCKED, UltipaConverter.convertBool(operation.getAccountBlocked()))
+                    .put(operation.ACCOUNT_TYPE, UltipaConverter.convertString(operation.getAccountType()))
                     .build();
         }
     }
@@ -857,10 +853,11 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write5 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
+                    .put(operation.COMPANY_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Company|"))
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Account|"))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.ACCOUNT_BLOCKED, UltipaConverter.convertBool(operation.getAccountBlocked()))
+                    .put(operation.ACCOUNT_TYPE, UltipaConverter.convertString(operation.getAccountType()))
                     .build();
         }
     }
@@ -875,10 +872,11 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write6 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.COMPANY_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Company|"))
-                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
                     .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.LOAN_AMOUNT, UltipaConverter.convertDouble(operation.getLoanAmount()))
+                    .put(operation.BALANCE, UltipaConverter.convertDouble(operation.getBalance()))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
                     .build();
         }
     }
@@ -893,9 +891,10 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write7 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
-                    .put(operation.MEDIUM_ID, UltipaConverter.convertIdStr(operation.getMediumId(),"Medium|"))
-                    .put(operation.MEDIUM_BLOCKED, UltipaConverter.convertBool(operation.getMediumBlocked()))
+                    .put(operation.COMPANY_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Company|"))
+                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
+                    .put(operation.LOAN_AMOUNT, UltipaConverter.convertDouble(operation.getLoanAmount()))
+                    .put(operation.BALANCE, UltipaConverter.convertDouble(operation.getBalance()))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
                     .build();
         }
@@ -911,10 +910,10 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write8 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
-                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
+                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
+                    .put(operation.COMPANY_ID, UltipaConverter.convertIdStr(operation.getCompanyId(),"Company|"))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.RATIO, UltipaConverter.convertDouble(operation.getRatio()))
                     .build();
         }
     }
@@ -929,10 +928,10 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write9 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
-                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
+                    .put(operation.COMPANY_ID1, UltipaConverter.convertIdStr(operation.getCompanyId1(),"Company|"))
+                    .put(operation.COMPANY_ID2, UltipaConverter.convertIdStr(operation.getCompanyId2(),"Company|"))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
-                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .put(operation.RATIO, UltipaConverter.convertDouble(operation.getRatio()))
                     .build();
         }
     }
@@ -947,7 +946,9 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write10 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .put(operation.PERSON_ID1, UltipaConverter.convertIdStr(operation.getPersonId1(),"Person|"))
+                    .put(operation.PERSON_ID2, UltipaConverter.convertIdStr(operation.getPersonId2(),"Person|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
                     .build();
         }
     }
@@ -962,7 +963,9 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write11 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
+                    .put(operation.COMPANY_ID1, UltipaConverter.convertIdStr(operation.getCompanyId1(),"Company|"))
+                    .put(operation.COMPANY_ID2, UltipaConverter.convertIdStr(operation.getCompanyId2(),"Company|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
                     .build();
         }
     }
@@ -977,9 +980,10 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write12 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.PID1, UltipaConverter.convertIdStr(operation.getPid1(),"Person|"))
-                    .put(operation.PID2, UltipaConverter.convertIdStr(operation.getPid2(),"Person|"))
+                    .put(operation.ACCOUNT_ID1, UltipaConverter.convertIdStr(operation.getAccountId1(),"Account|"))
+                    .put(operation.ACCOUNT_ID2, UltipaConverter.convertIdStr(operation.getAccountId2(),"Account|"))
                     .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
                     .build();
         }
     }
@@ -994,7 +998,108 @@ public class UltipaDb extends Db {
         @Override
         public Map<String, Object> getParameters(UltipaDbConnectionState state, Write13 operation) {
             return new ImmutableMap.Builder<String, Object>()
-                    .put(operation.ID, UltipaConverter.convertIdStr(operation.getId(),"Account|"))
+                    .put(operation.ACCOUNT_ID1, UltipaConverter.convertIdStr(operation.getAccountId1(),"Account|"))
+                    .put(operation.ACCOUNT_ID2, UltipaConverter.convertIdStr(operation.getAccountId2(),"Account|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .build();
+        }
+    }
+
+    public static class Write14Handler extends UltipaUpdateOperationHandler<Write14> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write14 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite14);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write14 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .build();
+        }
+    }
+
+    public static class Write15Handler extends UltipaUpdateOperationHandler<Write15> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write15 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite15);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write15 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.LOAN_ID, UltipaConverter.convertIdStr(operation.getLoanId(),"Loan|"))
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
+                    .build();
+        }
+    }
+
+    public static class Write16Handler extends UltipaUpdateOperationHandler<Write16> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write16 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite16);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write16 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.MEDIUM_ID, UltipaConverter.convertIdStr(operation.getMediumId(),"Medium|"))
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .put(operation.TIME, UltipaConverter.convertDate(operation.getTime()))
+                    .build();
+        }
+    }
+
+    public static class Write17Handler extends UltipaUpdateOperationHandler<Write17> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write17 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite17);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write17 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .build();
+        }
+    }
+
+    public static class Write18Handler extends UltipaUpdateOperationHandler<Write18> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write18 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite18);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write18 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.ACCOUNT_ID, UltipaConverter.convertIdStr(operation.getAccountId(),"Account|"))
+                    .build();
+        }
+    }
+
+    public static class Write19Handler extends UltipaUpdateOperationHandler<Write19> {
+
+        @Override
+        public String getQueryString(UltipaDbConnectionState state, Write19 operation) {
+            return state.getQueryStore().getParameterizedQuery(QueryType.TransactionWrite19);
+        }
+
+        @Override
+        public Map<String, Object> getParameters(UltipaDbConnectionState state, Write19 operation) {
+            return new ImmutableMap.Builder<String, Object>()
+                    .put(operation.PERSON_ID, UltipaConverter.convertIdStr(operation.getPersonId(),"Person|"))
                     .build();
         }
     }
@@ -1077,8 +1182,6 @@ public class UltipaDb extends Db {
                     .put(operation.AMOUNT, UltipaConverter.convertDouble(operation.getAmount()))
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
-                    .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
                     .build();
         }
     }

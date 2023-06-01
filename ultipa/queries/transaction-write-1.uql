@@ -1,3 +1,1 @@
-insert().into(@Person).nodes({_id:$personId,name:$personName});
-insert().into(@Account).nodes({_id:$accountId,createTime:$time,isBlocked:$accountBlocked,type:$accountType});
-insert().into(@Own).edges({_from:$personId,_to:$accountId})
+insert().into(@Person).nodes({_id:$personId,name:$personName,isBlocked:$isBlocked})

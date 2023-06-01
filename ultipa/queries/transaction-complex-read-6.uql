@@ -6,9 +6,10 @@ call {
 	uncollect(midn) as start
 	n(start).le({@Transfer && timestamp <> [$startTime,$endTime] && amount>$threshold1} as edge1).n({@Account}).limit($truncationLimit) as path
 	group by start
-	where count(edge1) > 3
+	with start._id as midId,count(edge1) as count1,sum(edge1.amount) as sume1
+	where count1>3
 	order by edge1.timestamp $truncationOrder
-	return sum(edge1.amount) as sume1
+	return midId,sume1
 }
-return table(mid._id,round(sume1,3),round(sume2,3))
-order by sume2 desc,mid._id asc
+return table(midId,sume1,round(sume2,3))
+order by sume2 desc,midId asc

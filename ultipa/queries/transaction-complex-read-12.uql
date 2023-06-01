@@ -1,24 +1,13 @@
 n({@Person && _id==$id}).re({@Own}).n({@Account} as paccount)
-exta(complex_read).params({
-	srcs:paccount,
-	edgeDirection:"out",
-	depth:1,
-	limit:10000000,
-	edge_schema:"Transfer",
-	edge_timestamp:"timestamp",
-	edge_amount:"amount",
-    amount:-1,
-    pre:0,
-	range_begin:$startTime,
-    range_end:$endTime,
-	noCircle:0,
-	top_n:$truncationLimit,
-    order:$truncationOrder,
-	return_type:1
-}).stream() as rest
-with distinct(rest) as disrest
-n({disrest.dest}).le({@Own}).n({@Company} as compacc)
-group by disrest.dest
-with compacc._id as compaccid,round(sum(disrest.amount),3) as sume2
+with distinct(paccount) as paccountd
+n(paccountd).re({@Transfer && timestamp <> [$startTime,$endTime]} as edge2).n({@Account} as mid).limit($truncationLimit)
+order by edge2.amount $truncationOrder
+group by mid
+with mid,round(sum(edge2.amount),3) as sume2
+call{
+	with mid
+	n({mid} as mid1).le({@Own}).n({@Company})
+	return mid1._id as compaccid
+}
 return table(compaccid,sume2)
 order by sume2 desc,compaccid asc

@@ -1,2 +1,2 @@
-insert().into(@Loan).nodes({_id:$loanId,loanAmount:$amount});
-insert().into(@Apply).edges({_from:$personId,_to:$loanId,timestamp:$time})
+insert().into(@Account).nodes({_id:$accountId,createTime:$time,isBlocked:$accountBlocked,type:$accountType});
+insert().into(@Own).edges({_from:$companyId,_to:$accountId})

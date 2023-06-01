@@ -1,1 +1,1 @@
-update().nodes({@Account && _id==$accountId}).set({isBlocked:'true'})
+insert().into(@Guarantee).edges({_from:$personId1,_to:$personId2,timestamp:$time})
