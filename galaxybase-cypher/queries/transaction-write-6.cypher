@@ -1,2 +1,3 @@
-MATCH (c:Company {id: '$companyId'})
-CREATE (:Loan {id: '$loanId', loanAmount: $amount})<-[:CompanyApplyLoan {timestamp: $time}]-(c)
+MATCH (p:Person {id: '$personId'})
+CREATE (:Loan {id: '$loanId', loanAmount: $loanAmount, balance: $balance})<-[:PersonApplyLoan {timestamp: $time}]-(p)
+

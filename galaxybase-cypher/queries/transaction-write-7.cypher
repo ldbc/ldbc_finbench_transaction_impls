@@ -1,2 +1,2 @@
-MATCH (acc:Account {id: '$accountId'})
-CREATE (acc)<-[:MediumSignInAccount {timestamp: $time}]-(:Medium {id: '$mediumId', isBlocked: $mediumBlocked})
+MATCH (c:Company {id: '$companyId'})
+CREATE (:Loan {id: '$loanId', loanAmount: $loanAmount, balance: $balance})<-[:CompanyApplyLoan {timestamp: $time}]-(c)

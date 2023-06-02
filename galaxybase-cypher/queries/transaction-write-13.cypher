@@ -1,3 +1,2 @@
-MATCH (acc:Account {id: '$id'})
-OPTIONAL MATCH (acc)-[:AccountReplyLoan]->(loan:Loan)-[:LoanDepositAccount]->(acc)
-DETACH DELETE acc, loan
+MATCH (account1:Account {id: '$accountId1'}), (account2:Account {id: '$accountId2'})
+CREATE (account1)-[:AccountWithdrawAccount {timestamp: $time, amount: $amount}]->(account2)

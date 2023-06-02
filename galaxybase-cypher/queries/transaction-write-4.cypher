@@ -1,2 +1,2 @@
-MATCH (dst:Account {id: '$dstId'}), (src:Account {id: '$srcId'})
-CREATE (dst)<-[:AccountWithdrawAccount {timestamp: $time, amount: $amount}]-(src)
+MATCH (person:Person {id: '$personId'})
+CREATE (person)-[:PersonOwnAccount]->(:Account {id: '$accountId', createTime: $time, isBlocked: $accountBlocked, type: '$accountType'})

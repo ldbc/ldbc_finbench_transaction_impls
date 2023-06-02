@@ -1,2 +1,2 @@
-MATCH (p1:Person {id: '$pid1'}), (p2:Person {id: '$pid2'})
-CREATE (p1)<-[:PersonGuaranteePerson {timestamp: $time}]-(p2)
+MATCH (account1:Account {id: '$accountId1'}), (account2:Account {id: '$accountId2'})
+CREATE (account1)-[:AccountTransferAccount {timestamp: $time, amount: $amount}]->(account2)

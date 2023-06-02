@@ -1,2 +1,2 @@
-MATCH (acc:Account {id: '$accountId'})
-SET acc.isBlocked = true
+MATCH (person1:Person {id: '$personId1'}), (person2:Person {id: '$personId2'})
+CREATE (person1)-[:PersonGuaranteePerson {timestamp: $time}]->(person2)
