@@ -1,6 +1,12 @@
 package org.ldbcouncil.finbench.impls.galaxybase;
 
 import com.graphdbapi.driver.v1.Record;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write16;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write17;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write18;
+import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write19;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseListOperationHandler;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseTransactionUpdateOperationHandler;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseUpdateOperationHandler;
@@ -113,6 +119,12 @@ public class GalaxybaseDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
+        registerOperationHandler(Write14.class, Write14Handler.class);
+        registerOperationHandler(Write15.class, Write15Handler.class);
+        registerOperationHandler(Write16.class, Write16Handler.class);
+        registerOperationHandler(Write17.class, Write17Handler.class);
+        registerOperationHandler(Write18.class, Write18Handler.class);
+        registerOperationHandler(Write19.class, Write19Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -578,6 +590,60 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write13 operation) {
             return state.getQueryStore().getWrite13(operation);
+        }
+    }
+
+    public static class Write14Handler extends
+        GalaxybaseUpdateOperationHandler<Write14> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write14 operation) {
+            return state.getQueryStore().getWrite14(operation);
+        }
+    }
+
+    public static class Write15Handler extends
+        GalaxybaseUpdateOperationHandler<Write15> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write15 operation) {
+            return state.getQueryStore().getWrite15(operation);
+        }
+    }
+
+    public static class Write16Handler extends
+        GalaxybaseUpdateOperationHandler<Write16> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write16 operation) {
+            return state.getQueryStore().getWrite16(operation);
+        }
+    }
+
+    public static class Write17Handler extends
+        GalaxybaseUpdateOperationHandler<Write17> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write17 operation) {
+            return state.getQueryStore().getWrite17(operation);
+        }
+    }
+
+    public static class Write18Handler extends
+        GalaxybaseUpdateOperationHandler<Write18> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write18 operation) {
+            return state.getQueryStore().getWrite18(operation);
+        }
+    }
+
+    public static class Write19Handler extends
+        GalaxybaseUpdateOperationHandler<Write19> {
+
+        @Override
+        public String getQueryString(GalaxybaseDbConnectionState state, Write19 operation) {
+            return state.getQueryStore().getWrite19(operation);
         }
     }
 
