@@ -2,7 +2,7 @@ CYPHER EXPANDCONFIG = ([edge3, edge4], timestamp, $truncationOrder, $truncationL
 OPTIONAL MATCH (loan1:Loan)-[edge1:LoanDepositAccount]->(mid:Account {id: '$id'})
 WHERE edge1.amount > $threshold AND $startTime < edge1.timestamp < $endTime
 WITH sum(edge1.amount) AS edge1Amount
-OPTIONAL MATCH (mid:Account {id: '$id'})-[edge2:AccountReplyLoan]->(loan2:Loan)
+OPTIONAL MATCH (mid:Account {id: '$id'})-[edge2:AccountRepayLoan]->(loan2:Loan)
 WHERE edge2.amount > $threshold AND $startTime < edge2.timestamp < $endTime
 WITH edge1Amount, sum(edge2.amount) AS edge2Amount
 OPTIONAL MATCH (up:Account)-[edge3:AccountTransferAccount]->(mid:Account {id: '$id'})
