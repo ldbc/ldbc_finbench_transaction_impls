@@ -24,7 +24,10 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
         Graph graph = state.getGraph();
 
         String queryString = getQueryString(state, operation);
+        queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
+        queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
         System.out.println(operation.toString());
+        System.out.println(queryString);
         String[] txns = queryString.split("BEGIN|COMMIT", 1000);
         for (String txn : txns) {
             if (txn.trim().isEmpty()) {
@@ -34,23 +37,32 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
             String[] queries = txn.split("QUERY", 1000);
             int successNum = 0;
             try {
+                boolean isSuccess = true;
                 for (String query : queries) {
                     if (query.trim().isEmpty()) {
                         continue;
                     }
-                    System.out.println(query +"\n");
+                    System.out.println(query + "\n");
                     StatementResult statementResult = tx.executeQuery(query);
-                    Record record = statementResult.next();
-                    if (!record.get(0).asBoolean()) {
-                        tx.failure();
+                    if (statementResult.hasNext()) {
+                        Record record = statementResult.next();
+                        if (!record.get(0).asBoolean()) {
+                            isSuccess = false;
+                            break;
+                        }
+                    } else {
+                        isSuccess = false;
                         break;
                     }
                     successNum++;
                 }
-                tx.success();
+                if (isSuccess) {
+                    tx.success();
+                } else {
+                    tx.failure();
+                }
+            } finally {
                 tx.close();
-            } catch (Exception e) {
-                System.out.println("txn is abort");
             }
             // Whether to do step 4
             // step 1 is success
@@ -60,8 +72,6 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
             if (successNum != 2) {
                 break;
             }
-
-
         }
         resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
     }

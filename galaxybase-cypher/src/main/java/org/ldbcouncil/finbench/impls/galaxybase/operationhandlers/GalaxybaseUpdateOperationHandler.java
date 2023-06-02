@@ -21,6 +21,8 @@ public abstract class GalaxybaseUpdateOperationHandler<
         throws DbException {
         Graph graph = state.getGraph();
         String queryString = getQueryString(state, operation);
+        queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
+        queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
         System.out.println(operation.toString());
         System.out.println(queryString);
         StatementResult statementResult = graph.executeQuery(queryString);

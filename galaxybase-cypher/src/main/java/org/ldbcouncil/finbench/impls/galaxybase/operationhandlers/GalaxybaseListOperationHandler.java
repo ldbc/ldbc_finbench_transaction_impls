@@ -24,6 +24,8 @@ public abstract class GalaxybaseListOperationHandler<TOperationResult, TOperatio
         int resultCount = 0;
 
         String queryString = getQueryString(state, operation);
+        queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
+        queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
         System.out.println(operation.toString());
         System.out.println(queryString);
 
