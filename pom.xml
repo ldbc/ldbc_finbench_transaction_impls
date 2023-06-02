@@ -97,7 +97,7 @@
     <repositories>
         <repository>
             <id>finbench-mvn</id>
-            <url>https://ldbcouncil.org/finbench-mvn/</url>
+            <url>https://ldbcouncil.org/ldbc_finbench_mvn/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
