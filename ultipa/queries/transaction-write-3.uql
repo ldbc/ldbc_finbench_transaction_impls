@@ -1,1 +1,1 @@
-insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount})
+insert().into(@Medium).nodes({_id:$mediumId,isBlocked:$isBlocked})

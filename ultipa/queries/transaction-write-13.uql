@@ -1,1 +1,1 @@
-delete().nodes({@Account && _id == $id})
+insert().into(@Withdraw).edges({_from:$accountId1,_to:$accountId2,timestamp:$time,amount:$amount})
