@@ -1,0 +1,1 @@
+java -classpath "D:/javaworkspace/ldbc_finbench_transaction_impls/ultipa/target/ultipa-0.1.0-alpha.jar;D:/javaworkspace/ldbc_finbench_transaction_impls/ultipa/lib/ultipa-java-sdk-4.3.0-SNAPSHOT-package.jar" org.ldbcouncil.finbench.driver.driver.Driver -P ultipa_example.properties

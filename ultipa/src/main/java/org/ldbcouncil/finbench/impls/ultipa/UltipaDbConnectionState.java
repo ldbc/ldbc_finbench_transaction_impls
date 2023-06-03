@@ -28,7 +28,8 @@ public class UltipaDbConnectionState extends DbConnectionState {
         UltipaConfiguration configuration = UltipaConfiguration.config()
                 .hosts(properties.get("ultipa.grpc.pool.conn.url"))
                 .username(properties.get("ultipa.grpc.pool.conn.username"))
-                .password(properties.get("ultipa.grpc.pool.conn.password"));
+                .password(properties.get("ultipa.grpc.pool.conn.password"))
+                .timeout(Integer.valueOf(properties.get("ultipa.grpc.pool.conn.timeout")));
         //configuration.getPoolConfig().setMaxTotal(1);
         DataSource dataSource = new DataSource();
         dataSource.setUltipaConfiguration(configuration);

@@ -1,3 +1,3 @@
 n({@Account} as src).re({@Transfer && timestamp <> [$startTime,$endTime] && amount>$threshold} as edge).n({@Account && _id==$id} as dest)
 group by src._id
-return table(src._id,count(edge),sum(edge.amount))
+return table(src._id,count(edge),round(sum(edge.amount),3))

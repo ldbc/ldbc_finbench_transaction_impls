@@ -1,11 +1,17 @@
-find().nodes({@Account && _id in [$srcId,$dstId]}) as nodes return nodes.is_blocked as is_blocked;
+find().nodes({@Account && _id==$srcId}) as nodes return nodes.isBlocked as isBlocked;
+
+find().nodes({@Account && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
 insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount});
 
 n({@Account && _id==$srcId} as src).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge1).n({@Account && _id==$dstId} as dst).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge3).n({@Account} as other).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge2).n({@Account && _id==$srcId}) as path
-group by other._id
-with other._id as otherid,count(edge2) as edge2count,sum(edge2.amount) as edge2sum,max(edge2.amount)as edge2max,count(edge3) as edge3count,sum(edge3.amount) as edge3sum,max(edge3.amount) as edge3max
-order by edge2sum desc,edge3sum desc
-return table(otherid,edge2count,edge2sum,edge2max,edge3count,edge3sum,edge3max);
+group by other
+with round(max(edge2.amount),3) as max2, round(max(edge3.amount),3) as max3, collect(distinct(edge2)) as edge2c,collect(distinct(edge3)) as edge3c
+  call{
+      with edge2c,edge3c
+      uncollect(edge2c) as e2 with sum(e2.amount) as sum2,count(e2.amount) as count2
+	  uncollect(edge3c) as e3 with sum(e3.amount) as sum3,count(e3.amount) as count3
+  return sum2,sum3,count2,count3}
+return table(other._id,count2,sum2,max2,count3,sum3,max3);
 
-update().nodes({@Account && _id in [$srcId,$dstId]}).set({is_blocked:'True'})
+update().nodes({@Account && _id in [$srcId,$dstId]}).set({isBlocked:'true'})
