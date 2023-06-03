@@ -1,4 +1,39 @@
-n({@Account}).re({(@Transfer) && timestamp <> [$startTime,$endTime] && amount > $threshold} as edge1).n({@Account && _id==$id}) as path1
-n({@Account && _id==$id}).re({(@Transfer) && timestamp <> [$startTime,$endTime]  && amount > $threshold} as edge2).n({@Account}) as path2
-with count(path1) as path1count,count(path2) as path2count
-return table(path1count,path2count,path1count/path2count)
+find().nodes({@Account && _id==$id}) as mid
+with mid
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"in",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest1
+with count(distinct(rest1.dest)) as path1count,sum(rest1.amount) as amount1
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"out",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$threshold,
+    pre:0,
+	range_begin:$startTime,
+    range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest2
+with count(distinct(rest2.dest)) as path2count,sum(rest2.amount) as amount2
+return table(path1count,path2count,round(amount1/amount2,3))

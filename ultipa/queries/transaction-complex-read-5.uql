@@ -1,4 +1,20 @@
 n({@Person && _id==$id}).re({@Own}).n({@Account} as account)
-n(account).re({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp>prev_e.@Transfer.timestamp})[1:3].n({@Account}).no_circle() as path
-order by length(path) desc
-return path{*}
+exta(complex_read).params({
+	srcs:account,
+	edgeDirection:"out",
+	depth:3,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:-1,
+    pre:1,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:1,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:0
+}).stream() as rest
+return distinct rest
+order by size(rest) desc

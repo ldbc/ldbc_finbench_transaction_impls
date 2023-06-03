@@ -1,3 +1,22 @@
-n({@Account && _id==$id} as account).re({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp>prev_e.@Transfer.timestamp})[1:3].n({@Account} as other).le({@SignIn}).n({@Medium.is_blocked=='True'} as medium) as p
-return table(other._id,length(p)-1,medium._id,medium.name)
-order by other._id asc,length(p)-1 asc
+find().nodes({@Account && _id==$id}) as start
+exta(complex_read).params({
+	srcs:start,
+	edgeDirection:"out",
+	depth:3,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:-1,
+    pre:1,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+	order:$truncationOrder,
+	return_type:1
+}).stream() as rest
+with rest.dest as dd,rest.length as length
+n({dd} as other).le({@SignIn}).n({@Medium.isBlocked=='true'} as medium) as p
+return distinct table(other._id,length,medium._id,medium.type)
+order by other._id,length asc
