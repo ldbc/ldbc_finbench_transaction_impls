@@ -699,7 +699,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CREATE (p:Person{id:%d, name:'%s', isBlocked:%s});";
+                String cypher = "CREATE (p:Person{id:%d, name:\"%s\", isBlocked:%s});";
                 cypher = String.format(
                         cypher,
                         w1.getPersonId(), w1.getPersonName(), String.valueOf(w1.getIsBlocked()));
