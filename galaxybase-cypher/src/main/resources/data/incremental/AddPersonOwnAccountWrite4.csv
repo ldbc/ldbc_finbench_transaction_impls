@@ -1,5 +1,1 @@
-createTime|dependencyTime|personId|accountId|accountType|accountBlocked
-1669715937988|1670317094611|0000030786325578280|4910612443694105787|brokerage account|false
-1669866049022|1670747910372|0000030786325579612|4911175393647530055|merchant account|false
-1669868914920|1670809605606|0000030786325579434|4911175393647529634|credit card|false
-1670595167979|1671239752247|0000030786325579200|4913427193461214379|retirement account|false
+createTime|dependencyTime|personId|accountId|accountType|accountBlocked|nickname|phonenum|email|freqLoginType|lastLoginTime|accountLevel
