@@ -719,7 +719,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "CREATE (:Company {id:%d, name:'%s', isBlocked:%s});";
+                String cypher = "CREATE (:Company {id:%d, name:\"%s\", isBlocked:%s});";
                 cypher = String.format(
                         cypher,
                         w2.getCompanyId(), w2.getCompanyName(), String.valueOf(w2.getIsBlocked()));
@@ -804,7 +804,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (p:Person {id: %d}) CREATE (:Loan {id: %d, loanAmount: %f, balance: %f})<-[:apply {timestamp: %d}]-(p);";
                 cypher = String.format(
                         cypher,
-                        w6.getPersonId(), w6.getLoanId(), w6.getLoanAmount(), w6.getBalance(), w6.getTime());
+                        w6.getPersonId(), w6.getLoanId(), w6.getLoanAmount(), w6.getBalance(), w6.getTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w6);
@@ -824,7 +824,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (c:Company {id: %d}) CREATE (:Loan {id: %d, loanAmount: %f, balance: %f})<-[:apply {timestamp: %d}]-(c);";
                 cypher = String.format(
                         cypher,
-                        w7.getCompanyId(), w7.getLoanId(), w7.getLoanAmount(), w7.getBalance(), w7.getTime());
+                        w7.getCompanyId(), w7.getLoanId(), w7.getLoanAmount(), w7.getBalance(), w7.getTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w7);
@@ -844,7 +844,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (p:Person{id:%d}), (c:Company{id:%d}) CREATE (p)-[:invest{timestamp: %d, ratio: %f}]->(c);";
                 cypher = String.format(
                         cypher,
-                        w8.getPersonId(), w8.getCompanyId(), w8.getTime(), w8.getRatio());
+                        w8.getPersonId(), w8.getCompanyId(), w8.getTime().getTime(), w8.getRatio());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w8);
@@ -864,7 +864,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (c1:Company{id:%d}), (c2:Company{id:%d}) CREATE (c1)-[:invest{timestamp: %d, ratio: %f}]->(c2);";
                 cypher = String.format(
                         cypher,
-                        w9.getCompanyId1(), w9.getCompanyId2(), w9.getTime(), w9.getRatio());
+                        w9.getCompanyId1(), w9.getCompanyId2(), w9.getTime().getTime(), w9.getRatio());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w9);
@@ -884,7 +884,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (p1:Person{id:%d}), (p2:Person{id:%d}) CREATE (p1)-[:guarantee{timestamp: %d}]->(p2);";
                 cypher = String.format(
                         cypher,
-                        w10.getPersonId1(), w10.getPersonId2(), w10.getTime());
+                        w10.getPersonId1(), w10.getPersonId2(), w10.getTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w10);
@@ -904,7 +904,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (c1:Company{id:%d}), (c2:Company{id:%d}) CREATE (c1)-[:guarantee{timestamp: %d}]->(c2);";
                 cypher = String.format(
                         cypher,
-                        w11.getCompanyId1(), w11.getCompanyId2(), w11.getTime());
+                        w11.getCompanyId1(), w11.getCompanyId2(), w11.getTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w11);
@@ -924,7 +924,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (a1:Account{id:%d}), (a2:Account{id:%d}) CREATE (a1)-[:transfer{timestamp: %d, amount: %f}]->(a2);";
                 cypher = String.format(
                         cypher,
-                        w12.getAccountId1(), w12.getAccountId2(), w12.getTime(), w12.getAmount());
+                        w12.getAccountId1(), w12.getAccountId2(), w12.getTime().getTime(), w12.getAmount());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w12);
@@ -944,7 +944,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (a1:Account{id:%d}), (a2:Account{id:%d}) CREATE (a1)-[:withdraw{timestamp: %d, amount: %f}]->(a2);";
                 cypher = String.format(
                         cypher,
-                        w13.getAccountId1(), w13.getAccountId2(), w13.getTime(), w13.getAmount());
+                        w13.getAccountId1(), w13.getAccountId2(), w13.getTime().getTime(), w13.getAmount());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w13);
@@ -964,7 +964,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (a:Account{id:%d}), (loan:Loan{id:%d}) CREATE (a)-[:repay{timestamp: %d, amount: %f}]->(loan);";
                 cypher = String.format(
                         cypher,
-                        w14.getAccountId(), w14.getLoanId(), w14.getTime(), w14.getAmount());
+                        w14.getAccountId(), w14.getLoanId(), w14.getTime().getTime(), w14.getAmount());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w14);
@@ -984,7 +984,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (a:Account{id:%d}), (loan:Loan{id:%d}) CREATE (a)<-[:deposit{timestamp: %d, amount: %f}]-(loan);";
                 cypher = String.format(
                         cypher,
-                        w15.getAccountId(), w15.getLoanId(), w15.getTime(), w15.getAmount());
+                        w15.getAccountId(), w15.getLoanId(), w15.getTime().getTime(), w15.getAmount());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w15);
@@ -1004,7 +1004,7 @@ public class TuGraphTransactionDb extends Db {
                 String cypher = "MATCH (acc:Account {id:%d}), (med:Medium {id:%d}) CREATE (acc)<-[:signIn {timestamp: %d}]-(med);";
                 cypher = String.format(
                         cypher,
-                        w16.getAccountId(), w16.getMediumId(), w16.getTime());
+                        w16.getAccountId(), w16.getMediumId(), w16.getTime().getTime());
                 String graph = "default";
                 client.callCypher(cypher, graph, 0);
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w16);
@@ -1021,7 +1021,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (a:Account {id:%d}) DELETE a;";
+                String cypher = "MATCH (acc:Account {id: %d}) WITH acc OPTIONAL MATCH (acc)-[:repay]->(loan:Loan)-[:deposit]->(acc) DELETE acc, loan;";
                 cypher = String.format(
                         cypher,
                         w17.getAccountId());
