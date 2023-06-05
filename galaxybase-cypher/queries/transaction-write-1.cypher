@@ -1,1 +1,1 @@
-CREATE (:Person {id: '$personId', name: '$personName', isBlocked: $isBlocked})
+CREATE (:Person {id: '$personId', name: "$personName", isBlocked: $isBlocked})
