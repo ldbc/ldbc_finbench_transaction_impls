@@ -1021,7 +1021,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (acc:Account {id: %d}) WITH acc OPTIONAL MATCH (acc)-[:repay]->(loan:Loan)-[:deposit]->(acc) DELETE acc, loan;";
+                String cypher = "MATCH (acc:Account {id: %d}) WITH acc OPTIONAL MATCH (acc)-[:repay|deposit]-(loan:Loan) DELETE acc, loan;";
                 cypher = String.format(
                         cypher,
                         w17.getAccountId());
