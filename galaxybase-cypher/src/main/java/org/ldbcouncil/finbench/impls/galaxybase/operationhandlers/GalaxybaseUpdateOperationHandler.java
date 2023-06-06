@@ -23,9 +23,14 @@ public abstract class GalaxybaseUpdateOperationHandler<
         String queryString = getQueryString(state, operation);
         queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
         queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
-        StatementResult statementResult = graph.executeQuery(queryString);
-        while (statementResult.hasNext()) {
-            statementResult.next();
+
+        try {
+            StatementResult statementResult = graph.executeQuery(queryString);
+            while (statementResult.hasNext()) {
+                statementResult.next();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
     }

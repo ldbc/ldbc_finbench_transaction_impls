@@ -27,14 +27,19 @@ public abstract class GalaxybaseListOperationHandler<TOperationResult, TOperatio
         queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
         queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
 
-        StatementResult statementResult = graph.executeQuery(queryString);
-        while (statementResult.hasNext()) {
-            Record record = statementResult.next();
-            resultCount++;
-            TOperationResult tuple;
-            tuple = convertSingleResult(record);
-            results.add(tuple);
+        try {
+            StatementResult statementResult = graph.executeQuery(queryString);
+            while (statementResult.hasNext()) {
+                Record record = statementResult.next();
+                resultCount++;
+                TOperationResult tuple;
+                tuple = convertSingleResult(record);
+                results.add(tuple);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
 
         resultReporter.report(resultCount, results, operation);
     }

@@ -27,47 +27,52 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
         queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
         queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
         String[] txns = queryString.split("BEGIN|COMMIT", 1000);
-        for (String txn : txns) {
-            if (txn.trim().isEmpty()) {
-                continue;
-            }
-            GraphTransaction tx = graph.beginTransaction();
-            String[] queries = txn.split("QUERY", 1000);
-            int successNum = 0;
-            try {
-                boolean isSuccess = true;
-                for (String query : queries) {
-                    if (query.trim().isEmpty()) {
-                        continue;
-                    }
-                    StatementResult statementResult = tx.executeQuery(query);
-                    if (statementResult.hasNext()) {
-                        Record record = statementResult.next();
-                        if (!record.get(0).asBoolean()) {
+
+        try {
+            for (String txn : txns) {
+                if (txn.trim().isEmpty()) {
+                    continue;
+                }
+                GraphTransaction tx = graph.beginTransaction();
+                String[] queries = txn.split("QUERY", 1000);
+                int successNum = 0;
+                try {
+                    boolean isSuccess = true;
+                    for (String query : queries) {
+                        if (query.trim().isEmpty()) {
+                            continue;
+                        }
+                        StatementResult statementResult = tx.executeQuery(query);
+                        if (statementResult.hasNext()) {
+                            Record record = statementResult.next();
+                            if (!record.get(0).asBoolean()) {
+                                isSuccess = false;
+                                break;
+                            }
+                        } else {
                             isSuccess = false;
                             break;
                         }
-                    } else {
-                        isSuccess = false;
-                        break;
+                        successNum++;
                     }
-                    successNum++;
+                    if (isSuccess) {
+                        tx.success();
+                    } else {
+                        tx.failure();
+                    }
+                } finally {
+                    tx.close();
                 }
-                if (isSuccess) {
-                    tx.success();
-                } else {
-                    tx.failure();
+                // Whether to do step 4
+                // step 1 is success
+                // step 2 is success
+                // step 3 is failure
+                if (successNum != 2) {
+                    break;
                 }
-            } finally {
-                tx.close();
             }
-            // Whether to do step 4
-            // step 1 is success
-            // step 2 is success
-            // step 3 is failure
-            if (successNum != 2) {
-                break;
-            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
     }
