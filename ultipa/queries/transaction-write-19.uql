@@ -1,0 +1,1 @@
+update().nodes({@Person && _id==$personId}).set({isBlocked:'true'})

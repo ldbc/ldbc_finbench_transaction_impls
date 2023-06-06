@@ -19,8 +19,6 @@
             <groupId>com.ultipa</groupId>
             <artifactId>ultipa-java-sdk</artifactId>
             <version>4.3.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ultipa-java-sdk-4.3.0-SNAPSHOT-package.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.ldbcouncil.finbench</groupId>

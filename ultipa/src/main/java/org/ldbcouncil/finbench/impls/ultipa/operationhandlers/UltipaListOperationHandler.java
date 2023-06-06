@@ -10,6 +10,7 @@ import org.ldbcouncil.finbench.impls.ultipa.UltipaDbConnectionState;
 import org.ldbcouncil.finbench.impls.ultipa.converter.UltipaConverter;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public abstract class UltipaListOperationHandler<TOperation extends Operation<Li
                                  UltipaDbConnectionState state,
                                  ResultReporter resultReporter) throws DbException {
         Connection conn = state.getConn();
+        //System.out.println(conn.sayHello("Hello"));
         int resultCount;
         Map<String, Object> map = getParameters(state,operation);
         String query = getQueryString(state,operation);
@@ -29,8 +31,13 @@ public abstract class UltipaListOperationHandler<TOperation extends Operation<Li
         List<TOperationResult> results;
         try {
             Response resp = conn.uql(uql);
-            resultCount = resp.get(0).asTable().getRows().size();
-            results = toResult(resp);
+            if(resp.getItems().size()>0) {
+                resultCount = resp.get(0).asTable().getRows().size();
+                results = toResult(resp);
+            }else{
+                resultCount = 0;
+                results = new ArrayList<>();
+            }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

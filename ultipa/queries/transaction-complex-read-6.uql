@@ -1,5 +1,15 @@
-n({@Account}).re({@Transfer && timestamp <> [$startTime,$endTime] && amount > $threshold1} as edge1).n({@Account} as mid).re({@Withdraw && timestamp <> [$startTime,$endTime] && amount> $threshold2} as edge2).n({@Account && _id==$id && type=='Card'} as dstcard)
+n({@Account && _id==$id && type contains 'card'} as dstcard).le({@Withdraw && timestamp <> [$startTime,$endTime] && amount>$threshold2} as edge2).n({@Account} as mid)
 group by mid
-with mid._id as midid,sum(edge1.amount) as sume1,sum(edge2.amount) as sume2
-return table(midid,sume1,sume2)
-order by sume2 desc,midid asc
+with collect(mid) as midn,sum(edge2.amount) as sume2
+call {
+	with midn
+	uncollect(midn) as start
+	n(start).le({@Transfer && timestamp <> [$startTime,$endTime] && amount>$threshold1} as edge1).n({@Account}).limit($truncationLimit) as path
+	group by start
+	with start._id as midId,count(edge1) as count1,sum(edge1.amount) as sume1
+	where count1>3
+	order by edge1.timestamp $truncationOrder
+	return midId,sume1
+}
+return table(midId,sume1,round(sume2,3))
+order by sume2 desc,midId asc
