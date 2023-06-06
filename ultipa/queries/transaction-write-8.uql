@@ -1,2 +1,1 @@
-insert().into(@Loan).nodes({_id:$loanId});
-insert().into(@Deposit).edges({_from:$loanId,_to:$accountId,timestamp:$time,amount:$amount})
+insert().into(@Invest).edges({_from:$personId,_to:$companyId,timestamp:$time,ratio:$ratio})

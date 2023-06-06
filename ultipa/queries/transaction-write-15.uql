@@ -1,0 +1,1 @@
+insert().into(@Deposit).edges({_from:$loanId,_to:$accountId,timestamp:$time,amount:$amount})

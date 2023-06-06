@@ -1,1 +1,1 @@
-insert().into(@Guarantee).edges({_from:$pid1,_to:$pid2,timestamp:$time})
+insert().into(@Transfer).edges({_from:$accountId1,_to:$accountId2,timestamp:$time,amount:$amount})

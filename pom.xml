@@ -27,6 +27,7 @@
         <module>galaxybase</module>
         <module>galaxybase-cypher</module>
         <module>ultipa</module>
+<!--        <module>neo4j</module>-->
     </modules>
 
     <dependencies>

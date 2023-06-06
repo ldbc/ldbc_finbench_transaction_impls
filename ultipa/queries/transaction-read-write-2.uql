@@ -1,10 +1,48 @@
-find().nodes({@Account && _id in [$srcId,$dstId]}) as nodes return nodes.is_blocked as is_blocked;
+find().nodes({@Account && _id==$srcId}) as nodes return nodes.isBlocked as isBlocked;
+
+find().nodes({@Account && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
 insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount});
 
-n({@Account}).re({(@Transfer) && timestamp <> [$startTime,$endTime] && amount>$amountThreshold}} as edge1).n({@Account && _id in [$srcId,$dstId]}) as path1
-n({@Account && _id in [$srcId,$dstId]}).re({(@Transfer) && timestamp <> [$startTime,$endTime]  && amount>$amountThreshold} as edge2).n({@Account}) as path2
-with count(path1) as path1count,count(path2) as path2count
+find().nodes({@Account && _id in [$srcId,$dstId]}) as mid
+with mid
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"in",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$amountThreshold,
+    pre:0,
+	range_begin:$startTime,
+	range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest1
+with count(distinct(rest1.dest)) as path1count,sum(rest1.amount) as amount1
+exta(complex_read).params({
+	srcs:mid,
+	edgeDirection:"out",
+	depth:1,
+	limit:10000000,
+	edge_schema:"Transfer",
+	edge_timestamp:"timestamp",
+	edge_amount:"amount",
+    amount:$amountThreshold,
+    pre:0,
+	range_begin:$startTime,
+    range_end:$endTime,
+	noCircle:0,
+	top_n:$truncationLimit,
+    order:$truncationOrder,
+	return_type:1
+}).stream() as rest2
+with count(distinct(rest2.dest)) as path2count,sum(rest2.amount) as amount2
 return table(path1count/path2count);
 
-update().nodes({@Account && _id in [$srcId,$dstId]}).set({is_blocked:'True'})
+
+update().nodes({@Account && _id in [$srcId,$dstId]}).set({isBlocked:'true'})
