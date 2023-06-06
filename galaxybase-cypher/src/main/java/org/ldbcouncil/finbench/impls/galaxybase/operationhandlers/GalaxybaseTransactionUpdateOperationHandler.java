@@ -26,8 +26,6 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
         String queryString = getQueryString(state, operation);
         queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
         queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
-        System.out.println(operation.toString());
-        System.out.println(queryString);
         String[] txns = queryString.split("BEGIN|COMMIT", 1000);
         for (String txn : txns) {
             if (txn.trim().isEmpty()) {
@@ -42,7 +40,6 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
                     if (query.trim().isEmpty()) {
                         continue;
                     }
-                    System.out.println(query + "\n");
                     StatementResult statementResult = tx.executeQuery(query);
                     if (statementResult.hasNext()) {
                         Record record = statementResult.next();
@@ -68,7 +65,6 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
             // step 1 is success
             // step 2 is success
             // step 3 is failure
-            System.out.println(successNum);
             if (successNum != 2) {
                 break;
             }

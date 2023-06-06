@@ -26,11 +26,8 @@ public abstract class GalaxybaseSingletonOperationHandler<
         String queryString = getQueryString(state, operation);
         queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
         queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
-        System.out.println(operation.toString());
-        System.out.println(queryString);
         StatementResult statementResult = graph.executeQuery(queryString);
         Record record = statementResult.next();
-        System.out.println(record + "\n");
 
         resultCount++;
         tuple = convertSingleResult(record);
