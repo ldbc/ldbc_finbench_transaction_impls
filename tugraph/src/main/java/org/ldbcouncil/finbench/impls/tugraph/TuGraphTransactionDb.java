@@ -1,7 +1,6 @@
 package org.ldbcouncil.finbench.impls.tugraph;
 
 import com.antgroup.tugraph.TuGraphDbRpcClient;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ldbcouncil.finbench.driver.*;
@@ -103,13 +102,6 @@ public class TuGraphTransactionDb extends Db {
         public void executeOperation(ComplexRead1 cr1, TuGraphDbConnectionState dbConnectionState,
                 ResultReporter resultReporter) throws DbException {
             try {
-                // CustomDataOutputStream cdos = new CustomDataOutputStream();
-                // cdos.writeInt64(cr1.getId());
-                // cdos.writeInt64(cr1.getStartTime().getTime());
-                // cdos.writeInt64(cr1.getEndTime().getTime());
-                // cdos.writeInt64(cr1.getTruncationLimit());
-                // cdos.writeByte(encodeTruncationOrder(cr1.getTruncationOrder()));
-                // String input = Base64.encodeBase64String(cdos.toByteArray());
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
                 String cypher = "MATCH p = (acc:Account {id:%d})-[e1:transfer *1..3]->(other:Account)<-[e2:signIn]-(medium) WHERE isAsc(relationships(e1, 'timestamp'))=true AND head(relationships(e1, 'timestamp')) > %d AND last(relationships(e1, 'timestamp')) < %d AND e2.timestamp > %d AND e2.timestamp < %d AND medium.isBlocked = true RETURN DISTINCT other.id as otherId, length(p)-1 as accountDistance, medium.id as mediumId, medium.type as mediumType ORDER BY accountDistance, otherId, mediumId;";
                 long startTime = cr1.getStartTime().getTime();
