@@ -1,7 +1,7 @@
 # Ultipa Server Configurations
 server:
   # Host Address or URI : Port
-  host: "10.132.3.177:60061"
+  host: "127.0.0.1:60061"
   # Username
   username: "root"
   # Password
