@@ -22,7 +22,7 @@ mvn install
 # install impl
 cd /data
 git clone https://github.com/ldbc/ldbc_finbench_transaction_impls.git
-cd /data/ldbc_finbench_transaction_impls && git checkout tugraph-cypher
+cd /data/ldbc_finbench_transaction_impls
 mvn clean package
 
 # install tugraph
