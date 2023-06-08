@@ -47,7 +47,7 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
                         if (query.trim().isEmpty()) {
                             continue;
                         }
-                        StatementResult statementResult = graph.executeCypher(query, params);
+                        StatementResult statementResult = tx.executeCypher(query, params);
                         if (statementResult.hasNext()) {
                             Record record = statementResult.next();
                             if (!record.get(0).asBoolean()) {
