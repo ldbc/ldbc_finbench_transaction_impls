@@ -139,13 +139,6 @@ nohup sh sf1_finbench_create_validation.sh > create_validation.log &
 nohup sh sf1_finbench_validation_database.sh > validation_database.log &
 ```
 
-## 3.2 Run benchmark
-
-```
-# run benchmark
-nohup sh sf10_finbench_benchmark.sh > finbench_benchmark.log &
-```
-
 # 4. ACID Tests
 
 ## 4.1 Compile & run ACID tests
