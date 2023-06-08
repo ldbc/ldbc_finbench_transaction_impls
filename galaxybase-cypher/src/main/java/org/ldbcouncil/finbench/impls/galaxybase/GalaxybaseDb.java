@@ -1,12 +1,14 @@
 package org.ldbcouncil.finbench.impls.galaxybase;
 
 import com.graphdbapi.driver.v1.Record;
+import com.graphdbapi.driver.v1.Value;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write14;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write15;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write16;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write17;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write18;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.Write19;
+import org.ldbcouncil.finbench.impls.common.QueryType;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseListOperationHandler;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseTransactionUpdateOperationHandler;
 import org.ldbcouncil.finbench.impls.galaxybase.operationhandlers.GalaxybaseUpdateOperationHandler;
@@ -160,6 +162,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, ComplexRead1 operation) {
             return state.getQueryStore().getComplexRead1(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead1 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead1);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead1 operation) {
+            return state.getQueryStore().getParamsComplexRead1(operation);
+        }
     }
 
     public static class ComplexRead2Handler extends
@@ -177,6 +189,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, ComplexRead2 operation) {
             return state.getQueryStore().getComplexRead2(operation);
+        }        
+        
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead2 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead2);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead2 operation) {
+            return state.getQueryStore().getParamsComplexRead2(operation);
         }
     }
 
@@ -193,6 +215,16 @@ public class GalaxybaseDb extends Db {
         protected ComplexRead3Result convertSingleResult(Record record) {
             ComplexRead3Result result = new ComplexRead3Result(record.get(0).asLong());
             return result;
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead3 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead3);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead3 operation) {
+            return state.getQueryStore().getParamsComplexRead3(operation);
         }
     }
 
@@ -217,6 +249,16 @@ public class GalaxybaseDb extends Db {
                 record.get(6).asDouble());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead4 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead4);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead4 operation) {
+            return state.getQueryStore().getParamsComplexRead4(operation);
+        }
     }
 
     public static class ComplexRead5Handler extends
@@ -238,6 +280,16 @@ public class GalaxybaseDb extends Db {
             ComplexRead5Result result = new ComplexRead5Result(path);
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead5 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead5);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead5 operation) {
+            return state.getQueryStore().getParamsComplexRead5(operation);
+        }
     }
 
     public static class ComplexRead6Handler extends
@@ -257,6 +309,16 @@ public class GalaxybaseDb extends Db {
                 record.get(2).asDouble());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead6 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead6);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead6 operation) {
+            return state.getQueryStore().getParamsComplexRead6(operation);
+        }
     }
 
     public static class ComplexRead7Handler extends
@@ -274,6 +336,15 @@ public class GalaxybaseDb extends Db {
                 record.get(1).asInt(),
                 (float) record.get(2).asDouble());
             return result;
+        }
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead7 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead7);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead7 operation) {
+            return state.getQueryStore().getParamsComplexRead7(operation);
         }
     }
 
@@ -294,6 +365,16 @@ public class GalaxybaseDb extends Db {
                 record.get(2).asInt());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead8 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead8);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead8 operation) {
+            return state.getQueryStore().getParamsComplexRead8(operation);
+        }
     }
 
     public static class ComplexRead9Handler extends
@@ -313,6 +394,15 @@ public class GalaxybaseDb extends Db {
                 (float) record.get(2).asDouble());
             return result;
         }
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead9 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead9);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead9 operation) {
+            return state.getQueryStore().getParamsComplexRead9(operation);
+        }
     }
 
     public static class ComplexRead10Handler extends
@@ -329,6 +419,16 @@ public class GalaxybaseDb extends Db {
             ComplexRead10Result result = new ComplexRead10Result(
                 (float) record.get(0).asDouble());
             return result;
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead10 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead10);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead10 operation) {
+            return state.getQueryStore().getParamsComplexRead10(operation);
         }
     }
 
@@ -347,6 +447,16 @@ public class GalaxybaseDb extends Db {
                 record.get(0).asDouble(),
                 record.get(1).asInt());
             return result;
+        }        
+        
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead11 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead11);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead11 operation) {
+            return state.getQueryStore().getParamsComplexRead11(operation);
         }
     }
 
@@ -366,6 +476,16 @@ public class GalaxybaseDb extends Db {
                 record.get(1).asDouble());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ComplexRead12 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionComplexRead12);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ComplexRead12 operation) {
+            return state.getQueryStore().getParamsComplexRead12(operation);
+        }
     }
 
     public static class SimpleRead1Handler extends
@@ -384,6 +504,16 @@ public class GalaxybaseDb extends Db {
                 record.get(1).asBoolean(),
                 record.get(2).asString());
             return result;
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead1 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead1);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead1 operation) {
+            return state.getQueryStore().getParamsSimpleRead1(operation);
         }
     }
 
@@ -406,6 +536,16 @@ public class GalaxybaseDb extends Db {
                 record.get(5).asLong());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead2 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead2);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead2 operation) {
+            return state.getQueryStore().getParamsSimpleRead2(operation);
+        }
     }
 
     public static class SimpleRead3Handler extends
@@ -421,6 +561,16 @@ public class GalaxybaseDb extends Db {
             SimpleRead3Result result = new SimpleRead3Result(
                 (float) record.get(0).asDouble());
             return result;
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead3 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead3);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead3 operation) {
+            return state.getQueryStore().getParamsSimpleRead3(operation);
         }
     }
 
@@ -440,6 +590,16 @@ public class GalaxybaseDb extends Db {
                 record.get(2).asDouble());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead4 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead4);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead4 operation) {
+            return state.getQueryStore().getParamsSimpleRead4(operation);
+        }
     }
 
     public static class SimpleRead5Handler extends
@@ -458,6 +618,16 @@ public class GalaxybaseDb extends Db {
                 record.get(2).asDouble());
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead5 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead5);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead5 operation) {
+            return state.getQueryStore().getParamsSimpleRead5(operation);
+        }
     }
 
     public static class SimpleRead6Handler extends
@@ -474,6 +644,16 @@ public class GalaxybaseDb extends Db {
                 Long.parseLong(record.get(0).asString()));
             return result;
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, SimpleRead6 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionSimpleRead6);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, SimpleRead6 operation) {
+            return state.getQueryStore().getParamsSimpleRead6(operation);
+        }
     }
 
     public static class Write1Handler extends
@@ -482,6 +662,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write1 operation) {
             return state.getQueryStore().getWrite1(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write1 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite1);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write1 operation) {
+            return state.getQueryStore().getParamWrite1(operation);
         }
     }
 
@@ -492,6 +682,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write2 operation) {
             return state.getQueryStore().getWrite2(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write2 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite2);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write2 operation) {
+            return state.getQueryStore().getParamWrite2(operation);
+        }
     }
 
     public static class Write3Handler extends
@@ -500,6 +700,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write3 operation) {
             return state.getQueryStore().getWrite3(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write3 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite3);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write3 operation) {
+            return state.getQueryStore().getParamWrite3(operation);
         }
     }
 
@@ -510,6 +720,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write4 operation) {
             return state.getQueryStore().getWrite4(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write4 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite4);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write4 operation) {
+            return state.getQueryStore().getParamWrite4(operation);
+        }
     }
 
     public static class Write5Handler extends
@@ -518,6 +738,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write5 operation) {
             return state.getQueryStore().getWrite5(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write5 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite5);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write5 operation) {
+            return state.getQueryStore().getParamWrite5(operation);
         }
     }
 
@@ -528,6 +758,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write6 operation) {
             return state.getQueryStore().getWrite6(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write6 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite6);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write6 operation) {
+            return state.getQueryStore().getParamWrite6(operation);
+        }
     }
 
     public static class Write7Handler extends
@@ -536,6 +776,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write7 operation) {
             return state.getQueryStore().getWrite7(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write7 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite7);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write7 operation) {
+            return state.getQueryStore().getParamWrite7(operation);
         }
     }
 
@@ -546,6 +796,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write8 operation) {
             return state.getQueryStore().getWrite8(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write8 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite8);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write8 operation) {
+            return state.getQueryStore().getParamWrite8(operation);
+        }
     }
 
     public static class Write9Handler extends
@@ -554,6 +814,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write9 operation) {
             return state.getQueryStore().getWrite9(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write9 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite9);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write9 operation) {
+            return state.getQueryStore().getParamWrite9(operation);
         }
     }
 
@@ -564,6 +834,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write10 operation) {
             return state.getQueryStore().getWrite10(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write10 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite10);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write10 operation) {
+            return state.getQueryStore().getParamWrite10(operation);
+        }
     }
 
     public static class Write11Handler extends
@@ -572,6 +852,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write11 operation) {
             return state.getQueryStore().getWrite11(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write11 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite11);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write11 operation) {
+            return state.getQueryStore().getParamWrite11(operation);
         }
     }
 
@@ -582,6 +872,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write12 operation) {
             return state.getQueryStore().getWrite12(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write12 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite12);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write12 operation) {
+            return state.getQueryStore().getParamWrite12(operation);
+        }
     }
 
     public static class Write13Handler extends
@@ -590,6 +890,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write13 operation) {
             return state.getQueryStore().getWrite13(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write13 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite13);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write13 operation) {
+            return state.getQueryStore().getParamWrite13(operation);
         }
     }
 
@@ -600,6 +910,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write14 operation) {
             return state.getQueryStore().getWrite14(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write14 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite14);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write14 operation) {
+            return state.getQueryStore().getParamWrite14(operation);
+        }
     }
 
     public static class Write15Handler extends
@@ -608,6 +928,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write15 operation) {
             return state.getQueryStore().getWrite15(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write15 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite15);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write15 operation) {
+            return state.getQueryStore().getParamWrite15(operation);
         }
     }
 
@@ -618,6 +948,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write16 operation) {
             return state.getQueryStore().getWrite16(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write16 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite16);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write16 operation) {
+            return state.getQueryStore().getParamWrite16(operation);
+        }
     }
 
     public static class Write17Handler extends
@@ -626,6 +966,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write17 operation) {
             return state.getQueryStore().getWrite17(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write17 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite17);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write17 operation) {
+            return state.getQueryStore().getParamWrite17(operation);
         }
     }
 
@@ -636,6 +986,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, Write18 operation) {
             return state.getQueryStore().getWrite18(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write18 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite18);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write18 operation) {
+            return state.getQueryStore().getParamWrite18(operation);
+        }
     }
 
     public static class Write19Handler extends
@@ -644,6 +1004,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, Write19 operation) {
             return state.getQueryStore().getWrite19(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, Write19 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionWrite19);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, Write19 operation) {
+            return state.getQueryStore().getParamWrite19(operation);
         }
     }
 
@@ -654,6 +1024,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, ReadWrite1 operation) {
             return state.getQueryStore().getReadWrite1(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ReadWrite1 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionReadWrite1);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ReadWrite1 operation) {
+            return state.getQueryStore().getParamReadWrite1(operation);
+        }
     }
 
     public static class ReadWrite2Handler extends
@@ -663,6 +1043,16 @@ public class GalaxybaseDb extends Db {
         public String getQueryString(GalaxybaseDbConnectionState state, ReadWrite2 operation) {
             return state.getQueryStore().getReadWrite2(operation);
         }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ReadWrite2 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionReadWrite2);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ReadWrite2 operation) {
+            return state.getQueryStore().getParamReadWrite2(operation);
+        }
     }
 
     public static class ReadWrite3Handler extends
@@ -671,6 +1061,16 @@ public class GalaxybaseDb extends Db {
         @Override
         public String getQueryString(GalaxybaseDbConnectionState state, ReadWrite3 operation) {
             return state.getQueryStore().getReadWrite3(operation);
+        }
+
+        @Override
+        protected String getQuery(GalaxybaseDbConnectionState state, ReadWrite3 operation) {
+            return state.getQueryStore().getQuery(QueryType.TransactionReadWrite3);
+        }
+
+        @Override
+        protected Map<String, Value> getParams(GalaxybaseDbConnectionState state, ReadWrite3 operation) {
+            return state.getQueryStore().getParamReadWrite3(operation);
         }
     }
 }

@@ -1,5 +1,5 @@
 CYPHER EXPANDCONFIG = ([edge], timestamp, $truncationOrder, $truncationLimit)
-MATCH (loan:Loan {id: '$id'})-[deposit:LoanDepositAccount]->(src:Account)
+MATCH (loan:Loan {id: $id})-[deposit:LoanDepositAccount]->(src:Account)
 WHERE $startTime < deposit.timestamp < $endTime
 WITH loan, src
 MATCH p=(src)-[edge:AccountTransferAccount|AccountWithdrawAccount*1..3]->(dst:Account)

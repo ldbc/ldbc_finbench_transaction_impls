@@ -1,5 +1,5 @@
 CYPHER EXPANDCONFIG = ([transfer1, transfer2], timestamp, $truncationOrder, $truncationLimit)
-MATCH (:Account {id: '$id'})<-[transfer2:AccountWithdrawAccount]-(mid:Account)
+MATCH (:Account {id: $id})<-[transfer2:AccountWithdrawAccount]-(mid:Account)
 WHERE transfer2.timestamp > $startTime AND transfer2.timestamp < $endTime AND transfer2.amount > $threshold2
 WITH mid, sum(transfer2.amount) as sumEdge2Amount
 MATCH (mid)<-[transfer1:AccountTransferAccount]-(:Account)

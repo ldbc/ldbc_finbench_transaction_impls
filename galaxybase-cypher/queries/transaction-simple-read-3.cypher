@@ -1,4 +1,4 @@
-OPTIONAL MATCH (dst:Account {id: '$id'})
+OPTIONAL MATCH (dst:Account {id: $id})
 WITH dst
 OPTIONAL MATCH (src:Account)-[edge2:AccountTransferAccount]->(dst)
 WITH dst, count(edge2) AS edge2Num

@@ -1,4 +1,4 @@
-MATCH (account:Account {id: '$accountId'})
+MATCH (account:Account {id: $accountId})
 WITH account
 OPTIONAL MATCH (account)-[:AccountRepayLoan]->(loan1:Loan)
 WITH account, loan1

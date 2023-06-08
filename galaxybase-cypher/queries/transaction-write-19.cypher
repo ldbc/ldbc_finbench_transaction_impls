@@ -1,2 +1,2 @@
-MATCH (person:Person {id: '$personId'})
+MATCH (person:Person {id: $personId})
 SET person.isBlocked = true

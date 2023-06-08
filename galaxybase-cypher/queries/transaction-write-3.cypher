@@ -1,1 +1,1 @@
-CREATE (:Medium {id: '$mediumId', type: '$mediumType', isBlocked: $isBlocked})
+CREATE (:Medium {id: $mediumId, type: '$mediumType', isBlocked: $isBlocked})
