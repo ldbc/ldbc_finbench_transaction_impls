@@ -1,26 +1,8 @@
 n({@Loan && _id==$id} as loan).re({@Deposit && timestamp <> [$startTime,$endTime]}).n({@Account} as src)
 with src,loan.loanAmount as loanAmount
-exta(complex_read).params({
-	srcs:src,
-	edgeDirection:"out",
-	depth:3,
-	limit:10000000,
-	edge_schema:"Transfer",
-	edge_timestamp:"timestamp",
-	edge_amount:"amount",
-    amount:$threshold,
-    pre:0,
-	range_begin:$startTime,
-	range_end:$endTime,
-	noCircle:0,
-	top_n:$truncationLimit,
-    order:$truncationOrder,
-	return_type:1
-}).stream() as rest
-with distinct(rest) as rr
-group by rr.dest
-with rr.dest as rd,(rr.length+1) as length,sum(rr.amount)/loanAmount as ratio
-find().nodes(rd) as dd
-with dd._id as destid,ratio,length
-return table(destid,round(ratio,3),length)
-order by length desc,ratio desc,destid asc
+n(src).re({(@Transfer || @Withdraw) && timestamp <> [$startTime,$endTime] && amount>$threshold})[0:2].n({@Account}).re({(@Transfer || @Withdraw) && timestamp <> [$startTime,$endTime] && amount>$threshold} as edge).n({@Account} as dest) as path
+group by dest with min(length(path)+1) as minlength,collect(distinct(edge)) as arrE
+CALL{with arrE UNCOLLECT arrE as e with sum(e.amount) as esum return esum}
+with dest._id as destid,dest.accountId as accountId2,round(esum/loanAmount,3) as ratio,minlength as minlength2
+return table(destid,ratio,minlength2)
+order by minlength2 desc,ratio desc,accountId2 asc

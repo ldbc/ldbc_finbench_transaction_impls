@@ -18,5 +18,6 @@ exta(complex_read).params({
 }).stream() as rest
 with rest.dest as dd,rest.length as length
 n({dd} as other).le({@SignIn}).n({@Medium.isBlocked=='true'} as medium) as p
-return distinct table(other._id,length,medium._id,medium.type)
-order by other._id,length asc
+with distinct other._id as otherId,length as accountDistance,medium._id as mediumId,medium.type as mediumType
+return table(otherId,accountDistance,mediumId,mediumType)
+order by accountDistance,otherId,mediumId asc
