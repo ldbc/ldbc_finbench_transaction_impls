@@ -2,17 +2,18 @@ package org.ldbcouncil.finbench.impls.ultipa.converter;
 
 import org.ldbcouncil.finbench.driver.truncation.TruncationOrder;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 
 public  class UltipaConverter {
-    final static String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    final static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static String convertDate(Date date) {
         final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        //sdf.setTimeZone(TimeZone.getTimeZone("Etc/GMT+0"));
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         return "'" + sdf.format(date) + "'";
     }
 
@@ -21,6 +22,14 @@ public  class UltipaConverter {
             return "'asc'";
         }else{
             return "'desc'";
+        }
+    }
+
+    public static String converOrder2(TruncationOrder order){
+        if(order == TruncationOrder.TIMESTAMP_ASCENDING){
+            return "asc";
+        }else{
+            return "desc";
         }
     }
 
@@ -46,11 +55,15 @@ public  class UltipaConverter {
     }
 
     public static String convertFloat(float value) {
-        return Float.toString(value);
+        DecimalFormat decimalFormat = new DecimalFormat("0");
+        String numberString = decimalFormat.format(value);
+        return numberString;
     }
 
     public static String convertDouble(double value) {
-        return Double.toString(value);
+        DecimalFormat decimalFormat = new DecimalFormat("0");
+        String numberString = decimalFormat.format(value);
+        return numberString;
     }
     public static String convertBool(boolean value){
         return "'" + Boolean.toString(value) +"'";

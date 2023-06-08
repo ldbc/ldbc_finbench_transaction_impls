@@ -1,5 +1,5 @@
 n({@Person && _id==$id}).re({@Own}).n({@Account} as account1)
-n({@Account} as other).re({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp>prev_e.@Transfer.timestamp})[1:3].n(account1)
+n(account1).le({@Transfer.timestamp <> [$startTime,$endTime] && @Transfer.timestamp<prev_e.@Transfer.timestamp})[1:3].n({@Account} as other)
 with distinct(other) as dd
     call{
 	    with dd
@@ -9,5 +9,5 @@ with distinct(other) as dd
         with round(sum(dloan2.loanAmount),3) as sumLoanAmount,round(sum(dloan2.balance),3) as sumLoanBalance
         return table(otherId,sumLoanAmount,sumLoanBalance) as m
 	}
-RETURN m
+return m
 order by m.sumLoanAmount desc,m.otherId asc

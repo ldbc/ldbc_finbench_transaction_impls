@@ -2,7 +2,8 @@ find().nodes({@Account && _id==$srcId}) as nodes return nodes.isBlocked as isBlo
 
 find().nodes({@Account && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
-insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount});
+insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount}) as edges
+return edges{*};
 
 find().nodes({@Account && _id in [$srcId,$dstId]}) as mid
 with mid

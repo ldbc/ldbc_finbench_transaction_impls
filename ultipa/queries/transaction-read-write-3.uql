@@ -2,7 +2,8 @@ find().nodes({@Person && _id==$srcId}) as nodes return nodes.isBlocked as isBloc
 
 find().nodes({@Person && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
-insert().into(@Guarantee).edges({_from:$srcId,_to:$dstId,timestamp:$time});
+insert().into(@Guarantee).edges({_from:$srcId,_to:$dstId,timestamp:$time}) as edges
+return edges{*};
 
 find().nodes({@Person && _id==$srcId}) as start
 exta(complex_read).params({
@@ -22,7 +23,7 @@ exta(complex_read).params({
     order:$truncationOrder,
 	return_type:0
 }).stream() as rest
-find().nodes({@Person && _uuid in rest && _id!=$id}) as node
+find().nodes({@Person && _uuid in rest && _id!=$srcId}) as node
 with distinct(node) as pn
 n(pn).re({@Apply}).n({@Loan} as loan)
 return table(round(sum(loan.loanAmount),3),count(loan));
