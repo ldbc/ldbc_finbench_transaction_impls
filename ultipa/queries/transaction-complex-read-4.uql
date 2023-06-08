@@ -7,3 +7,4 @@ with round(max(edge2.amount),3) as max2, round(max(edge3.amount),3) as max3, col
 	  uncollect(edge3c) as e3 with round(sum(e3.amount),3) as sum3,count(e3.amount) as count3
   return sum2,sum3,count2,count3}
 return table(other._id,count2,sum2,max2,count3,sum3,max3)
+order by sum2 desc,sum3 desc,other.accountId asc

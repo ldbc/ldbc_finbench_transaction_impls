@@ -1,1 +1,4 @@
+n({@Account && _id==$accountId}).e({@Repay || @Deposit}).n({@Loan} as loan)
+with distinct(loan) as loand
+delete().nodes(loand);
 delete().nodes({@Account && _id == $accountId})

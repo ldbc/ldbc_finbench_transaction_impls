@@ -2,7 +2,8 @@ find().nodes({@Account && _id==$srcId}) as nodes return nodes.isBlocked as isBlo
 
 find().nodes({@Account && _id==$dstId}) as nodes return nodes.isBlocked as isBlocked;
 
-insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount});
+insert().into(@Transfer).edges({_from:$srcId,_to:$dstId,timestamp:$time,amount:$amount}) as edges
+return edges{*};
 
 n({@Account && _id==$srcId} as src).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge1).n({@Account && _id==$dstId} as dst).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge3).n({@Account} as other).re({@Transfer.timestamp <> [$startTime,$endTime]} as edge2).n({@Account && _id==$srcId}) as path
 group by other
