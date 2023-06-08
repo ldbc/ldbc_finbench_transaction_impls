@@ -1,0 +1,315 @@
+# Ultipa Server Configurations
+server:
+  # Host Address or URI : Port
+  host: "127.0.0.1:60061"
+  # Username
+  username: "root"
+  # Password
+  password: "root"
+  # Target Graphset
+  graphset: "sf1"
+  # Crt File for TLS
+  crt: ""
+
+# Node File Configurations
+# You can add more than one node config in one time
+nodeConfig:
+  - schema: "Person"
+    file: "./data/Person_new.csv"
+    skip: 1
+    properties:
+      - name: id
+        type: _id
+      - name: name
+        type: string
+      - name: isBlocked
+        type: string
+      - name: createTime
+        type: string
+      - name: gender
+        type: string
+      - name: birthday
+        type: string
+      - name: country
+        type: string
+      - name: city
+        type: string
+  - schema: "Account"
+    file: "./data/Account_new.csv"
+    skip: 1
+    properties:
+      - name: id
+        type: _id
+      - name: createTime
+        type: timestamp
+      - name: createTime2
+        type: int64
+      - name: isBlocked
+        type: string
+      - name: type
+        type: string
+      - name: nickname
+        type: string
+      - name: phonenum
+        type: string
+      - name: email
+        type: string
+      - name: freqLoginType
+        type: string
+      - name: lastLoginTime
+        type: string
+      - name: accountLevel
+        type: string
+      - name: accountId
+        type: int64
+  - schema: "Medium"
+    file: "./data/Medium_new.csv"
+    skip: 1
+    properties:
+      - name: id
+        type: _id
+      - name: type
+        type: string
+      - name: isBlocked
+        type: string
+      - name: createTime
+        type: string
+      - name: lastLoginTime
+        type: string
+      - name: riskLevel
+        type: string
+      - name: mediumId
+        type: int64
+  - schema: "Loan"
+    file: "./data/Loan_new.csv"
+    skip: 1
+    properties:
+      - name: id
+        type: _id
+      - name: loanAmount
+        type: double
+      - name: balance
+        type: double
+      - name: createTime
+        type: string
+      - name: loanUsage
+        type: string
+      - name: interestRate
+        type: string
+  - schema: "Company"
+    file: "./data/Company_new.csv"
+    skip: 1
+    properties:
+      - name: id
+        type: _id
+      - name: name
+        type: string
+      - name: isBlocked
+        type: string
+      - name: createTime
+        type: string
+      - name: country
+        type: string
+      - name: city
+        type: string
+      - name: business
+        type: string
+      - name: description
+        type: string
+      - name: url
+        type: string
+
+# Edge File Configurations
+# You can add more than one edge config one time
+edgeConfig:
+
+  - schema: "Transfer"
+    file: "./data/AccountTransferAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: amount
+        type: double
+      - name: timestamp
+        type: timestamp
+      - name: orderNum
+        type: string
+      - name: comment
+        type: string
+      - name: goodsType
+        type: string
+
+  - schema: "Withdraw"
+    file: "./data/AccountWithdrawAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: amount
+        type: double
+      - name: timestamp
+        type: timestamp
+
+  - schema: "Repay"
+    file: "./data/AccountRepayLoan_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: amount
+        type: double
+      - name: timestamp
+        type: timestamp
+
+  - schema: "Deposit"
+    file: "./data/LoanDepositAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: amount
+        type: double
+      - name: timestamp
+        type: timestamp
+
+  - schema: "SignIn"
+    file: "./data/MediumSignInAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: timestamp
+        type: timestamp
+      - name: location
+        type: string
+
+  - schema: "Invest"
+    file: "./data/PersonInvestCompany_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: ratio
+        type: float
+      - name: timestamp
+        type: timestamp
+
+  - schema: "Invest"
+    file: "./data/CompanyInvestCompany_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: ratio
+        type: float
+      - name: timestamp
+        type: timestamp
+
+  - schema: "Apply"
+    file: "./data/PersonApplyLoan_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: timestamp
+        type: timestamp
+      - name: org
+        type: string
+
+  - schema: "Apply"
+    file: "./data/CompanyApplyLoan_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: timestamp
+        type: timestamp
+      - name: org
+        type: string
+
+  - schema: "Guarantee"
+    file: "./data/PersonGuaranteePerson_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: timestamp
+        type: timestamp
+      - name: relation
+        type: string
+
+  - schema: "Guarantee"
+    file: "./data/CompanyGuaranteeCompany_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: timestamp
+        type: timestamp
+      - name: relation
+        type: string
+
+  - schema: "Own"
+    file: "./data/CompanyOwnAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: createTime
+        type: string
+
+  - schema: "Own"
+    file: "./data/PersonOwnAccount_new.csv"
+    skip: 1
+    properties:
+      - name: from
+        type: _from
+      - name: to
+        type: _to
+      - name: createTime
+        type: string
+
+settings:
+  # use , for csv file, use \t for tsv file ...
+  separator: "@"
+  # define log output folder path
+  logPath: "./importlogs"
+  # set the nodes or edges number for each inserting batch
+  batchSize: 10000
+  # set insert mode , overwrite, insert or upsert
+  importMode: overwrite
+  # set create node if not exist when inserting edges
+  createNodeIfNotExist: false
+  # set stop or not if an error occurs
+  stopWhenError: false
+  # cut or fit the row to adapt to header length
+  fitToHeader: true
+  # Y/n : if set to true, the system will not ask if you want to create elements such as graph schema...
+  yes: true # set all yes to create graph, schema, and properties
+  # max threads, suggest: 5 - 10
+  threads: 10

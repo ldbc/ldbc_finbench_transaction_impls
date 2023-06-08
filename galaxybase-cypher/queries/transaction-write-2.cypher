@@ -1,0 +1,1 @@
+CREATE (:Company {id: '$companyId', name: "$companyName", isBlocked: $isBlocked})

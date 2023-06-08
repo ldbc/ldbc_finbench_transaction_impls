@@ -5,7 +5,7 @@ exta(abpath).params({
 	src:srcId,
     dest:destId,
 	edgeDirection:"out",
-	depth:10,
+	depth:20,
 	limit:10000,
 	edge_schema:"Transfer",
 	edge_timestamp:"timestamp",

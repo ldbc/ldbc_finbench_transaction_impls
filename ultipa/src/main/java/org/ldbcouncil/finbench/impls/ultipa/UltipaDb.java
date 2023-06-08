@@ -2,7 +2,6 @@ package org.ldbcouncil.finbench.impls.ultipa;
 
 import com.google.common.collect.ImmutableMap;
 import com.ultipa.sdk.connect.Connection;
-/*import com.ultipa.sdk.connect.transaction.Transaction;*/
 import com.ultipa.sdk.operate.entity.*;
 import com.ultipa.sdk.operate.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -79,9 +78,9 @@ public class UltipaDb extends Db {
         registerOperationHandler(Write19.class, Write19Handler.class);
 
         // read-writes
-        /*registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
+        registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
         registerOperationHandler(ReadWrite2.class, ReadWrite2Handler.class);
-        registerOperationHandler(ReadWrite3.class, ReadWrite3Handler.class);*/
+        registerOperationHandler(ReadWrite3.class, ReadWrite3Handler.class);
     }
 
     @Override
@@ -298,7 +297,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
+                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder2(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -307,6 +306,61 @@ public class UltipaDb extends Db {
         @Override
         public String getQueryString(UltipaDbConnectionState state, ComplexRead7 operation) {
             return state.getQueryStore().getParameterizedQuery(QueryType.TransactionComplexRead7);
+        }
+
+        @Override
+        public void executeOperation(ComplexRead7 operation,
+                                     UltipaDbConnectionState state,
+                                     ResultReporter resultReporter) throws DbException {
+            Connection conn = state.getConn();
+            //System.out.println(conn.sayHello("Hello"));
+            Map<String, Object> map = getParameters(state,operation);
+            String query = getQueryString(state,operation);
+
+            List<String> uqlList = new ArrayList<>();
+            String[] querys = query.split(";");
+            for (int i = 0; i < querys.length; i++) {
+                String uql = UltipaConverter.replaceVariables(querys[i],map);
+                uqlList.add(uql);
+            }
+            List<ComplexRead7Result> resultList = new ArrayList<>();
+            try {
+                float inOutRatio = 0.0F;
+
+                int count1 = 0;
+                float sum1 = 0.0F;
+                int count2 = 0;
+                float sum2 = 0.0F;
+                String uql0 = uqlList.get(0);
+                System.out.println(uql0);
+                Response resp0 = conn.uql(uql0);
+                if(resp0.getItems().size()>0){
+                    count1 = Integer.parseInt(resp0.get(0).asTable().getRows().get(0).get(0).toString());
+                    sum1 = Float.parseFloat(resp0.get(0).asTable().getRows().get(0).get(1).toString());
+                }
+
+                String uql1 = uqlList.get(1);
+                System.out.println(uql1);
+                Response resp1 = conn.uql(uql1);
+                if(resp1.getItems().size()>0){
+                    count2 = Integer.parseInt(resp1.get(0).asTable().getRows().get(0).get(0).toString());
+                    sum2 = Float.parseFloat(resp1.get(0).asTable().getRows().get(0).get(1).toString());
+                }else{
+                    inOutRatio = -1;
+                }
+
+                if(inOutRatio != -1){
+                    inOutRatio = Float.parseFloat(String.format("%.3f",sum1/sum2)) ;
+                }
+
+                ComplexRead7Result result = new ComplexRead7Result(
+                        count1,count2,inOutRatio
+                );
+                resultList.add(result);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            resultReporter.report(1, resultList, operation);
         }
 
         @Override
@@ -337,7 +391,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
+                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder2(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -440,10 +494,6 @@ public class UltipaDb extends Db {
                     ratioTransfer = "-1";
                 }
 
-                System.out.println(sum1);
-                System.out.println(sum2);
-                System.out.println(sum3);
-                System.out.println(sum4);
                 if(!"-1".equals(ratioRepay)){
                     ratioRepay = String.format("%.3f",sum1/sum2);
                 }
@@ -478,7 +528,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
+                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder2(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -572,7 +622,7 @@ public class UltipaDb extends Db {
                     .put(operation.START_TIME, UltipaConverter.convertDate(operation.getStartTime()))
                     .put(operation.END_TIME, UltipaConverter.convertDate(operation.getEndTime()))
                     .put(operation.TRUNCATION_LIMIT,UltipaConverter.convertInteger(operation.getTruncationLimit()))
-                    .put(operation.TRUNCATION_ORDER,operation.getTruncationOrder())
+                    .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder2(operation.getTruncationOrder()))
                     .build();
         }
     }
@@ -589,7 +639,8 @@ public class UltipaDb extends Db {
             Table table = resp.get(0).asTable();
             for(List<Object> dataList : table.getRows()){
                 SimpleRead1Result result = new SimpleRead1Result(
-                        new SimpleDateFormat("E MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(dataList.get(0).toString()),
+                        //new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(dataList.get(0).toString()),
+                        new Date(Long.parseLong(dataList.get(0).toString())),
                         Boolean.parseBoolean(dataList.get(1).toString()),
                         dataList.get(2).toString()
                 );
@@ -610,6 +661,66 @@ public class UltipaDb extends Db {
         @Override
         public String getQueryString(UltipaDbConnectionState state, SimpleRead2 operation) {
             return state.getQueryStore().getParameterizedQuery(QueryType.TransactionSimpleRead2);
+        }
+
+        @Override
+        public void executeOperation(SimpleRead2 operation,
+                                     UltipaDbConnectionState state,
+                                     ResultReporter resultReporter) throws DbException {
+            Connection conn = state.getConn();
+            //System.out.println(conn.sayHello("Hello"));
+            Map<String, Object> map = getParameters(state,operation);
+            String query = getQueryString(state,operation);
+
+            List<String> uqlList = new ArrayList<>();
+            String[] querys = query.split(";");
+            for (int i = 0; i < querys.length; i++) {
+                String uql = UltipaConverter.replaceVariables(querys[i],map);
+                uqlList.add(uql);
+            }
+
+            List<SimpleRead2Result> results = new ArrayList<>();
+
+            double rs1 = 0.0;
+            double rm1 = 0.0;
+            long c1 = 0;
+
+            double rs2 = 0.0;
+            double rm2 = 0.0;
+            long c2 = 0;
+
+            try {
+                String uql0 = uqlList.get(0);
+                System.out.println(uql0);
+                Response resp0 = conn.uql(uql0);
+                if(resp0.getItems().size()>0){
+                    Table table = resp0.get(0).asTable();
+                    rs1 = Double.parseDouble(table.getRows().get(0).get(0).toString());
+                    rm1 = Double.parseDouble(table.getRows().get(0).get(1).toString());
+                    c1 = Long.parseLong(table.getRows().get(0).get(2).toString());
+                }else{
+                    rm1 = -1;
+                }
+
+                String uql1 = uqlList.get(1);
+                System.out.println(uql1);
+                Response resp1 = conn.uql(uql1);
+                if(resp1.getItems().size()>0){
+                    Table table = resp1.get(0).asTable();
+                    rs2 = Double.parseDouble(table.getRows().get(0).get(0).toString());
+                    rm2 = Double.parseDouble(table.getRows().get(0).get(1).toString());
+                    c2 = Long.parseLong(table.getRows().get(0).get(2).toString());
+                }else{
+                    rm2 = -1;
+                }
+                SimpleRead2Result result = new SimpleRead2Result(
+                        rs1,rm1,c1,rs2,rm2,c2
+                );
+                results.add(result);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            resultReporter.report(1, results, operation);
         }
 
         @Override
@@ -650,6 +761,60 @@ public class UltipaDb extends Db {
         @Override
         public String getQueryString(UltipaDbConnectionState state, SimpleRead3 operation) {
             return state.getQueryStore().getParameterizedQuery(QueryType.TransactionSimpleRead3);
+        }
+
+        @Override
+        public void executeOperation(SimpleRead3 operation,
+                                     UltipaDbConnectionState state,
+                                     ResultReporter resultReporter) throws DbException {
+            Connection conn = state.getConn();
+            //System.out.println(conn.sayHello("Hello"));
+            int resultCount;
+            Map<String, Object> map = getParameters(state,operation);
+            String query = getQueryString(state,operation);
+
+            List<String> uqlList = new ArrayList<>();
+            String[] querys = query.split(";");
+            for (int i = 0; i < querys.length; i++) {
+                String uql = UltipaConverter.replaceVariables(querys[i],map);
+                uqlList.add(uql);
+            }
+            float ct1 = 0;
+            float ct2 = 0;
+
+            List<SimpleRead3Result> results = new ArrayList<>();
+            try {
+
+                String uql0 = uqlList.get(0);
+                System.out.println(uql0);
+                Response resp0 = conn.uql(uql0);
+                if(resp0.getItems().size()>0){
+                    Table table = resp0.get(0).asTable();
+                    ct1 = Float.parseFloat(table.getRows().get(0).get(0).toString());
+                }
+
+                String uql1 = uqlList.get(1);
+                System.out.println(uql1);
+                Response resp1 = conn.uql(uql1);
+                if(resp1.getItems().size()>0){
+                    Table table = resp1.get(0).asTable();
+                    ct2 = Float.parseFloat(table.getRows().get(0).get(0).toString());
+                }
+                float ratio = 0;
+                if(ct2==0){
+                    ratio = -1;
+                }else{
+                    ratio = (int)Math.round(ct1/ct2*1000)/1000f;
+                }
+                SimpleRead3Result result = new SimpleRead3Result(
+                        ratio
+                );
+                results.add(result);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            resultReporter.report(1, results, operation);
         }
 
         @Override
@@ -1104,7 +1269,7 @@ public class UltipaDb extends Db {
         }
     }
 
-    /*public static class ReadWrite1Handler extends UltipaSingletonOperationHandler<ReadWrite1> {
+    public static class ReadWrite1Handler extends UltipaSingletonOperationHandler<ReadWrite1> {
 
         @Override
         public String getQueryString(UltipaDbConnectionState state, ReadWrite1 operation) {
@@ -1124,11 +1289,10 @@ public class UltipaDb extends Db {
                 uqlList.add(uql);
             }
 
-            Transaction tx = conn.beginTransaction();
             boolean isBlocked = false;
             String uql0 = uqlList.get(0);
             System.out.println(uql0);
-            Response resp0 = tx.run(uql0);
+            Response resp0 = conn.uql(uql0);
             if(resp0.getItems().size()>0){
                 String value = resp0.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql0 isBlocked-->"+value);
@@ -1141,7 +1305,7 @@ public class UltipaDb extends Db {
 
             String uql1 = uqlList.get(1);
             System.out.println(uql1);
-            Response resp1 = tx.run(uql1);
+            Response resp1 = conn.uql(uql1);
             if(resp1.getItems().size()>0){
                 String value = resp1.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql1 isBlocked-->"+value);
@@ -1155,21 +1319,22 @@ public class UltipaDb extends Db {
             if (!isBlocked) {
                 String uql2 = uqlList.get(2);
                 System.out.println(uql2);
-                tx.run(uql2);
+                Response resp2 = conn.uql(uql2);
+                List<Edge> edges = resp2.get(0).asEdges();
 
                 String uql3 = uqlList.get(3);
                 System.out.println(uql3);
-                Response resp3 = tx.run(uql3);
+                Response resp3 = conn.uql(uql3);
                 if(resp3.getItems().size()>0){
-                    tx.rollback();
+                    for(Edge e : edges){
+                        System.out.println("delete().edges("+e.getUUID()+")");
+                        conn.uql("delete().edges("+e.getUUID()+")");
+                    }
                     String uql4 = uqlList.get(4);
                     System.out.println(uql4);
-                    tx.run(uql4);
+                    conn.uql(uql4);
                 }
-            }else{
-                tx.rollback();
             }
-            tx.commit();
             resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
         }
 
@@ -1206,11 +1371,10 @@ public class UltipaDb extends Db {
                 uqlList.add(uql);
             }
 
-            Transaction tx = conn.beginTransaction();
             boolean isBlocked = false;
             String uql0 = uqlList.get(0);
             System.out.println(uql0);
-            Response resp0 = tx.run(uql0);
+            Response resp0 = conn.uql(uql0);
             if(resp0.getItems().size()>0){
                 String value = resp0.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql0 isBlocked-->"+value);
@@ -1223,7 +1387,7 @@ public class UltipaDb extends Db {
 
             String uql1 = uqlList.get(1);
             System.out.println(uql1);
-            Response resp1 = tx.run(uql1);
+            Response resp1 = conn.uql(uql1);
             if(resp1.getItems().size()>0){
                 String value = resp1.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql1 isBlocked-->"+value);
@@ -1236,25 +1400,28 @@ public class UltipaDb extends Db {
             if (!isBlocked) {
                 String uql2 = uqlList.get(2);
                 System.out.println(uql2);
-                tx.run(uql2);
+                Response resp2 = conn.uql(uql2);
+                List<Edge> edges = resp2.get(0).asEdges();
 
                 String uql3 = uqlList.get(3);
                 System.out.println(uql3);
-                Response resp3 = tx.run(uql3);
-                System.out.println(resp3.get(0).asTable().getRows().get(0).get(0).toString());
-                float ratio = Float.parseFloat(resp3.get(0).asTable().getRows().get(0).get(0).toString());
-                float ratioThreshold = Float.parseFloat(map.get("ratioThreshold").toString());
-                System.out.println("ratioThreshold:"+ratioThreshold);
-                if (ratio < ratioThreshold){
-                    tx.rollback();
-                    String uql4 = uqlList.get(4);
-                    System.out.println(uql4);
-                    tx.run(uql4);
+                Response resp3 = conn.uql(uql3);
+                if (resp3.getItems().size()>0){
+                    System.out.println(resp3.get(0).asTable().getRows().get(0).get(0).toString());
+                    float ratio = Float.parseFloat(resp3.get(0).asTable().getRows().get(0).get(0).toString());
+                    float ratioThreshold = Float.parseFloat(map.get("ratioThreshold").toString());
+                    System.out.println("ratioThreshold:"+ratioThreshold);
+                    if (ratio <= ratioThreshold){
+                        for(Edge e : edges){
+                            System.out.println("delete().edges("+e.getUUID()+")");
+                            conn.uql("delete().edges("+e.getUUID()+")");
+                        }
+                        String uql4 = uqlList.get(4);
+                        System.out.println(uql4);
+                        conn.uql(uql4);
+                    }
                 }
-            }else{
-                tx.rollback();
             }
-            tx.commit();
             resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
         }
 
@@ -1295,11 +1462,10 @@ public class UltipaDb extends Db {
                 uqlList.add(uql);
             }
 
-            Transaction tx = conn.beginTransaction();
             boolean isBlocked = false;
             String uql0 = uqlList.get(0);
             System.out.println(uql0);
-            Response resp0 = tx.run(uql0);
+            Response resp0 = conn.uql(uql0);
             if(resp0.getItems().size()>0){
                 String value = resp0.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql0 isBlocked-->"+value);
@@ -1312,7 +1478,7 @@ public class UltipaDb extends Db {
 
             String uql1 = uqlList.get(1);
             System.out.println(uql1);
-            Response resp1 = tx.run(uql1);
+            Response resp1 = conn.uql(uql1);
             if(resp1.getItems().size()>0){
                 String value = resp1.getItems().get("isBlocked").asAttr().getValues().get(0).toString();
                 System.out.println("uql1 isBlocked-->"+value);
@@ -1326,26 +1492,29 @@ public class UltipaDb extends Db {
             if (!isBlocked) {
                 String uql2 = uqlList.get(2);
                 System.out.println(uql2);
-                tx.run(uql2);
+                Response resp2 = conn.uql(uql2);
+                List<Edge> edges = resp2.get(0).asEdges();
 
                 String uql3 = uqlList.get(3);
                 System.out.println(uql3);
-                Response resp3 = tx.run(uql3);
+                Response resp3 = conn.uql(uql3);
 
-                float sumAmount = Float.parseFloat(resp3.get(0).asTable().getRows().get(0).get(0).toString());
-                System.out.println("sumAmount:"+sumAmount);
-                float threshold = Float.parseFloat(map.get("threshold").toString());
-                System.out.println("threshold:"+threshold);
-                if (sumAmount < threshold){
-                    tx.rollback();
-                    String uql4 = uqlList.get(4);
-                    System.out.println(uql4);
-                    tx.run(uql4);
+                if(resp3.getItems().size()>0){
+                    float sumAmount = Float.parseFloat(resp3.get(0).asTable().getRows().get(0).get(0).toString());
+                    System.out.println("sumAmount:"+sumAmount);
+                    float threshold = Float.parseFloat(map.get("threshold").toString());
+                    System.out.println("threshold:"+threshold);
+                    if (sumAmount > threshold){
+                        for(Edge e : edges){
+                            System.out.println("delete().edges("+e.getUUID()+")");
+                            conn.uql("delete().edges("+e.getUUID()+")");
+                        }
+                        String uql4 = uqlList.get(4);
+                        System.out.println(uql4);
+                        conn.uql(uql4);
+                    }
                 }
-            }else{
-                tx.rollback();
             }
-            tx.commit();
             resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
         }
 
@@ -1362,7 +1531,7 @@ public class UltipaDb extends Db {
                     .put(operation.TRUNCATION_ORDER,UltipaConverter.converOrder(operation.getTruncationOrder()))
                     .build();
         }
-    }*/
+    }
 
 
 }
