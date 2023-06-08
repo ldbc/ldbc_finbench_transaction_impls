@@ -5,7 +5,7 @@ import datetime
 
 def to_timestamp(date):
     dt = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
-    return str(int(time.mktime(dt.timetuple()) * 1000 + (dt.microsecond / 1000)))
+    return str(int(time.mktime(dt.timetuple()) * 1000 + (dt.microsecond / 1000))-time.altzone*1000)
 
 def convert_file(in_file, out_file):
     out = open(out_file, 'w')
