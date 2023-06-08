@@ -26,12 +26,11 @@ cd /data/ldbc_finbench_transaction_impls && git checkout tugraph-cypher
 mvn clean package
 
 # install tugraph
-mkdir /data/ldbc_finbench_transaction_impls/tugraph/deps
-cd /data/ldbc_finbench_transaction_impls/tugraph/deps
+cd /data
 sudo dpkg -i tugraph-3.4.0-1.x86_64.deb
 
 # install g++
-cd /data/ldbc_finbench_transaction_impls/tugraph/deps
+cd /data
 wget http://ftp.gnu.org/gnu/gcc/gcc-8.4.0/gcc-8.4.0.tar.gz
 tar zxf gcc-8.4.0.tar.gz && cd gcc-8.4.0
 ./contrib/download_prerequisites && mkdir build && cd build
@@ -42,7 +41,7 @@ make -j4 && sudo make install
 bash /data/ldbc_finbench_transaction_impls/tugraph/scripts/build_procedure.sh
 
 # install acid
-cd /data/ldbc_finbench_transaction_impls/tugraph/deps
+cd /data
 git clone https://github.com/ldbc/ldbc_finbench_acid.git
 ```
 
@@ -50,7 +49,10 @@ git clone https://github.com/ldbc/ldbc_finbench_acid.git
 
 ## 2.1 Data
 
+download Finbench data, list data directories
+
 ```bash
+$ tree -d /data/ldbc_finbench_transaction_impls/tugraph/data
 /data/ldbc_finbench_transaction_impls/tugraph/data
 ├── sf1
 │   ├── incremental
@@ -60,6 +62,13 @@ git clone https://github.com/ldbc/ldbc_finbench_acid.git
     ├── incremental
     ├── read_params
     └── snapshot
+```
+
+convert datetime to Unix timestamp
+
+```bash
+bash /data/ldbc_finbench_transaction_impls/tugraph/scripts/convert_data.sh sf1
+bash /data/ldbc_finbench_transaction_impls/tugraph/scripts/convert_data.sh sf10
 ```
 
 ## 2.2 Load data
@@ -88,7 +97,7 @@ time bash /data/ldbc_finbench_transaction_impls/tugraph/scripts/load_procedure.s
 
 ```shell
 # create validation
-cd /data/ldbc_finbench_transaction_impls/tugraph/deps/ldbc_finbench_transaction_impls/tugraph && sync
+cd /data/ldbc_finbench_transaction_impls/tugraph && sync
 bash run.sh create_validation.properties
 # stop server
 cd /data && lgraph_server --directory /data/lgraph_db --log_dir /data/lgraph_log -d stop
@@ -98,7 +107,7 @@ cd /data && lgraph_server --directory /data/lgraph_db --log_dir /data/lgraph_log
 
 ```shell
 # copy (neo4j) validation_params.csv
-cd /data/tugraph_ldbc_snb/deps/ldbc_finbench_transaction_impls/tugraph && sync
+cd /data/ldbc_finbench_transaction_impls/tugraph && sync
 cp ${VALIDATION_PARAMS_PATH}/validation_params.csv ./
 # validate
 bash run.sh validate_database.properties
@@ -112,7 +121,7 @@ cd /data && lgraph_server --directory /data/lgraph_db --log_dir /data/lgraph_log
 # warmup db
 lgraph_warmup -d ${DB_ROOT_DIR}/lgraph_db -g default
 # run benchmark
-cd /data/tugraph_ldbc_snb/deps/ldbc_finbench_transaction_impls/tugraph && sync
+cd /data/ldbc_finbench_transaction_impls/tugraph && sync
 bash run.sh benchmark.properties
 # stop server
 cd /data && lgraph_server --directory /data/lgraph_db --log_dir /data/lgraph_log -d stop
@@ -125,7 +134,7 @@ cd /data && lgraph_server --directory /data/lgraph_db --log_dir /data/lgraph_log
 ACID test implementations are reviewed for compliance with the ACID test specification and implement all specified test cases. Additionally, tests execute successfully without atomicity and isolation test failures, supporting serializable isolation level transaction settings.
 
 ```shell
-cd /data/ldbc_finbench_transaction_impls/tugraph/deps/ldbc_finbench_acid/tugraph
+cd /data/ldbc_finbench_acid/tugraph
 bash compile_embedded.sh acid
 ./acid
 ```

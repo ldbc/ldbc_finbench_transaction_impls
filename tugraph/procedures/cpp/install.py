@@ -29,4 +29,3 @@ js = json.dumps(data)
 r = requests.post(url='http://%s/db/default/cpp_plugin' % endpoint, data=js, headers={'Content-Type':'application/json', 'Authorization':'Bearer %s' % jwt})
 print(r.status_code)
 print(r.content)
-
