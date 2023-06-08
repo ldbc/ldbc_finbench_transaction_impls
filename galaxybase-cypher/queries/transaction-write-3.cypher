@@ -1,0 +1,1 @@
+CREATE (:Medium {id: '$mediumId', type: '$mediumType', isBlocked: $isBlocked})
