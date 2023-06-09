@@ -1,4 +1,4 @@
-MATCH (p1:Person {id: '$pid1'}), (p2:Person {id: '$pid2'})
+MATCH (p1:Person {id: $pid1}), (p2:Person {id: $pid2})
 WITH p1, p2
 OPTIONAL MATCH (p1)-[edge1:PersonInvestCompany]->(p1Neighbor)
 WHERE $startTime < edge1.timestamp < $endTime

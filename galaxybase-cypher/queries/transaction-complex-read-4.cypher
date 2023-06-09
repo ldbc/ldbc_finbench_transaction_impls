@@ -1,4 +1,4 @@
-MATCH (src:Account {id: '$id1' })-[transfer1:AccountTransferAccount]->(dst:Account{id: '$id2' })
+MATCH (src:Account {id: $id1 })-[transfer1:AccountTransferAccount]->(dst:Account{id: $id2 })
 WHERE transfer1.timestamp > $startTime AND transfer1.timestamp < $endTime
 WITH src, dst
 MATCH (dst)-[transfer3:AccountTransferAccount]->(other:Account)-[transfer2:AccountTransferAccount]->(src)

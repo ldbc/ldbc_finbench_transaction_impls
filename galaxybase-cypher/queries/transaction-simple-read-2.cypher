@@ -1,4 +1,4 @@
-OPTIONAL MATCH (src:Account {id: '$id'})
+OPTIONAL MATCH (src:Account {id: $id})
 WITH src
 OPTIONAL MATCH (src)-[edge1:AccountTransferAccount]->(dst1:Account)
 WHERE $startTime < edge1.timestamp < $endTime

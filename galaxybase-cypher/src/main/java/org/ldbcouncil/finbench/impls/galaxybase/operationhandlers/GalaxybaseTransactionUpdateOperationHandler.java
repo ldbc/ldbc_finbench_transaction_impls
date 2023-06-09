@@ -6,6 +6,8 @@ import com.graphdbapi.driver.GraphTransaction;
 import com.graphdbapi.driver.Isolation;
 import com.graphdbapi.driver.v1.Record;
 import com.graphdbapi.driver.v1.StatementResult;
+import com.graphdbapi.driver.v1.Value;
+import java.util.Map;
 import org.ldbcouncil.finbench.impls.galaxybase.GalaxybaseDbConnectionState;
 import org.ldbcouncil.finbench.driver.DbException;
 import org.ldbcouncil.finbench.driver.Operation;
@@ -23,9 +25,12 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
                                  ResultReporter resultReporter) throws DbException {
         Graph graph = state.getGraph();
 
-        String queryString = getQueryString(state, operation);
-        queryString = queryString.replace("TIMESTAMP_ASCENDING", "ASC");
-        queryString = queryString.replace("TIMESTAMP_DESCENDING", "DESC");
+        String queryString = getQuery(state, operation);
+        Map<String, Value> params = getParams(state, operation);
+        if (queryString.contains("$truncationOrder")) {
+            queryString = queryString.replace("$truncationOrder", params.get("truncationOrder").asString());
+            queryString = queryString.replace("$truncationLimit", String.valueOf(params.get("truncationLimit").asInt()));
+        }
         String[] txns = queryString.split("BEGIN|COMMIT", 1000);
 
         try {
@@ -42,7 +47,7 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
                         if (query.trim().isEmpty()) {
                             continue;
                         }
-                        StatementResult statementResult = tx.executeQuery(query);
+                        StatementResult statementResult = tx.executeCypher(query, params);
                         if (statementResult.hasNext()) {
                             Record record = statementResult.next();
                             if (!record.get(0).asBoolean()) {
@@ -76,4 +81,8 @@ public abstract class GalaxybaseTransactionUpdateOperationHandler<
         }
         resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
     }
+
+    protected abstract String getQuery(GalaxybaseDbConnectionState state, TOperation operation);
+
+    protected abstract Map<String, Value> getParams(GalaxybaseDbConnectionState state, TOperation operation);
 }

@@ -1,5 +1,5 @@
 CYPHER EXPANDCONFIG = ([edge2], timestamp, $truncationOrder, $truncationLimit)
-MATCH (person:Person {id: '$id'})-[edge1:PersonOwnAccount]->(pAcc:Account)
+MATCH (person:Person {id: $id})-[edge1:PersonOwnAccount]->(pAcc:Account)
    -[edge2:AccountTransferAccount]->(compAcc:Account)
   <-[edge3:CompanyOwnAccount]-(company:Company)
 WHERE $startTime < edge2.timestamp < $endTime
