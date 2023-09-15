@@ -1,0 +1,7 @@
+/**
+Add a guarantee edge from a Company to another Company.
+*/
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw11(UINT companyId1, UINT companyId2, UINT time){
+  INSERT INTO guarantee (FROM, TO, timestamp) VALUES (companyId1 Company, companyId2 Company, time);
+}

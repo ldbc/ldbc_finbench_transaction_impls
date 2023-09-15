@@ -1,0 +1,8 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tw3(
+  UINT mediumId, 
+  STRING mediumType, 
+  BOOL isBlocked
+) FOR GRAPH ldbc_fin syntax v1{
+  INSERT INTO Medium(PRIMARY_ID, mediumType, isBlocked) VALUES (mediumId, mediumType, isBlocked);
+}

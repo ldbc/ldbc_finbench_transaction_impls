@@ -1,0 +1,6 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tw18(
+  VERTEX<Account> accountId
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  accountId.isBlocked = TRUE;
+}

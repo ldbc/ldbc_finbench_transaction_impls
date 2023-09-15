@@ -1,0 +1,8 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tw1(
+  UINT personId, 
+  STRING personName, 
+  BOOL isBlocked
+) FOR GRAPH ldbc_fin syntax v1{
+  INSERT INTO Person(PRIMARY_ID, name, isBlocked) VALUES (personId, personName, isBlocked);
+}

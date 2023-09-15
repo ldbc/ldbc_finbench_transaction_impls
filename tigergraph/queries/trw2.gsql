@@ -1,0 +1,43 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY trw2(
+  UINT srcId,
+  UINT dstId,
+  UINT time,
+  UINT startTime,
+  UINT endTime,
+  DOUBLE amount,
+  DOUBLE amountThreshold,
+  DOUBLE ratioThreshold,
+  INT truncationLimit,
+  STRING truncationOrder
+) FOR GRAPH ldbc_fin syntax v1{
+  SumAccum<DOUBLE> @totalE1Amount, @totalE2Amount, @ratio;
+  SumAccum<INT> @outCount;
+
+  Nodes = SELECT s FROM Account:s WHERE s.id IN (srcId,dstId) AND s.isBlocked == TRUE;
+  IF Nodes.size() > 0 THEN
+    RETURN;
+  END;
+
+  INSERT INTO transfer VALUES (srcId, dstId, time, _, amount, _, _, _);
+
+  transfersIn = SELECT t FROM Nodes:t - (transfer_REVERSE:e1) -> Account:s
+                        WHERE e1.amount > amountThreshold
+                          AND e1.timestamp > startTime
+                          AND e1.timestamp < endTime
+                        ACCUM t.@totalE1Amount += e1.amount
+                          ;
+
+  transfersOut = SELECT s FROM Nodes:s - (transfer:e2) -> Account:t
+                        WHERE e2.amount > amountThreshold
+                          AND e2.timestamp > startTime
+                          AND e2.timestamp < endTime
+                        ACCUM s.@totalE2Amount += e2.amount,
+                              s.@outCount += 1
+                          ;
+
+  Nodes = SELECT s FROM Nodes:s
+             POST-ACCUM
+               s.isBlocked = (s.@outCount > 0 AND s.@totalE1Amount/s.@totalE2Amount <= ratioThreshold) OR (s.@outCount == 0 AND ratioThreshold >= -1)
+               ;
+}
