@@ -36,7 +36,7 @@ mvn clean package
 ```
 
 ## 2. DDL & Loading & Queries
-Please make sure that you already installed TigerGraph, and logged in as the user can run TigerGraph.
+Ensure that you have already installed TigerGraph and authenticated as a user with the necessary privileges to run TigerGraph.
 ### 2.1 Create schema and loading job
 ```bash
 bash ~/ldbc_finbench_transaction_impls/tigergraph/scripts/setup_schema.sh
@@ -58,6 +58,7 @@ $ tree -L 2 ~/ldbc_finbench_transaction_impls/tigergraph/data
     ├── raw
     ├── read_params
     └── snapshot
+    ...
 ```
 
 #### 2.2.2 Data Loading
@@ -72,6 +73,7 @@ bash ~/ldbc_finbench_transaction_impls/tigergraph/scripts/install_queries.sh
 ```
 
 ### 2.4 one-step setup
+If you prefer to avoid separately performing steps 2.1, 2.2, and 2.3, you can use the convenient ```one_step_env.sh``` script, which automates the setup process of creating schemas, loading data, and preparing queries.
 ```bash
 bash ~/ldbc_finbench_transaction_impls/tigergraph/scripts/one_step_env.sh
 ```
