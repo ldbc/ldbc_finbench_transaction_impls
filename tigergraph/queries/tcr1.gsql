@@ -37,7 +37,7 @@ CREATE or REPLACE QUERY tcr1(
         s.@result_set.clear()
     ;
 
-    i = i + 1
+    i = i + 1;
 
   END;
 
