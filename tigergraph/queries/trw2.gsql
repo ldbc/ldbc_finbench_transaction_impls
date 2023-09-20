@@ -19,8 +19,6 @@ CREATE OR REPLACE QUERY trw2(
     RETURN;
   END;
 
-  INSERT INTO transfer VALUES (srcId, dstId, time, _, amount, _, _, _);
-
   transfersIn = SELECT t FROM Nodes:t - (transfer_REVERSE:e1) -> Account:s
                         WHERE e1.amount > amountThreshold
                           AND e1.timestamp > startTime
@@ -38,6 +36,10 @@ CREATE OR REPLACE QUERY trw2(
 
   Nodes = SELECT s FROM Nodes:s
              POST-ACCUM
-               s.isBlocked = (s.@outCount > 0 AND s.@totalE1Amount/s.@totalE2Amount <= ratioThreshold) OR (s.@outCount == 0 AND ratioThreshold >= -1)
+               IF (s.@outCount > 0 AND s.@totalE1Amount/s.@totalE2Amount > ratioThreshold) THEN
+                  INSERT INTO transfer VALUES (srcId, dstId, time, _, amount, _, _, _)
+               ELSE
+                  s.isBlocked = true
+               END
                ;
 }
