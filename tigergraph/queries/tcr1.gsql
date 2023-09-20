@@ -1,32 +1,31 @@
-USE GRAPH ldbc_fin
 CREATE or REPLACE QUERY tcr1(
-  VERTEX<Account> id, 
+  VERTEX<Account> id,
   UINT startTime,
   UINT endTime,
-  INT truncationLimit, 
+  INT truncationLimit,
   STRING truncationOrder
 ) FOR GRAPH ldbc_fin syntax v1{
   TYPEDEF TUPLE <UINT otherId, INT accountDistance, UINT mediumId, STRING mediumType> RESULT;
   SetAccum<RESULT> @result_set;
   HeapAccum<RESULT>(accountDistance ASC, otherId ASC, mediumId ASC) @@result;
 
-  MapAccum<int, MinAccum<UINT>> @min_time_map;
+  ArrayAccum<MinAccum<UINT>> @min_times[4];
 
   StepNodes = {id};
 
-  TMP = SELECT s from StepNodes:s POST-ACCUM s.@min_time_map += (0 -> 0);
-  
+  TMP = SELECT s from StepNodes:s POST-ACCUM s.@min_times[0] += 0;
+
   INT i = 1;
-  
+
   WHILE StepNodes.size() > 0 and i <= 3 DO
-    StepNodes = 
-          SELECT t 
+    StepNodes =
+          SELECT
           FROM StepNodes:s - (transfer:e) -> Account:t
           WHERE e.timestamp > startTime and e.timestamp < endTime
-              and e.timestamp > s.@min_time_map.get(i-1)
-          ACCUM t.@min_time_map += (i -> e.timestamp);
+              and e.timestamp > s.@min_times[i-1]
+          ACCUM t.@min_times[i] += e.timestamp;
 
-    R = 
+    R =
       SELECT t
       FROM StepNodes:s - (signIn_REVERSE:e) -> Medium:t
       WHERE e.timestamp > startTime and e.timestamp < endTime and t.isBlocked == true
@@ -37,10 +36,10 @@ CREATE or REPLACE QUERY tcr1(
         END,
         s.@result_set.clear()
     ;
-  
-    i = i + 1;
-  
+
+    i = i + 1
+
   END;
-  
-  PRINT @@result; 
+
+  PRINT @@result;
 }

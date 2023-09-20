@@ -98,22 +98,48 @@ public class TigerGraphTransactionDb extends Db {
         return rs.getBigDecimal(columnName).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
+    private static void closeResources(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static class ComplexRead1Handler implements OperationHandler<ComplexRead1, TigerGraphDbConnectionState> {
         @Override
         public void executeOperation(ComplexRead1 cr1, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr1(id=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr1.getId());
                 pstmt.setLong(2, cr1.getStartTime().getTime());
                 pstmt.setLong(3, cr1.getEndTime().getTime());
                 pstmt.setInt(4, cr1.getTruncationLimit());
                 pstmt.setString(5, String.valueOf(cr1.getTruncationOrder()));
-
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead1Result> results = new ArrayList<>();
 
                 while (rs.next()) {
@@ -127,6 +153,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr1);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -135,10 +163,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead2 cr2, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr2(id=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr2.getId());
                 pstmt.setLong(2, cr2.getStartTime().getTime());
@@ -146,7 +177,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(4, cr2.getTruncationLimit());
                 pstmt.setString(5, String.valueOf(cr2.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead2Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead2Result rowResult = new ComplexRead2Result(
@@ -159,6 +190,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr2);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -166,17 +199,20 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead3 cr3, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr3(id1=?, id2=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr3.getId1());
                 pstmt.setLong(2, cr3.getId2());
                 pstmt.setLong(3, cr3.getStartTime().getTime());
                 pstmt.setLong(4, cr3.getEndTime().getTime());
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead3Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead3Result rowResult = new ComplexRead3Result(rs.getLong("shortestPathLength"));
@@ -186,6 +222,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr3);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -193,19 +231,22 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead4 cr4, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr4(id1=?, id2=?, startTime=?, endTime=?)";
                 long startTime = cr4.getStartTime().getTime();
                 long endTime = cr4.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr4.getId1());
                 pstmt.setLong(2, cr4.getId2());
                 pstmt.setLong(3, startTime);
                 pstmt.setLong(4, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead4Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead4Result rowResult = new ComplexRead4Result(
@@ -222,6 +263,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr4);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -230,12 +273,15 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead5 cr5, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr5(id=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
                 long startTime = cr5.getStartTime().getTime();
                 long endTime = cr5.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr5.getId());
                 pstmt.setLong(2, startTime);
@@ -243,7 +289,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(4, cr5.getTruncationLimit());
                 pstmt.setString(5, String.valueOf(cr5.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead5Result> results = new ArrayList<>();
                 while (rs.next()) {
                     Array pathArray = rs.getArray("path");
@@ -265,6 +311,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr5);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -272,11 +320,14 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead6 cr6, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr6(accountId=?, threshold1=?, threshold2=?, startTime=?, endTime=?, " +
                         "truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr6.getId());
                 pstmt.setDouble(2, cr6.getThreshold1());
@@ -286,7 +337,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(6, cr6.getTruncationLimit());
                 pstmt.setString(7, String.valueOf(cr6.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead6Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead6Result rowResult = new ComplexRead6Result(
@@ -299,6 +350,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr6);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -307,11 +360,14 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead7 cr7, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr7(accountId=?, threshold=?, startTime=?, endTime=?, " +
                         "truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr7.getId());
                 pstmt.setDouble(2, cr7.getThreshold());
@@ -320,7 +376,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(5, cr7.getTruncationLimit());
                 pstmt.setString(6, String.valueOf(cr7.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead7Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead7Result rowResult = new ComplexRead7Result(
@@ -332,6 +388,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr7);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -340,11 +398,14 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead8 cr8, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr8(loanId=?, threshold=?, startTime=?, endTime=?, " +
                         "truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr8.getId());
                 pstmt.setDouble(2, cr8.getThreshold());
@@ -353,7 +414,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(5, cr8.getTruncationLimit());
                 pstmt.setString(6, String.valueOf(cr8.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead8Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead8Result rowResult = new ComplexRead8Result(
@@ -365,6 +426,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr8);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -373,12 +436,15 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead9 cr9, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr9(id=?, threshold=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
                 long startTime = cr9.getStartTime().getTime();
                 long endTime = cr9.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr9.getId());
                 pstmt.setDouble(2, cr9.getThreshold());
@@ -387,7 +453,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(5, cr9.getTruncationLimit());
                 pstmt.setString(6, String.valueOf(cr9.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead9Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead9Result rowResult = new ComplexRead9Result(
@@ -399,6 +465,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr9);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -407,19 +475,22 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead10 cr10, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr10(pid1=?, pid2=?, startTime=?, endTime=?)";
                 long startTime = cr10.getStartTime().getTime();
                 long endTime = cr10.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr10.getPid1());
                 pstmt.setLong(2, cr10.getPid2());
                 pstmt.setLong(3, startTime);
                 pstmt.setLong(4, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead10Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead10Result rowResult = new ComplexRead10Result(
@@ -430,6 +501,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr10);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -438,12 +511,15 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead11 cr11, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr11(id=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
                 long startTime = cr11.getStartTime().getTime();
                 long endTime = cr11.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr11.getId());
                 pstmt.setLong(2, startTime);
@@ -451,7 +527,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(4, cr11.getTruncationLimit());
                 pstmt.setString(5, String.valueOf(cr11.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead11Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead11Result rowResult = new ComplexRead11Result(
@@ -463,6 +539,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr11);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -471,12 +549,15 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ComplexRead12 cr12, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tcr12(id=?, startTime=?, endTime=?, truncationLimit=?, truncationOrder=?)";
                 long startTime = cr12.getStartTime().getTime();
                 long endTime = cr12.getEndTime().getTime();
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, cr12.getId());
                 pstmt.setLong(2, startTime);
@@ -484,7 +565,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setInt(4, cr12.getTruncationLimit());
                 pstmt.setString(5, String.valueOf(cr12.getTruncationOrder()));
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<ComplexRead12Result> results = new ArrayList<>();
                 while (rs.next()) {
                     ComplexRead12Result rowResult = new ComplexRead12Result(
@@ -496,6 +577,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, cr12);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -504,14 +587,17 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead1 sr1, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr1(id=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, sr1.getId());
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead1Result> results = new ArrayList<>();
                 while (rs.next()) {
                     SimpleRead1Result rowResult = new SimpleRead1Result(
@@ -523,6 +609,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr1);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -531,10 +619,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead2 sr2, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr2(id=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 long startTime = sr2.getStartTime().getTime();
                 long endTime = sr2.getEndTime().getTime();
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
@@ -542,7 +633,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setLong(2, startTime);
                 pstmt.setLong(3, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead2Result> results = new ArrayList<>();
                 while (rs.next()) {
                     SimpleRead2Result rowResult = new SimpleRead2Result(
@@ -558,6 +649,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr2);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -566,10 +659,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead3 sr3, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr3(dstId=?, threshold=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 long startTime = sr3.getStartTime().getTime();
                 long endTime = sr3.getEndTime().getTime();
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
@@ -578,7 +674,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setLong(3, startTime);
                 pstmt.setLong(4, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead3Result> results = new ArrayList<>();
                 while (rs.next()) {
                     SimpleRead3Result rowResult = new SimpleRead3Result(
@@ -589,6 +685,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr3);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -597,10 +695,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead4 sr4, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr4(dstAccountId=?, threshold=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 long startTime = sr4.getStartTime().getTime();
                 long endTime = sr4.getEndTime().getTime();
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
@@ -609,7 +710,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setLong(3, startTime);
                 pstmt.setLong(4, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead4Result> results = new ArrayList<>();
                 while (rs.next()) {
                     if (rs.getObject("@@result") == null) {
@@ -624,6 +725,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr4);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -632,10 +735,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead5 sr5, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr5(id=?, threshold=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 long startTime = sr5.getStartTime().getTime();
                 long endTime = sr5.getEndTime().getTime();
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
@@ -644,7 +750,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setLong(3, startTime);
                 pstmt.setLong(4, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead5Result> results = new ArrayList<>();
                 while (rs.next()) {
                     if (rs.getObject("Nodes") == null) {
@@ -659,6 +765,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr5);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -667,10 +775,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(SimpleRead6 sr6, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+			PreparedStatement pstmt = null;
+            ResultSet rs = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tsr6(id=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 long startTime = sr6.getStartTime().getTime();
                 long endTime = sr6.getEndTime().getTime();
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
@@ -678,7 +789,7 @@ public class TigerGraphTransactionDb extends Db {
                 pstmt.setLong(2, startTime);
                 pstmt.setLong(3, endTime);
 
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
                 List<SimpleRead6Result> results = new ArrayList<>();
                 while (rs.next()) {
                     if (rs.getObject("Nodes") == null) {
@@ -691,6 +802,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(results.size(), results, sr6);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, rs);
             }
         }
     }
@@ -699,10 +812,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write1 w1, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw1(personId=?, personName=?, isBlocked=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w1.getPersonId());
                 pstmt.setString(2, w1.getPersonName());
@@ -711,6 +826,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w1);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -719,10 +836,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write2 w2, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw2(companyId=?, companyName=?, isBlocked=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w2.getCompanyId());
                 pstmt.setString(2, w2.getCompanyName());
@@ -731,6 +850,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w2);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -739,10 +860,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write3 w3, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw3(mediumId=?, mediumType=?, isBlocked=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w3.getMediumId());
                 pstmt.setString(2, w3.getMediumType());
@@ -751,6 +874,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w3);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -759,10 +884,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write4 w4, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw4(personId=?, accountId=?, time=?, accountBlocked=?, accountType=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w4.getPersonId());
                 pstmt.setLong(2, w4.getAccountId());
@@ -773,6 +900,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w4);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -781,10 +910,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write5 w5, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw5(companyId=?, accountId=?, time=?, accountBlocked=?, accountType=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w5.getCompanyId());
                 pstmt.setLong(2, w5.getAccountId());
@@ -795,6 +926,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w5);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -803,10 +936,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write6 w6, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw6(personId=?, loanId=?, loanAmount=?, balance=?, time=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w6.getPersonId());
                 pstmt.setLong(2, w6.getLoanId());
@@ -817,6 +952,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w6);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -825,10 +962,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write7 w7, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw7(companyId=?, loanId=?, loanAmount=?, balance=?, time=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w7.getCompanyId());
                 pstmt.setLong(2, w7.getLoanId());
@@ -839,6 +978,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w7);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -847,10 +988,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write8 w8, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw8(personId=?, companyId=?, time=?, ratio=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w8.getPersonId());
                 pstmt.setLong(2, w8.getCompanyId());
@@ -860,6 +1003,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w8);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -868,10 +1013,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write9 w9, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw9(companyId1=?, companyId2=?, time=?, ratio=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w9.getCompanyId1());
                 pstmt.setLong(2, w9.getCompanyId2());
@@ -881,6 +1028,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w9);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -889,10 +1038,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write10 w10, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw10(personId1=?, personId2=?, time=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w10.getPersonId1());
                 pstmt.setLong(2, w10.getPersonId2());
@@ -901,6 +1052,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w10);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -909,10 +1062,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write11 w11, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw11(companyId1=?, companyId2=?, time=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w11.getCompanyId1());
                 pstmt.setLong(2, w11.getCompanyId2());
@@ -921,6 +1076,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w11);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -929,10 +1086,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write12 w12, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw12(accountId1=?, accountId2=?, time=?, amount=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w12.getAccountId1());
                 pstmt.setLong(2, w12.getAccountId2());
@@ -942,6 +1101,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w12);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -950,10 +1111,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write13 w13, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw13(accountId1=?, accountId2=?, time=?, amount=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w13.getAccountId1());
                 pstmt.setLong(2, w13.getAccountId2());
@@ -963,6 +1126,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w13);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -971,10 +1136,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write14 w14, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw14(accountId=?, loanId=?, time=?, amount=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w14.getAccountId());
                 pstmt.setLong(2, w14.getLoanId());
@@ -984,6 +1151,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w14);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -992,10 +1161,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write15 w15, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw15(loanId=?, accountId=?, time=?, amount=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w15.getLoanId());
                 pstmt.setLong(2, w15.getAccountId());
@@ -1005,6 +1176,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w15);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1013,10 +1186,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write16 w16, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw16(mediumId=?, accountId=?, time=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w16.getMediumId());
                 pstmt.setLong(2, w16.getAccountId());
@@ -1025,6 +1200,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w16);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1033,16 +1210,20 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write17 w17, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw17(accountId=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w17.getAccountId());
                 pstmt.executeQuery();
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w17);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1051,16 +1232,20 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write18 w18, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw18(accountId=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w18.getAccountId());
                 pstmt.executeQuery();
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w18);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1069,16 +1254,20 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(Write19 w19, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN tw19(personId=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, w19.getPersonId());
                 pstmt.executeQuery();
                 resultReporter.report(0, LdbcNoResult.INSTANCE, w19);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1087,10 +1276,12 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite1 rw1, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN trw1(srcId=?, dstId=?, time=?, amount=?, startTime=?, endTime=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, rw1.getSrcId());
                 pstmt.setLong(2, rw1.getDstId());
@@ -1102,6 +1293,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw1);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1110,12 +1303,14 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite2 rw2, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN trw2(srcId=?, dstId=?, time=?, startTime=?, endTime=?, " +
                         "amount=?, amountThreshold=?, ratioThreshold=?, " +
                         "truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, rw2.getSrcId());
                 pstmt.setLong(2, rw2.getDstId());
@@ -1131,6 +1326,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw2);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }
@@ -1139,11 +1336,13 @@ public class TigerGraphTransactionDb extends Db {
         @Override
         public void executeOperation(ReadWrite3 rw3, TigerGraphDbConnectionState dbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
             try {
-                Connection conn = dbConnectionState.getConn();
+                conn = dbConnectionState.getPooledConn();
                 String query = "RUN trw3(srcId=?, dstId=?, time=?, threshold=?, startTime=?, endTime=?, " +
                         "truncationLimit=?, truncationOrder=?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt = conn.prepareStatement(query);
                 pstmt.setQueryTimeout(QUERY_TIMEOUT_SECONDS);
                 pstmt.setLong(1, rw3.getSrcId());
                 pstmt.setLong(2, rw3.getDstId());
@@ -1157,6 +1356,8 @@ public class TigerGraphTransactionDb extends Db {
                 resultReporter.report(0, LdbcNoResult.INSTANCE, rw3);
             } catch (SQLException e) {
                 logger.error("Failed to createStatement: " + e);
+            } finally {
+                closeResources(conn, pstmt, null);
             }
         }
     }

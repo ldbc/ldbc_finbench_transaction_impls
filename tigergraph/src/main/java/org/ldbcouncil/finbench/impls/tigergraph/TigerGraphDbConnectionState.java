@@ -15,17 +15,9 @@ public class TigerGraphDbConnectionState extends DbConnectionState {
     static Logger logger = LogManager.getLogger("TigerGraphDbConnectionState");
     private static HikariDataSource dataSource; // Singleton instance
 
-    private Connection conn;
-
     public TigerGraphDbConnectionState(Map<String, String> properties) throws IOException {
         if (dataSource == null) {
             initializeDataSource(properties);
-        }
-
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to get connection from the connection pool.", e);
         }
     }
 
@@ -35,6 +27,7 @@ public class TigerGraphDbConnectionState extends DbConnectionState {
         String user = properties.get("user");
         String pass = properties.get("pass");
         String graph = properties.get("graph");
+        int maxPoolSize = Integer.parseInt(properties.get("maxPoolSize"));
 
         HikariConfig config = new HikariConfig();
         StringBuilder sb = new StringBuilder();
@@ -45,24 +38,17 @@ public class TigerGraphDbConnectionState extends DbConnectionState {
         config.setPassword(pass);
         config.addDataSourceProperty("graph", graph);
         config.addDataSourceProperty("debug", 0);
+        config.setMaximumPoolSize(maxPoolSize);
 
         dataSource = new HikariDataSource(config);
     }
 
-    public Connection getConn() {
-        return conn;
+    public Connection getPooledConn() throws SQLException {
+        return dataSource.getConnection();
     }
 
     @Override
     public void close() throws IOException {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            throw new IOException("Failed to close connection", e);
-        }
-
         // Close the data source after all connections have been closed
         if (dataSource != null) {
             dataSource.close();
