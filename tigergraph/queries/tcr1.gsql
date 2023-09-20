@@ -20,7 +20,7 @@ CREATE or REPLACE QUERY tcr1(
 
   WHILE StepNodes.size() > 0 and i <= 3 DO
     StepNodes =
-          SELECT
+          SELECT t
           FROM StepNodes:s - (transfer:e) -> Account:t
           WHERE e.timestamp > startTime and e.timestamp < endTime
               and e.timestamp > s.@min_times[i-1]
