@@ -1,3 +1,4 @@
+USE GRAPH ldbc_fin
 CREATE or REPLACE QUERY tcr1(
   VERTEX<Account> id,
   UINT startTime,
