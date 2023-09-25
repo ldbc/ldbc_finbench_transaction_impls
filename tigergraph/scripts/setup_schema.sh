@@ -41,8 +41,8 @@ CREATE DIRECTED EDGE signIn(From Medium, To Account, DISCRIMINATOR(timestamp UIN
 CREATE GRAPH ldbc_fin(*)
 '
 
-gsql 'PUT ExprUtil FROM "./ExprFunctions.hpp"'
-gsql 'PUT ExprFunctions FROM "./TokenBank.cpp"'
+gsql 'PUT ExprFunctions FROM "./ExprFunctions.hpp"'
+gsql 'PUT TokenBank FROM "./TokenBank.cpp"'
 
 gsql -g ldbc_fin '
 CREATE LOADING JOB load_fin_snapshot FOR GRAPH ldbc_fin{

@@ -62,35 +62,6 @@ namespace UDIMPL {
 
   using namespace std;
 
-  inline uint64_t convert_time_to_uint(string str_time) {
-    // Convert to epoch second
-    tm tm_struct;
-    istringstream ss(str_time);
-    ss >> get_time(&tm_struct, "%Y-%m-%dT%H:%M:%S");
-    time_t timestamp = mktime(&tm_struct);
-    uint64_t epoch = (uint64_t) timestamp;
-
-    // Adjust for time zone
-    if (str_time.length() >= 28) {
-        string str_hour = str_time.substr(24, 2);
-        string str_minute = str_time.substr(26, 2);
-        uint64_t diff_second = stoi(str_hour) * 3600 + stoi(str_minute) * 60;
-        if (str_time.substr(23, 1) == "-") {
-            epoch = epoch + diff_second;
-        } else {
-            epoch = epoch - diff_second;
-        }
-    }
-
-    // Add millisecond
-    uint64_t ms = 0;
-    if (str_time.length() >= 23) {
-        string str_ms = str_time.substr(20, 3);
-        ms = stoi(str_ms);
-    }
-    return epoch * 1000 + ms;
-  }
-
   inline bool circle_and_len_check(string str_path, string key, uint path_len, string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     string token;
