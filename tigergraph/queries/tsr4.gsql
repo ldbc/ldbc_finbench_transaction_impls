@@ -1,0 +1,18 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE DISTRIBUTED QUERY tsr4(UINT dstAccountId, DOUBLE threshold, UINT startTime, UINT endTime) syntax v1{
+    TYPEDEF TUPLE <UINT dstId, INT numEdges, DOUBLE sumAmount> RESULT;
+    HeapAccum<RESULT>(sumAmount DESC, dstId ASC) @@result;
+    SumAccum<INT> @eCount;
+    SumAccum<DOUBLE> @totalAmount;
+
+    R = SELECT src FROM Account:src -(transfer:e) -> :dst
+           WHERE src.id == dstAccountId
+             AND e.timestamp > startTime AND e.timestamp < endTime
+             AND e.amount > threshold
+            ACCUM dst.@eCount += 1,
+                  dst.@totalAmount += e.amount
+         POST-ACCUM @@result += RESULT(dst.id, dst.@eCount, round(dst.@totalAmount, 3))
+         ;
+
+    PRINT @@result;
+}

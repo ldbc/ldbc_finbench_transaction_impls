@@ -1,0 +1,48 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tcr9(
+  VERTEX<Account> id,
+  DOUBLE threshold,
+  UINT startTime,
+  UINT endTime,
+  INT truncationLimit,
+  STRING truncationOrder = "TIMESTAMP_DESCENDING"
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  SumAccum<DOUBLE> @@sum_deposit;
+  SumAccum<DOUBLE> @@sum_repay;
+  SumAccum<DOUBLE> @@sum_transfers_in;
+  SumAccum<DOUBLE> @@sum_transfers_out;
+  SumAccum<DOUBLE> @@ratioRepay;
+  SumAccum<DOUBLE> @@ratioDeposit;
+  SumAccum<DOUBLE> @@ratioTransfer;
+  Nodes = {id};
+
+  Nodes =
+    SELECT s
+    FROM   Nodes:s -((deposit_REVERSE|repay|transfer_REVERSE|transfer):e)- :t
+    WHERE  e.amount > threshold
+           AND e.timestamp > startTime
+           AND e.timestamp < endTime
+    ACCUM  IF e.type == "deposit_REVERSE" THEN
+             @@sum_deposit += e.amount
+           ELSE IF e.type == "repay" THEN
+             @@sum_repay += e.amount
+           ELSE IF e.type == "transfer_REVERSE" THEN
+             @@sum_transfers_in += e.amount
+           ELSE IF e.type == "transfer" THEN
+             @@sum_transfers_out += e.amount
+           END
+  ;
+  IF @@sum_repay > 0 THEN
+    @@ratioRepay = round(@@sum_deposit / @@sum_repay, 3);
+  ELSE
+    @@ratioRepay = -1;
+  END;
+  IF @@sum_transfers_out > 0 THEN
+    @@ratioDeposit = round(@@sum_deposit / @@sum_transfers_out, 3);
+    @@ratioTransfer = round(@@sum_transfers_in / @@sum_transfers_out, 3);
+  ELSE
+    @@ratioDeposit = -1;
+    @@ratioTransfer = -1;
+  END;
+  PRINT @@ratioRepay AS ratioRepay,@@ratioDeposit AS ratioDeposit,@@ratioTransfer AS ratioTransfer;
+}

@@ -1,0 +1,9 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tw15(
+  UINT loanId,
+  UINT accountId,
+  UINT time,
+  DOUBLE amount
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  INSERT INTO deposit VALUES (loanId, accountId, time, amount);
+}

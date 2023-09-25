@@ -1,0 +1,7 @@
+/**
+Add invest between Company and Company
+*/
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw9(UINT companyId1, UINT companyId2, UINT time, DOUBLE ratio){
+  INSERT INTO invest VALUES (companyId1 Company, companyId2, time, ratio);
+}
