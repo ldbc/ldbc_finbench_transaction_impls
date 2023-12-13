@@ -6,12 +6,12 @@
     <parent>
         <artifactId>impls</artifactId>
         <groupId>org.ldbcouncil.finbench</groupId>
-        <version>0.1.0-alpha</version>
+        <version>0.2.0-alpha</version>
     </parent>
 
     <artifactId>tugraph</artifactId>
     <name>tugraph</name>
-    <version>0.1.0-alpha</version>
+    <version>0.2.0-alpha</version>
     <description>A TuGraph implementation for reference</description>
 
     <properties>
