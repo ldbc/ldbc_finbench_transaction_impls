@@ -103,7 +103,7 @@ nohup sh sf1_finbench_validation_database.sh > console.log &
 nohup sh sf10_finbench_benchmark.sh > console.log &
 
 # Run automatic test
-nohup sh sf1_automatic_test.sh > console.log &
+nohup sh ldbc_automatic_test.sh > console.log &
 ```
 
 ## 4. Verification
