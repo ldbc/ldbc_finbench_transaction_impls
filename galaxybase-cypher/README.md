@@ -102,7 +102,7 @@ nohup sh sf1_finbench_validation_database.sh > console.log &
 # Run benchmark for sf10
 nohup sh sf10_finbench_benchmark.sh > console.log &
 
-# Run automatic for sf1
+# Run automatic test
 nohup sh sf1_automatic_test.sh > console.log &
 ```
 
