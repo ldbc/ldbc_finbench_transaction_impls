@@ -23,7 +23,7 @@
         <maven.compiler.plugin>3.6.1</maven.compiler.plugin>
         <maven.source.plugin>2.2.1</maven.source.plugin>
         <maven.javadoc.plugin>2.9.1</maven.javadoc.plugin>
-        <protoc.jar.maven.plugin>3.6.0</protoc.jar.maven.plugin>
+        <protoc.jar.maven.plugin>3.11.4</protoc.jar.maven.plugin>
         <jdk.version>1.8</jdk.version>
     </properties>
 
@@ -208,9 +208,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <protocVersion>3.6.0</protocVersion>
                             <addSources>none</addSources>
-                            <includeStdTypes>true</includeStdTypes>
                             <outputDirectory>src/main/java</outputDirectory>
                             <inputDirectories>
                                 <include>src/main/proto</include>
