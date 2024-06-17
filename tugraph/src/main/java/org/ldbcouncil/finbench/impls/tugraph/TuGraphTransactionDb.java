@@ -103,7 +103,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH p = (acc:Account {id:%d})-[e1:transfer *1..3]->(other:Account)<-[e2:signIn]-(medium) WHERE isAsc(relationships(e1, 'timestamp'))=true AND head(relationships(e1, 'timestamp')) > %d AND last(relationships(e1, 'timestamp')) < %d AND e2.timestamp > %d AND e2.timestamp < %d AND medium.isBlocked = true RETURN DISTINCT other.id as otherId, length(p)-1 as accountDistance, medium.id as mediumId, medium.type as mediumType ORDER BY accountDistance, otherId, mediumId;";
+                String cypher = "MATCH p = (acc:Account {id:%d})-[e1:transfer *1..3]->(other:Account)<-[e2:signIn]-(medium) WHERE isAsc(getMemberProp(e1, 'timestamp'))=true AND head(getMemberProp(e1, 'timestamp')) > %d AND last(getMemberProp(e1, 'timestamp')) < %d AND e2.timestamp > %d AND e2.timestamp < %d AND medium.isBlocked = true RETURN DISTINCT other.id as otherId, length(p)-1 as accountDistance, medium.id as mediumId, medium.type as mediumType ORDER BY accountDistance, otherId, mediumId;";
                 long startTime = cr1.getStartTime().getTime();
                 long endTime = cr1.getEndTime().getTime();
                 cypher = String.format(
@@ -137,7 +137,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) < %d AND last(relationships(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT other.id AS otherId, loan.loanAmount AS loanAmount, loan.balance AS loanBalance WITH otherId AS otherId, sum(loanAmount) as sumLoanAmount, sum(loanBalance) as sumLoanBalance RETURN otherId, round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, round(sumLoanBalance * 1000) / 1000 as sumLoanBalance ORDER BY sumLoanAmount DESC, otherId ASC;";
+                String cypher = "MATCH (p:Person {id:%d})-[e1:own]->(acc:Account) <-[e2:transfer*1..3]-(other:Account) WHERE isDesc(getMemberProp(e2, 'timestamp'))=true AND head(getMemberProp(e2, 'timestamp')) < %d AND last(getMemberProp(e2, 'timestamp')) > %d WITH DISTINCT other MATCH (other)<-[e3:deposit]-(loan:Loan) WHERE e3.timestamp > %d AND e3.timestamp < %d WITH DISTINCT other.id AS otherId, loan.loanAmount AS loanAmount, loan.balance AS loanBalance WITH otherId AS otherId, sum(loanAmount) as sumLoanAmount, sum(loanBalance) as sumLoanBalance RETURN otherId, round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, round(sumLoanBalance * 1000) / 1000 as sumLoanBalance ORDER BY sumLoanAmount DESC, otherId ASC;";
                 long startTime = cr2.getStartTime().getTime();
                 long endTime = cr2.getEndTime().getTime();
                 cypher = String.format(
@@ -169,7 +169,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (src:Account{id:%d}), (dst:Account{id:%d}) CALL algo.shortestPath( src, dst, { relationshipQuery:'transfer', edgeFilter: { timestamp: { smaller_than: %d, greater_than: %d } } } ) YIELD nodeCount RETURN nodeCount - 1 AS len;";
+                String cypher = "MATCH (src:Account{id:%d}), (dst:Account{id:%d}) CALL algo.shortestPath( src, dst, { direction: 'PointingRight', relationshipQuery:'transfer', edgeFilter: { timestamp: { smaller_than: %d, greater_than: %d } } } ) YIELD nodeCount RETURN nodeCount - 1 AS len;";
                 long startTime = cr3.getStartTime().getTime();
                 long endTime = cr3.getEndTime().getTime();
                 cypher = String.format(
@@ -236,7 +236,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (person:Person {id:%d})-[e1:own]->(src:Account) WITH src MATCH p=(src)-[e2:transfer*1..3]->(dst:Account) WHERE isAsc(relationships(e2, 'timestamp'))=true AND head(relationships(e2, 'timestamp')) > %d AND last(relationships(e2, 'timestamp')) < %d WITH DISTINCT nodes(p, 'id') as path, length(p) as len ORDER BY len DESC WHERE hasDuplicates(path)=false RETURN path;";
+                String cypher = "MATCH (person:Person {id:%d})-[e1:own]->(src:Account) WITH src MATCH p=(src)-[e2:transfer*1..3]->(dst:Account) WHERE isAsc(getMemberProp(e2, 'timestamp'))=true AND head(getMemberProp(e2, 'timestamp')) > %d AND last(getMemberProp(e2, 'timestamp')) < %d WITH DISTINCT getMemberProp(nodes(p), 'id') as path, length(p) as len ORDER BY len DESC WHERE hasDuplicates(path)=false RETURN path;";
                 long startTime = cr5.getStartTime().getTime();
                 long endTime = cr5.getEndTime().getTime();
                 cypher = String.format(
@@ -437,7 +437,7 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (p1:Person {id:%d})-[edge:guarantee*1..5]->(pN:Person) -[:apply]->(loan:Loan) WHERE minInList(relationships(edge, 'timestamp')) > %d AND maxInList(relationships(edge, 'timestamp')) < %d WITH DISTINCT loan WITH sum(loan.loanAmount) as sumLoanAmount, count(distinct loan) as numLoans RETURN round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, numLoans;";
+                String cypher = "MATCH (p1:Person {id:%d})-[edge:guarantee*1..5]->(pN:Person) -[:apply]->(loan:Loan) WHERE minInList(getMemberProp(edge, 'timestamp')) > %d AND maxInList(getMemberProp(edge, 'timestamp')) < %d WITH DISTINCT loan WITH sum(loan.loanAmount) as sumLoanAmount, count(distinct loan) as numLoans RETURN round(sumLoanAmount * 1000) / 1000 as sumLoanAmount, numLoans;";
                 long startTime = cr11.getStartTime().getTime();
                 long endTime = cr11.getEndTime().getTime();
                 cypher = String.format(

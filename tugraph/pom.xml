@@ -208,6 +208,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
+                            <protocArtifact>com.google.protobuf:protoc:3.21.1</protocArtifact>
                             <addSources>none</addSources>
                             <outputDirectory>src/main/java</outputDirectory>
                             <inputDirectories>

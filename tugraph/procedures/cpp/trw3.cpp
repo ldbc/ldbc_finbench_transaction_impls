@@ -97,8 +97,8 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     static const std::vector<std::string> GUARANTEE_FIELD_NAMES = {"timestamp"};
     static const std::string APPLY_LABEL = "apply";
     lgraph_api::Result api_result({{"msg", LGraphType::STRING}, {"txn", LGraphType::STRING}});
-    auto& record = api_result.NewRecord();
-    record.Insert("txn", FieldData::String("abort"));
+    auto record = api_result.MutableRecord();
+    record->Insert("txn", FieldData::String("abort"));
     int64_t src_id, dst_id, time, threshold, start_time, end_time;
     int64_t limit = -1;
     try {
@@ -111,7 +111,7 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         parse_from_json(end_time, "endTime", input);
         parse_from_json(limit, "limit", input);
     } catch (std::exception& e) {
-        record.Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
+        record->Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
         response = api_result.Dump();
         return false;
     }
@@ -126,13 +126,13 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     };
 
     if (!src.IsValid() || !dst.IsValid()) {
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         txn.Abort();
         return false;
     }
     if (src.GetField(PERSON_ISBLOCKED).AsBool() || dst.GetField(PERSON_ISBLOCKED).AsBool()) {
-        record.Insert("msg", FieldData::String("src/dst is blocked"));
+        record->Insert("msg", FieldData::String("src/dst is blocked"));
         response = api_result.Dump();
         txn.Abort();
         return true;
@@ -148,8 +148,8 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
             for (auto eit = LabeledOutEdgeIterator(src.GetOutEdgeIterator(), src.GetId(), 0,
                                                    guarantee_id, limit);
                  eit.IsValid(); eit.Next()) {
-                auto ts = eit.Eit().GetField(GUARANTEE_TIMESTAMP).AsInt64();
-                if (ts > start_time && ts < end_time &&
+                auto timestamp = eit.Eit().GetField(GUARANTEE_TIMESTAMP).AsInt64();
+                if (timestamp > start_time && timestamp < end_time &&
                     visited.find(eit.Eit().GetDst()) == visited.end()) {
                     dst_set.emplace(eit.Eit().GetDst());
                     visited.emplace(eit.Eit().GetDst());
@@ -159,7 +159,6 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         swap(src_set, dst_set);
         dst_set.clear();
     }
-    int64_t sum_loan;
     for (auto& vid : visited) {
         src.Goto(vid);
         for (auto eit =
@@ -178,8 +177,8 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         }
     }
     if (txn.IsValid()) {
-        record.Insert("msg", FieldData::String("not detected"));
-        record.Insert("txn", FieldData::String("commit"));
+        record->Insert("msg", FieldData::String("not detected"));
+        record->Insert("txn", FieldData::String("commit"));
         response = api_result.Dump();
         txn.Commit();
         return true;
@@ -189,16 +188,15 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     dst = txn.GetVertexByUniqueIndex(PERSON_LABEL, PERSON_ID, FieldData(dst_id));
     if (!src.IsValid() || !dst.IsValid()) {
         txn.Abort();
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         return false;
     }
     src.SetField(PERSON_ISBLOCKED, FieldData(true));
     dst.SetField(PERSON_ISBLOCKED, FieldData(true));
-    record.Insert("msg", FieldData::String("block src/dst"));
-    record.Insert("txn", FieldData::String("commit"));
+    record->Insert("msg", FieldData::String("block src/dst"));
+    record->Insert("txn", FieldData::String("commit"));
     response = api_result.Dump();
     txn.Commit();
     return true;
 }
-

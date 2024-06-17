@@ -313,6 +313,102 @@ public final class Lgraph {
   /**
    * <pre>
    *--------------------------------
+   * graph query
+   *--------------------------------
+   * </pre>
+   *
+   * Protobuf enum {@code lgraph.ProtoGraphQueryType}
+   */
+  public enum ProtoGraphQueryType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>CYPHER = 0;</code>
+     */
+    CYPHER(0),
+    /**
+     * <code>GQL = 1;</code>
+     */
+    GQL(1),
+    ;
+
+    /**
+     * <code>CYPHER = 0;</code>
+     */
+    public static final int CYPHER_VALUE = 0;
+    /**
+     * <code>GQL = 1;</code>
+     */
+    public static final int GQL_VALUE = 1;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ProtoGraphQueryType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ProtoGraphQueryType forNumber(int value) {
+      switch (value) {
+        case 0: return CYPHER;
+        case 1: return GQL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ProtoGraphQueryType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ProtoGraphQueryType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ProtoGraphQueryType>() {
+            public ProtoGraphQueryType findValueByNumber(int number) {
+              return ProtoGraphQueryType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return lgraph.Lgraph.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final ProtoGraphQueryType[] VALUES = values();
+
+    public static ProtoGraphQueryType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ProtoGraphQueryType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:lgraph.ProtoGraphQueryType)
+  }
+
+  /**
+   * <pre>
+   *--------------------------------
    * heartbeat
    *--------------------------------
    * </pre>
@@ -419,7 +515,7 @@ public final class Lgraph {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return lgraph.Lgraph.getDescriptor().getEnumTypes().get(2);
+      return lgraph.Lgraph.getDescriptor().getEnumTypes().get(3);
     }
 
     private static final NodeState[] VALUES = values();
@@ -469,6 +565,10 @@ public final class Lgraph {
      * <code>Cypher = 3;</code>
      */
     Cypher(3),
+    /**
+     * <code>Gql = 4;</code>
+     */
+    Gql(4),
     ;
 
     /**
@@ -487,6 +587,10 @@ public final class Lgraph {
      * <code>Cypher = 3;</code>
      */
     public static final int Cypher_VALUE = 3;
+    /**
+     * <code>Gql = 4;</code>
+     */
+    public static final int Gql_VALUE = 4;
 
 
     public final int getNumber() {
@@ -507,6 +611,7 @@ public final class Lgraph {
         case 1: return Security;
         case 2: return Plugin;
         case 3: return Cypher;
+        case 4: return Gql;
         default: return null;
       }
     }
@@ -533,7 +638,7 @@ public final class Lgraph {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return lgraph.Lgraph.getDescriptor().getEnumTypes().get(3);
+      return lgraph.Lgraph.getDescriptor().getEnumTypes().get(4);
     }
 
     private static final LogApiType[] VALUES = values();
@@ -7525,63 +7630,49 @@ public final class Lgraph {
         getPrimaryBytes();
 
     /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    boolean hasTidOrder();
-    /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    java.lang.String getTidOrder();
-    /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getTidOrderBytes();
-
-    /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     java.util.List<lgraph.Lgraph.EdgeConstraint> 
         getEdgeConstraintsList();
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     lgraph.Lgraph.EdgeConstraint getEdgeConstraints(int index);
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     int getEdgeConstraintsCount();
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     java.util.List<? extends lgraph.Lgraph.EdgeConstraintOrBuilder> 
         getEdgeConstraintsOrBuilderList();
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     lgraph.Lgraph.EdgeConstraintOrBuilder getEdgeConstraintsOrBuilder(
         int index);
 
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     java.util.List<lgraph.Lgraph.ProtoFieldSpec> 
         getFieldsList();
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     lgraph.Lgraph.ProtoFieldSpec getFields(int index);
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     int getFieldsCount();
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     java.util.List<? extends lgraph.Lgraph.ProtoFieldSpecOrBuilder> 
         getFieldsOrBuilderList();
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     lgraph.Lgraph.ProtoFieldSpecOrBuilder getFieldsOrBuilder(
         int index);
@@ -7602,7 +7693,6 @@ public final class Lgraph {
       isVertex_ = false;
       label_ = "";
       primary_ = "";
-      tidOrder_ = "";
       edgeConstraints_ = java.util.Collections.emptyList();
       fields_ = java.util.Collections.emptyList();
     }
@@ -7649,24 +7739,18 @@ public final class Lgraph {
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              tidOrder_ = bs;
-              break;
-            }
-            case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                 edgeConstraints_ = new java.util.ArrayList<lgraph.Lgraph.EdgeConstraint>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000008;
               }
               edgeConstraints_.add(
                   input.readMessage(lgraph.Lgraph.EdgeConstraint.PARSER, extensionRegistry));
               break;
             }
-            case 50: {
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                 fields_ = new java.util.ArrayList<lgraph.Lgraph.ProtoFieldSpec>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000010;
               }
               fields_.add(
                   input.readMessage(lgraph.Lgraph.ProtoFieldSpec.PARSER, extensionRegistry));
@@ -7687,10 +7771,10 @@ public final class Lgraph {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           edgeConstraints_ = java.util.Collections.unmodifiableList(edgeConstraints_);
         }
-        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           fields_ = java.util.Collections.unmodifiableList(fields_);
         }
         this.unknownFields = unknownFields.build();
@@ -7810,112 +7894,70 @@ public final class Lgraph {
       }
     }
 
-    public static final int TID_ORDER_FIELD_NUMBER = 4;
-    private volatile java.lang.Object tidOrder_;
-    /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    public boolean hasTidOrder() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    public java.lang.String getTidOrder() {
-      java.lang.Object ref = tidOrder_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          tidOrder_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string tid_order = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTidOrderBytes() {
-      java.lang.Object ref = tidOrder_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        tidOrder_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EDGE_CONSTRAINTS_FIELD_NUMBER = 5;
+    public static final int EDGE_CONSTRAINTS_FIELD_NUMBER = 4;
     private java.util.List<lgraph.Lgraph.EdgeConstraint> edgeConstraints_;
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     public java.util.List<lgraph.Lgraph.EdgeConstraint> getEdgeConstraintsList() {
       return edgeConstraints_;
     }
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     public java.util.List<? extends lgraph.Lgraph.EdgeConstraintOrBuilder> 
         getEdgeConstraintsOrBuilderList() {
       return edgeConstraints_;
     }
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     public int getEdgeConstraintsCount() {
       return edgeConstraints_.size();
     }
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     public lgraph.Lgraph.EdgeConstraint getEdgeConstraints(int index) {
       return edgeConstraints_.get(index);
     }
     /**
-     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+     * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
      */
     public lgraph.Lgraph.EdgeConstraintOrBuilder getEdgeConstraintsOrBuilder(
         int index) {
       return edgeConstraints_.get(index);
     }
 
-    public static final int FIELDS_FIELD_NUMBER = 6;
+    public static final int FIELDS_FIELD_NUMBER = 5;
     private java.util.List<lgraph.Lgraph.ProtoFieldSpec> fields_;
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     public java.util.List<lgraph.Lgraph.ProtoFieldSpec> getFieldsList() {
       return fields_;
     }
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     public java.util.List<? extends lgraph.Lgraph.ProtoFieldSpecOrBuilder> 
         getFieldsOrBuilderList() {
       return fields_;
     }
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     public int getFieldsCount() {
       return fields_.size();
     }
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     public lgraph.Lgraph.ProtoFieldSpec getFields(int index) {
       return fields_.get(index);
     }
     /**
-     * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+     * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
      */
     public lgraph.Lgraph.ProtoFieldSpecOrBuilder getFieldsOrBuilder(
         int index) {
@@ -7965,14 +8007,11 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, primary_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, tidOrder_);
-      }
       for (int i = 0; i < edgeConstraints_.size(); i++) {
-        output.writeMessage(5, edgeConstraints_.get(i));
+        output.writeMessage(4, edgeConstraints_.get(i));
       }
       for (int i = 0; i < fields_.size(); i++) {
-        output.writeMessage(6, fields_.get(i));
+        output.writeMessage(5, fields_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -7993,16 +8032,13 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, primary_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, tidOrder_);
-      }
       for (int i = 0; i < edgeConstraints_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, edgeConstraints_.get(i));
+          .computeMessageSize(4, edgeConstraints_.get(i));
       }
       for (int i = 0; i < fields_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, fields_.get(i));
+          .computeMessageSize(5, fields_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8035,11 +8071,6 @@ public final class Lgraph {
         result = result && getPrimary()
             .equals(other.getPrimary());
       }
-      result = result && (hasTidOrder() == other.hasTidOrder());
-      if (hasTidOrder()) {
-        result = result && getTidOrder()
-            .equals(other.getTidOrder());
-      }
       result = result && getEdgeConstraintsList()
           .equals(other.getEdgeConstraintsList());
       result = result && getFieldsList()
@@ -8067,10 +8098,6 @@ public final class Lgraph {
       if (hasPrimary()) {
         hash = (37 * hash) + PRIMARY_FIELD_NUMBER;
         hash = (53 * hash) + getPrimary().hashCode();
-      }
-      if (hasTidOrder()) {
-        hash = (37 * hash) + TID_ORDER_FIELD_NUMBER;
-        hash = (53 * hash) + getTidOrder().hashCode();
       }
       if (getEdgeConstraintsCount() > 0) {
         hash = (37 * hash) + EDGE_CONSTRAINTS_FIELD_NUMBER;
@@ -8221,17 +8248,15 @@ public final class Lgraph {
         bitField0_ = (bitField0_ & ~0x00000002);
         primary_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        tidOrder_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
         if (edgeConstraintsBuilder_ == null) {
           edgeConstraints_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           edgeConstraintsBuilder_.clear();
         }
         if (fieldsBuilder_ == null) {
           fields_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           fieldsBuilder_.clear();
         }
@@ -8275,23 +8300,19 @@ public final class Lgraph {
           to_bitField0_ |= 0x00000004;
         }
         result.primary_ = primary_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.tidOrder_ = tidOrder_;
         if (edgeConstraintsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
             edgeConstraints_ = java.util.Collections.unmodifiableList(edgeConstraints_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.edgeConstraints_ = edgeConstraints_;
         } else {
           result.edgeConstraints_ = edgeConstraintsBuilder_.build();
         }
         if (fieldsBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
             fields_ = java.util.Collections.unmodifiableList(fields_);
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000010);
           }
           result.fields_ = fields_;
         } else {
@@ -8359,16 +8380,11 @@ public final class Lgraph {
           primary_ = other.primary_;
           onChanged();
         }
-        if (other.hasTidOrder()) {
-          bitField0_ |= 0x00000008;
-          tidOrder_ = other.tidOrder_;
-          onChanged();
-        }
         if (edgeConstraintsBuilder_ == null) {
           if (!other.edgeConstraints_.isEmpty()) {
             if (edgeConstraints_.isEmpty()) {
               edgeConstraints_ = other.edgeConstraints_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureEdgeConstraintsIsMutable();
               edgeConstraints_.addAll(other.edgeConstraints_);
@@ -8381,7 +8397,7 @@ public final class Lgraph {
               edgeConstraintsBuilder_.dispose();
               edgeConstraintsBuilder_ = null;
               edgeConstraints_ = other.edgeConstraints_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000008);
               edgeConstraintsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getEdgeConstraintsFieldBuilder() : null;
@@ -8394,7 +8410,7 @@ public final class Lgraph {
           if (!other.fields_.isEmpty()) {
             if (fields_.isEmpty()) {
               fields_ = other.fields_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000010);
             } else {
               ensureFieldsIsMutable();
               fields_.addAll(other.fields_);
@@ -8407,7 +8423,7 @@ public final class Lgraph {
               fieldsBuilder_.dispose();
               fieldsBuilder_ = null;
               fields_ = other.fields_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000010);
               fieldsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getFieldsFieldBuilder() : null;
@@ -8646,88 +8662,12 @@ public final class Lgraph {
         return this;
       }
 
-      private java.lang.Object tidOrder_ = "";
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public boolean hasTidOrder() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public java.lang.String getTidOrder() {
-        java.lang.Object ref = tidOrder_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            tidOrder_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getTidOrderBytes() {
-        java.lang.Object ref = tidOrder_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          tidOrder_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public Builder setTidOrder(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        tidOrder_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public Builder clearTidOrder() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        tidOrder_ = getDefaultInstance().getTidOrder();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string tid_order = 4;</code>
-       */
-      public Builder setTidOrderBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        tidOrder_ = value;
-        onChanged();
-        return this;
-      }
-
       private java.util.List<lgraph.Lgraph.EdgeConstraint> edgeConstraints_ =
         java.util.Collections.emptyList();
       private void ensureEdgeConstraintsIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
           edgeConstraints_ = new java.util.ArrayList<lgraph.Lgraph.EdgeConstraint>(edgeConstraints_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -8735,7 +8675,7 @@ public final class Lgraph {
           lgraph.Lgraph.EdgeConstraint, lgraph.Lgraph.EdgeConstraint.Builder, lgraph.Lgraph.EdgeConstraintOrBuilder> edgeConstraintsBuilder_;
 
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public java.util.List<lgraph.Lgraph.EdgeConstraint> getEdgeConstraintsList() {
         if (edgeConstraintsBuilder_ == null) {
@@ -8745,7 +8685,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public int getEdgeConstraintsCount() {
         if (edgeConstraintsBuilder_ == null) {
@@ -8755,7 +8695,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public lgraph.Lgraph.EdgeConstraint getEdgeConstraints(int index) {
         if (edgeConstraintsBuilder_ == null) {
@@ -8765,7 +8705,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder setEdgeConstraints(
           int index, lgraph.Lgraph.EdgeConstraint value) {
@@ -8782,7 +8722,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder setEdgeConstraints(
           int index, lgraph.Lgraph.EdgeConstraint.Builder builderForValue) {
@@ -8796,7 +8736,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder addEdgeConstraints(lgraph.Lgraph.EdgeConstraint value) {
         if (edgeConstraintsBuilder_ == null) {
@@ -8812,7 +8752,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder addEdgeConstraints(
           int index, lgraph.Lgraph.EdgeConstraint value) {
@@ -8829,7 +8769,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder addEdgeConstraints(
           lgraph.Lgraph.EdgeConstraint.Builder builderForValue) {
@@ -8843,7 +8783,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder addEdgeConstraints(
           int index, lgraph.Lgraph.EdgeConstraint.Builder builderForValue) {
@@ -8857,7 +8797,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder addAllEdgeConstraints(
           java.lang.Iterable<? extends lgraph.Lgraph.EdgeConstraint> values) {
@@ -8872,12 +8812,12 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder clearEdgeConstraints() {
         if (edgeConstraintsBuilder_ == null) {
           edgeConstraints_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           edgeConstraintsBuilder_.clear();
@@ -8885,7 +8825,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public Builder removeEdgeConstraints(int index) {
         if (edgeConstraintsBuilder_ == null) {
@@ -8898,14 +8838,14 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public lgraph.Lgraph.EdgeConstraint.Builder getEdgeConstraintsBuilder(
           int index) {
         return getEdgeConstraintsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public lgraph.Lgraph.EdgeConstraintOrBuilder getEdgeConstraintsOrBuilder(
           int index) {
@@ -8915,7 +8855,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public java.util.List<? extends lgraph.Lgraph.EdgeConstraintOrBuilder> 
            getEdgeConstraintsOrBuilderList() {
@@ -8926,14 +8866,14 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public lgraph.Lgraph.EdgeConstraint.Builder addEdgeConstraintsBuilder() {
         return getEdgeConstraintsFieldBuilder().addBuilder(
             lgraph.Lgraph.EdgeConstraint.getDefaultInstance());
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public lgraph.Lgraph.EdgeConstraint.Builder addEdgeConstraintsBuilder(
           int index) {
@@ -8941,7 +8881,7 @@ public final class Lgraph {
             index, lgraph.Lgraph.EdgeConstraint.getDefaultInstance());
       }
       /**
-       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 5;</code>
+       * <code>repeated .lgraph.EdgeConstraint edge_constraints = 4;</code>
        */
       public java.util.List<lgraph.Lgraph.EdgeConstraint.Builder> 
            getEdgeConstraintsBuilderList() {
@@ -8954,7 +8894,7 @@ public final class Lgraph {
           edgeConstraintsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               lgraph.Lgraph.EdgeConstraint, lgraph.Lgraph.EdgeConstraint.Builder, lgraph.Lgraph.EdgeConstraintOrBuilder>(
                   edgeConstraints_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
                   isClean());
           edgeConstraints_ = null;
@@ -8965,9 +8905,9 @@ public final class Lgraph {
       private java.util.List<lgraph.Lgraph.ProtoFieldSpec> fields_ =
         java.util.Collections.emptyList();
       private void ensureFieldsIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
           fields_ = new java.util.ArrayList<lgraph.Lgraph.ProtoFieldSpec>(fields_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000010;
          }
       }
 
@@ -8975,7 +8915,7 @@ public final class Lgraph {
           lgraph.Lgraph.ProtoFieldSpec, lgraph.Lgraph.ProtoFieldSpec.Builder, lgraph.Lgraph.ProtoFieldSpecOrBuilder> fieldsBuilder_;
 
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public java.util.List<lgraph.Lgraph.ProtoFieldSpec> getFieldsList() {
         if (fieldsBuilder_ == null) {
@@ -8985,7 +8925,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public int getFieldsCount() {
         if (fieldsBuilder_ == null) {
@@ -8995,7 +8935,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public lgraph.Lgraph.ProtoFieldSpec getFields(int index) {
         if (fieldsBuilder_ == null) {
@@ -9005,7 +8945,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder setFields(
           int index, lgraph.Lgraph.ProtoFieldSpec value) {
@@ -9022,7 +8962,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder setFields(
           int index, lgraph.Lgraph.ProtoFieldSpec.Builder builderForValue) {
@@ -9036,7 +8976,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder addFields(lgraph.Lgraph.ProtoFieldSpec value) {
         if (fieldsBuilder_ == null) {
@@ -9052,7 +8992,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder addFields(
           int index, lgraph.Lgraph.ProtoFieldSpec value) {
@@ -9069,7 +9009,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder addFields(
           lgraph.Lgraph.ProtoFieldSpec.Builder builderForValue) {
@@ -9083,7 +9023,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder addFields(
           int index, lgraph.Lgraph.ProtoFieldSpec.Builder builderForValue) {
@@ -9097,7 +9037,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder addAllFields(
           java.lang.Iterable<? extends lgraph.Lgraph.ProtoFieldSpec> values) {
@@ -9112,12 +9052,12 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder clearFields() {
         if (fieldsBuilder_ == null) {
           fields_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000010);
           onChanged();
         } else {
           fieldsBuilder_.clear();
@@ -9125,7 +9065,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public Builder removeFields(int index) {
         if (fieldsBuilder_ == null) {
@@ -9138,14 +9078,14 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public lgraph.Lgraph.ProtoFieldSpec.Builder getFieldsBuilder(
           int index) {
         return getFieldsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public lgraph.Lgraph.ProtoFieldSpecOrBuilder getFieldsOrBuilder(
           int index) {
@@ -9155,7 +9095,7 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public java.util.List<? extends lgraph.Lgraph.ProtoFieldSpecOrBuilder> 
            getFieldsOrBuilderList() {
@@ -9166,14 +9106,14 @@ public final class Lgraph {
         }
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public lgraph.Lgraph.ProtoFieldSpec.Builder addFieldsBuilder() {
         return getFieldsFieldBuilder().addBuilder(
             lgraph.Lgraph.ProtoFieldSpec.getDefaultInstance());
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public lgraph.Lgraph.ProtoFieldSpec.Builder addFieldsBuilder(
           int index) {
@@ -9181,7 +9121,7 @@ public final class Lgraph {
             index, lgraph.Lgraph.ProtoFieldSpec.getDefaultInstance());
       }
       /**
-       * <code>repeated .lgraph.ProtoFieldSpec fields = 6;</code>
+       * <code>repeated .lgraph.ProtoFieldSpec fields = 5;</code>
        */
       public java.util.List<lgraph.Lgraph.ProtoFieldSpec.Builder> 
            getFieldsBuilderList() {
@@ -9194,7 +9134,7 @@ public final class Lgraph {
           fieldsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               lgraph.Lgraph.ProtoFieldSpec, lgraph.Lgraph.ProtoFieldSpec.Builder, lgraph.Lgraph.ProtoFieldSpecOrBuilder>(
                   fields_,
-                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
                   isClean());
           fields_ = null;
@@ -70997,12 +70937,6 @@ public final class Lgraph {
     int getType();
   }
   /**
-   * <pre>
-   *--------------------------------
-   * cypher
-   *--------------------------------
-   * </pre>
-   *
    * Protobuf type {@code lgraph.Header}
    */
   public  static final class Header extends
@@ -71329,12 +71263,6 @@ public final class Lgraph {
       return builder;
     }
     /**
-     * <pre>
-     *--------------------------------
-     * cypher
-     *--------------------------------
-     * </pre>
-     *
      * Protobuf type {@code lgraph.Header}
      */
     public static final class Builder extends
@@ -71665,8 +71593,1530 @@ public final class Lgraph {
 
   }
 
-  public interface CypherResultOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:lgraph.CypherResult)
+  public interface GraphQueryRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lgraph.GraphQueryRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+     */
+    lgraph.Lgraph.ProtoGraphQueryType getType();
+
+    /**
+     * <code>required string query = 2;</code>
+     */
+    boolean hasQuery();
+    /**
+     * <code>required string query = 2;</code>
+     */
+    java.lang.String getQuery();
+    /**
+     * <code>required string query = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getQueryBytes();
+
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    java.util.List<java.lang.String>
+        getParamNamesList();
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    int getParamNamesCount();
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    java.lang.String getParamNames(int index);
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getParamNamesBytes(int index);
+
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    boolean hasParamValues();
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    lgraph.Lgraph.ListOfProtoFieldData getParamValues();
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder();
+
+    /**
+     * <code>required bool result_in_json_format = 5;</code>
+     */
+    boolean hasResultInJsonFormat();
+    /**
+     * <code>required bool result_in_json_format = 5;</code>
+     */
+    boolean getResultInJsonFormat();
+
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    boolean hasGraph();
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    java.lang.String getGraph();
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getGraphBytes();
+
+    /**
+     * <code>optional double timeout = 7;</code>
+     */
+    boolean hasTimeout();
+    /**
+     * <code>optional double timeout = 7;</code>
+     */
+    double getTimeout();
+
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    boolean hasPerNodeLimit();
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    long getPerNodeLimit();
+  }
+  /**
+   * Protobuf type {@code lgraph.GraphQueryRequest}
+   */
+  public  static final class GraphQueryRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lgraph.GraphQueryRequest)
+      GraphQueryRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GraphQueryRequest.newBuilder() to construct.
+    private GraphQueryRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GraphQueryRequest() {
+      type_ = 0;
+      query_ = "";
+      paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      resultInJsonFormat_ = false;
+      graph_ = "";
+      timeout_ = 0D;
+      perNodeLimit_ = 0L;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GraphQueryRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              lgraph.Lgraph.ProtoGraphQueryType value = lgraph.Lgraph.ProtoGraphQueryType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = rawValue;
+              }
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              query_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                paramNames_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              paramNames_.add(bs);
+              break;
+            }
+            case 34: {
+              lgraph.Lgraph.ListOfProtoFieldData.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = paramValues_.toBuilder();
+              }
+              paramValues_ = input.readMessage(lgraph.Lgraph.ListOfProtoFieldData.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(paramValues_);
+                paramValues_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              resultInJsonFormat_ = input.readBool();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              graph_ = bs;
+              break;
+            }
+            case 57: {
+              bitField0_ |= 0x00000020;
+              timeout_ = input.readDouble();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000040;
+              perNodeLimit_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          paramNames_ = paramNames_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              lgraph.Lgraph.GraphQueryRequest.class, lgraph.Lgraph.GraphQueryRequest.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+     */
+    public lgraph.Lgraph.ProtoGraphQueryType getType() {
+      @SuppressWarnings("deprecation")
+      lgraph.Lgraph.ProtoGraphQueryType result = lgraph.Lgraph.ProtoGraphQueryType.valueOf(type_);
+      return result == null ? lgraph.Lgraph.ProtoGraphQueryType.CYPHER : result;
+    }
+
+    public static final int QUERY_FIELD_NUMBER = 2;
+    private volatile java.lang.Object query_;
+    /**
+     * <code>required string query = 2;</code>
+     */
+    public boolean hasQuery() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string query = 2;</code>
+     */
+    public java.lang.String getQuery() {
+      java.lang.Object ref = query_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          query_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string query = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getQueryBytes() {
+      java.lang.Object ref = query_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        query_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PARAM_NAMES_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList paramNames_;
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getParamNamesList() {
+      return paramNames_;
+    }
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    public int getParamNamesCount() {
+      return paramNames_.size();
+    }
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    public java.lang.String getParamNames(int index) {
+      return paramNames_.get(index);
+    }
+    /**
+     * <code>repeated string param_names = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getParamNamesBytes(int index) {
+      return paramNames_.getByteString(index);
+    }
+
+    public static final int PARAM_VALUES_FIELD_NUMBER = 4;
+    private lgraph.Lgraph.ListOfProtoFieldData paramValues_;
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    public boolean hasParamValues() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    public lgraph.Lgraph.ListOfProtoFieldData getParamValues() {
+      return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
+    }
+    /**
+     * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+     */
+    public lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder() {
+      return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
+    }
+
+    public static final int RESULT_IN_JSON_FORMAT_FIELD_NUMBER = 5;
+    private boolean resultInJsonFormat_;
+    /**
+     * <code>required bool result_in_json_format = 5;</code>
+     */
+    public boolean hasResultInJsonFormat() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required bool result_in_json_format = 5;</code>
+     */
+    public boolean getResultInJsonFormat() {
+      return resultInJsonFormat_;
+    }
+
+    public static final int GRAPH_FIELD_NUMBER = 6;
+    private volatile java.lang.Object graph_;
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    public boolean hasGraph() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    public java.lang.String getGraph() {
+      java.lang.Object ref = graph_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          graph_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string graph = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGraphBytes() {
+      java.lang.Object ref = graph_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        graph_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TIMEOUT_FIELD_NUMBER = 7;
+    private double timeout_;
+    /**
+     * <code>optional double timeout = 7;</code>
+     */
+    public boolean hasTimeout() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional double timeout = 7;</code>
+     */
+    public double getTimeout() {
+      return timeout_;
+    }
+
+    public static final int PER_NODE_LIMIT_FIELD_NUMBER = 8;
+    private long perNodeLimit_;
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    public boolean hasPerNodeLimit() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    public long getPerNodeLimit() {
+      return perNodeLimit_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasQuery()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasResultInJsonFormat()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, query_);
+      }
+      for (int i = 0; i < paramNames_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, paramNames_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(4, getParamValues());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(5, resultInJsonFormat_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, graph_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeDouble(7, timeout_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt64(8, perNodeLimit_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, query_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < paramNames_.size(); i++) {
+          dataSize += computeStringSizeNoTag(paramNames_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getParamNamesList().size();
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getParamValues());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, resultInJsonFormat_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, graph_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(7, timeout_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(8, perNodeLimit_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof lgraph.Lgraph.GraphQueryRequest)) {
+        return super.equals(obj);
+      }
+      lgraph.Lgraph.GraphQueryRequest other = (lgraph.Lgraph.GraphQueryRequest) obj;
+
+      boolean result = true;
+      result = result && (hasType() == other.hasType());
+      if (hasType()) {
+        result = result && type_ == other.type_;
+      }
+      result = result && (hasQuery() == other.hasQuery());
+      if (hasQuery()) {
+        result = result && getQuery()
+            .equals(other.getQuery());
+      }
+      result = result && getParamNamesList()
+          .equals(other.getParamNamesList());
+      result = result && (hasParamValues() == other.hasParamValues());
+      if (hasParamValues()) {
+        result = result && getParamValues()
+            .equals(other.getParamValues());
+      }
+      result = result && (hasResultInJsonFormat() == other.hasResultInJsonFormat());
+      if (hasResultInJsonFormat()) {
+        result = result && (getResultInJsonFormat()
+            == other.getResultInJsonFormat());
+      }
+      result = result && (hasGraph() == other.hasGraph());
+      if (hasGraph()) {
+        result = result && getGraph()
+            .equals(other.getGraph());
+      }
+      result = result && (hasTimeout() == other.hasTimeout());
+      if (hasTimeout()) {
+        result = result && (
+            java.lang.Double.doubleToLongBits(getTimeout())
+            == java.lang.Double.doubleToLongBits(
+                other.getTimeout()));
+      }
+      result = result && (hasPerNodeLimit() == other.hasPerNodeLimit());
+      if (hasPerNodeLimit()) {
+        result = result && (getPerNodeLimit()
+            == other.getPerNodeLimit());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasType()) {
+        hash = (37 * hash) + TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + type_;
+      }
+      if (hasQuery()) {
+        hash = (37 * hash) + QUERY_FIELD_NUMBER;
+        hash = (53 * hash) + getQuery().hashCode();
+      }
+      if (getParamNamesCount() > 0) {
+        hash = (37 * hash) + PARAM_NAMES_FIELD_NUMBER;
+        hash = (53 * hash) + getParamNamesList().hashCode();
+      }
+      if (hasParamValues()) {
+        hash = (37 * hash) + PARAM_VALUES_FIELD_NUMBER;
+        hash = (53 * hash) + getParamValues().hashCode();
+      }
+      if (hasResultInJsonFormat()) {
+        hash = (37 * hash) + RESULT_IN_JSON_FORMAT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getResultInJsonFormat());
+      }
+      if (hasGraph()) {
+        hash = (37 * hash) + GRAPH_FIELD_NUMBER;
+        hash = (53 * hash) + getGraph().hashCode();
+      }
+      if (hasTimeout()) {
+        hash = (37 * hash) + TIMEOUT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getTimeout()));
+      }
+      if (hasPerNodeLimit()) {
+        hash = (37 * hash) + PER_NODE_LIMIT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getPerNodeLimit());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.GraphQueryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(lgraph.Lgraph.GraphQueryRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lgraph.GraphQueryRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lgraph.GraphQueryRequest)
+        lgraph.Lgraph.GraphQueryRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                lgraph.Lgraph.GraphQueryRequest.class, lgraph.Lgraph.GraphQueryRequest.Builder.class);
+      }
+
+      // Construct using lgraph.Lgraph.GraphQueryRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getParamValuesFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        query_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (paramValuesBuilder_ == null) {
+          paramValues_ = null;
+        } else {
+          paramValuesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        resultInJsonFormat_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        graph_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        timeout_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        perNodeLimit_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.GraphQueryRequest getDefaultInstanceForType() {
+        return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.GraphQueryRequest build() {
+        lgraph.Lgraph.GraphQueryRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.GraphQueryRequest buildPartial() {
+        lgraph.Lgraph.GraphQueryRequest result = new lgraph.Lgraph.GraphQueryRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.query_ = query_;
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          paramNames_ = paramNames_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.paramNames_ = paramNames_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (paramValuesBuilder_ == null) {
+          result.paramValues_ = paramValues_;
+        } else {
+          result.paramValues_ = paramValuesBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.resultInJsonFormat_ = resultInJsonFormat_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.graph_ = graph_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.timeout_ = timeout_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.perNodeLimit_ = perNodeLimit_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof lgraph.Lgraph.GraphQueryRequest) {
+          return mergeFrom((lgraph.Lgraph.GraphQueryRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(lgraph.Lgraph.GraphQueryRequest other) {
+        if (other == lgraph.Lgraph.GraphQueryRequest.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasQuery()) {
+          bitField0_ |= 0x00000002;
+          query_ = other.query_;
+          onChanged();
+        }
+        if (!other.paramNames_.isEmpty()) {
+          if (paramNames_.isEmpty()) {
+            paramNames_ = other.paramNames_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureParamNamesIsMutable();
+            paramNames_.addAll(other.paramNames_);
+          }
+          onChanged();
+        }
+        if (other.hasParamValues()) {
+          mergeParamValues(other.getParamValues());
+        }
+        if (other.hasResultInJsonFormat()) {
+          setResultInJsonFormat(other.getResultInJsonFormat());
+        }
+        if (other.hasGraph()) {
+          bitField0_ |= 0x00000020;
+          graph_ = other.graph_;
+          onChanged();
+        }
+        if (other.hasTimeout()) {
+          setTimeout(other.getTimeout());
+        }
+        if (other.hasPerNodeLimit()) {
+          setPerNodeLimit(other.getPerNodeLimit());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasType()) {
+          return false;
+        }
+        if (!hasQuery()) {
+          return false;
+        }
+        if (!hasResultInJsonFormat()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        lgraph.Lgraph.GraphQueryRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (lgraph.Lgraph.GraphQueryRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int type_ = 0;
+      /**
+       * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+       */
+      public lgraph.Lgraph.ProtoGraphQueryType getType() {
+        @SuppressWarnings("deprecation")
+        lgraph.Lgraph.ProtoGraphQueryType result = lgraph.Lgraph.ProtoGraphQueryType.valueOf(type_);
+        return result == null ? lgraph.Lgraph.ProtoGraphQueryType.CYPHER : result;
+      }
+      /**
+       * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+       */
+      public Builder setType(lgraph.Lgraph.ProtoGraphQueryType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .lgraph.ProtoGraphQueryType type = 1;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object query_ = "";
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public boolean hasQuery() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public java.lang.String getQuery() {
+        java.lang.Object ref = query_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            query_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getQueryBytes() {
+        java.lang.Object ref = query_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          query_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public Builder setQuery(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        query_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public Builder clearQuery() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        query_ = getDefaultInstance().getQuery();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string query = 2;</code>
+       */
+      public Builder setQueryBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        query_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureParamNamesIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          paramNames_ = new com.google.protobuf.LazyStringArrayList(paramNames_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getParamNamesList() {
+        return paramNames_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public int getParamNamesCount() {
+        return paramNames_.size();
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public java.lang.String getParamNames(int index) {
+        return paramNames_.get(index);
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getParamNamesBytes(int index) {
+        return paramNames_.getByteString(index);
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public Builder setParamNames(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureParamNamesIsMutable();
+        paramNames_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public Builder addParamNames(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureParamNamesIsMutable();
+        paramNames_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public Builder addAllParamNames(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureParamNamesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, paramNames_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public Builder clearParamNames() {
+        paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string param_names = 3;</code>
+       */
+      public Builder addParamNamesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureParamNamesIsMutable();
+        paramNames_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private lgraph.Lgraph.ListOfProtoFieldData paramValues_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder> paramValuesBuilder_;
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public boolean hasParamValues() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public lgraph.Lgraph.ListOfProtoFieldData getParamValues() {
+        if (paramValuesBuilder_ == null) {
+          return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
+        } else {
+          return paramValuesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public Builder setParamValues(lgraph.Lgraph.ListOfProtoFieldData value) {
+        if (paramValuesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          paramValues_ = value;
+          onChanged();
+        } else {
+          paramValuesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public Builder setParamValues(
+          lgraph.Lgraph.ListOfProtoFieldData.Builder builderForValue) {
+        if (paramValuesBuilder_ == null) {
+          paramValues_ = builderForValue.build();
+          onChanged();
+        } else {
+          paramValuesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public Builder mergeParamValues(lgraph.Lgraph.ListOfProtoFieldData value) {
+        if (paramValuesBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              paramValues_ != null &&
+              paramValues_ != lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance()) {
+            paramValues_ =
+              lgraph.Lgraph.ListOfProtoFieldData.newBuilder(paramValues_).mergeFrom(value).buildPartial();
+          } else {
+            paramValues_ = value;
+          }
+          onChanged();
+        } else {
+          paramValuesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public Builder clearParamValues() {
+        if (paramValuesBuilder_ == null) {
+          paramValues_ = null;
+          onChanged();
+        } else {
+          paramValuesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public lgraph.Lgraph.ListOfProtoFieldData.Builder getParamValuesBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getParamValuesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      public lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder() {
+        if (paramValuesBuilder_ != null) {
+          return paramValuesBuilder_.getMessageOrBuilder();
+        } else {
+          return paramValues_ == null ?
+              lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
+        }
+      }
+      /**
+       * <code>optional .lgraph.ListOfProtoFieldData param_values = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder> 
+          getParamValuesFieldBuilder() {
+        if (paramValuesBuilder_ == null) {
+          paramValuesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder>(
+                  getParamValues(),
+                  getParentForChildren(),
+                  isClean());
+          paramValues_ = null;
+        }
+        return paramValuesBuilder_;
+      }
+
+      private boolean resultInJsonFormat_ ;
+      /**
+       * <code>required bool result_in_json_format = 5;</code>
+       */
+      public boolean hasResultInJsonFormat() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required bool result_in_json_format = 5;</code>
+       */
+      public boolean getResultInJsonFormat() {
+        return resultInJsonFormat_;
+      }
+      /**
+       * <code>required bool result_in_json_format = 5;</code>
+       */
+      public Builder setResultInJsonFormat(boolean value) {
+        bitField0_ |= 0x00000010;
+        resultInJsonFormat_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool result_in_json_format = 5;</code>
+       */
+      public Builder clearResultInJsonFormat() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        resultInJsonFormat_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object graph_ = "";
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public boolean hasGraph() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public java.lang.String getGraph() {
+        java.lang.Object ref = graph_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            graph_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGraphBytes() {
+        java.lang.Object ref = graph_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          graph_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public Builder setGraph(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        graph_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public Builder clearGraph() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        graph_ = getDefaultInstance().getGraph();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string graph = 6;</code>
+       */
+      public Builder setGraphBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        graph_ = value;
+        onChanged();
+        return this;
+      }
+
+      private double timeout_ ;
+      /**
+       * <code>optional double timeout = 7;</code>
+       */
+      public boolean hasTimeout() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional double timeout = 7;</code>
+       */
+      public double getTimeout() {
+        return timeout_;
+      }
+      /**
+       * <code>optional double timeout = 7;</code>
+       */
+      public Builder setTimeout(double value) {
+        bitField0_ |= 0x00000040;
+        timeout_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double timeout = 7;</code>
+       */
+      public Builder clearTimeout() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        timeout_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private long perNodeLimit_ ;
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public boolean hasPerNodeLimit() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public long getPerNodeLimit() {
+        return perNodeLimit_;
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public Builder setPerNodeLimit(long value) {
+        bitField0_ |= 0x00000080;
+        perNodeLimit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public Builder clearPerNodeLimit() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        perNodeLimit_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lgraph.GraphQueryRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:lgraph.GraphQueryRequest)
+    private static final lgraph.Lgraph.GraphQueryRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new lgraph.Lgraph.GraphQueryRequest();
+    }
+
+    public static lgraph.Lgraph.GraphQueryRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GraphQueryRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GraphQueryRequest>() {
+      @java.lang.Override
+      public GraphQueryRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GraphQueryRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GraphQueryRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GraphQueryRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public lgraph.Lgraph.GraphQueryRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface GraphQueryResultOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lgraph.GraphQueryResult)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -71727,18 +73177,18 @@ public final class Lgraph {
     double getElapsed();
   }
   /**
-   * Protobuf type {@code lgraph.CypherResult}
+   * Protobuf type {@code lgraph.GraphQueryResult}
    */
-  public  static final class CypherResult extends
+  public  static final class GraphQueryResult extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:lgraph.CypherResult)
-      CypherResultOrBuilder {
+      // @@protoc_insertion_point(message_implements:lgraph.GraphQueryResult)
+      GraphQueryResultOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use CypherResult.newBuilder() to construct.
-    private CypherResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use GraphQueryResult.newBuilder() to construct.
+    private GraphQueryResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private CypherResult() {
+    private GraphQueryResult() {
       header_ = java.util.Collections.emptyList();
       result_ = java.util.Collections.emptyList();
       elapsed_ = 0D;
@@ -71749,7 +73199,7 @@ public final class Lgraph {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CypherResult(
+    private GraphQueryResult(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -71818,15 +73268,15 @@ public final class Lgraph {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherResult_descriptor;
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryResult_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherResult_fieldAccessorTable
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryResult_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              lgraph.Lgraph.CypherResult.class, lgraph.Lgraph.CypherResult.Builder.class);
+              lgraph.Lgraph.GraphQueryResult.class, lgraph.Lgraph.GraphQueryResult.Builder.class);
     }
 
     private int bitField0_;
@@ -71979,10 +73429,10 @@ public final class Lgraph {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof lgraph.Lgraph.CypherResult)) {
+      if (!(obj instanceof lgraph.Lgraph.GraphQueryResult)) {
         return super.equals(obj);
       }
-      lgraph.Lgraph.CypherResult other = (lgraph.Lgraph.CypherResult) obj;
+      lgraph.Lgraph.GraphQueryResult other = (lgraph.Lgraph.GraphQueryResult) obj;
 
       boolean result = true;
       result = result && getHeaderList()
@@ -72025,69 +73475,69 @@ public final class Lgraph {
       return hash;
     }
 
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(byte[] data)
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(java.io.InputStream input)
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResult parseDelimitedFrom(java.io.InputStream input)
+    public static lgraph.Lgraph.GraphQueryResult parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResult parseDelimitedFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResult parseFrom(
+    public static lgraph.Lgraph.GraphQueryResult parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -72100,7 +73550,7 @@ public final class Lgraph {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(lgraph.Lgraph.CypherResult prototype) {
+    public static Builder newBuilder(lgraph.Lgraph.GraphQueryResult prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -72116,26 +73566,26 @@ public final class Lgraph {
       return builder;
     }
     /**
-     * Protobuf type {@code lgraph.CypherResult}
+     * Protobuf type {@code lgraph.GraphQueryResult}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:lgraph.CypherResult)
-        lgraph.Lgraph.CypherResultOrBuilder {
+        // @@protoc_insertion_point(builder_implements:lgraph.GraphQueryResult)
+        lgraph.Lgraph.GraphQueryResultOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResult_descriptor;
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResult_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResult_fieldAccessorTable
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResult_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                lgraph.Lgraph.CypherResult.class, lgraph.Lgraph.CypherResult.Builder.class);
+                lgraph.Lgraph.GraphQueryResult.class, lgraph.Lgraph.GraphQueryResult.Builder.class);
       }
 
-      // Construct using lgraph.Lgraph.CypherResult.newBuilder()
+      // Construct using lgraph.Lgraph.GraphQueryResult.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -72175,17 +73625,17 @@ public final class Lgraph {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResult_descriptor;
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResult_descriptor;
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResult getDefaultInstanceForType() {
-        return lgraph.Lgraph.CypherResult.getDefaultInstance();
+      public lgraph.Lgraph.GraphQueryResult getDefaultInstanceForType() {
+        return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResult build() {
-        lgraph.Lgraph.CypherResult result = buildPartial();
+      public lgraph.Lgraph.GraphQueryResult build() {
+        lgraph.Lgraph.GraphQueryResult result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -72193,8 +73643,8 @@ public final class Lgraph {
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResult buildPartial() {
-        lgraph.Lgraph.CypherResult result = new lgraph.Lgraph.CypherResult(this);
+      public lgraph.Lgraph.GraphQueryResult buildPartial() {
+        lgraph.Lgraph.GraphQueryResult result = new lgraph.Lgraph.GraphQueryResult(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (headerBuilder_ == null) {
@@ -72258,16 +73708,16 @@ public final class Lgraph {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof lgraph.Lgraph.CypherResult) {
-          return mergeFrom((lgraph.Lgraph.CypherResult)other);
+        if (other instanceof lgraph.Lgraph.GraphQueryResult) {
+          return mergeFrom((lgraph.Lgraph.GraphQueryResult)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(lgraph.Lgraph.CypherResult other) {
-        if (other == lgraph.Lgraph.CypherResult.getDefaultInstance()) return this;
+      public Builder mergeFrom(lgraph.Lgraph.GraphQueryResult other) {
+        if (other == lgraph.Lgraph.GraphQueryResult.getDefaultInstance()) return this;
         if (headerBuilder_ == null) {
           if (!other.header_.isEmpty()) {
             if (header_.isEmpty()) {
@@ -72346,11 +73796,11 @@ public final class Lgraph {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        lgraph.Lgraph.CypherResult parsedMessage = null;
+        lgraph.Lgraph.GraphQueryResult parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (lgraph.Lgraph.CypherResult) e.getUnfinishedMessage();
+          parsedMessage = (lgraph.Lgraph.GraphQueryResult) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -72885,1463 +74335,48 @@ public final class Lgraph {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:lgraph.CypherResult)
+      // @@protoc_insertion_point(builder_scope:lgraph.GraphQueryResult)
     }
 
-    // @@protoc_insertion_point(class_scope:lgraph.CypherResult)
-    private static final lgraph.Lgraph.CypherResult DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:lgraph.GraphQueryResult)
+    private static final lgraph.Lgraph.GraphQueryResult DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new lgraph.Lgraph.CypherResult();
+      DEFAULT_INSTANCE = new lgraph.Lgraph.GraphQueryResult();
     }
 
-    public static lgraph.Lgraph.CypherResult getDefaultInstance() {
+    public static lgraph.Lgraph.GraphQueryResult getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<CypherResult>
-        PARSER = new com.google.protobuf.AbstractParser<CypherResult>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GraphQueryResult>
+        PARSER = new com.google.protobuf.AbstractParser<GraphQueryResult>() {
       @java.lang.Override
-      public CypherResult parsePartialFrom(
+      public GraphQueryResult parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CypherResult(input, extensionRegistry);
+        return new GraphQueryResult(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<CypherResult> parser() {
+    public static com.google.protobuf.Parser<GraphQueryResult> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<CypherResult> getParserForType() {
+    public com.google.protobuf.Parser<GraphQueryResult> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public lgraph.Lgraph.CypherResult getDefaultInstanceForType() {
+    public lgraph.Lgraph.GraphQueryResult getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface CypherRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:lgraph.CypherRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string query = 1;</code>
-     */
-    boolean hasQuery();
-    /**
-     * <code>required string query = 1;</code>
-     */
-    java.lang.String getQuery();
-    /**
-     * <code>required string query = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getQueryBytes();
-
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    java.util.List<java.lang.String>
-        getParamNamesList();
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    int getParamNamesCount();
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    java.lang.String getParamNames(int index);
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getParamNamesBytes(int index);
-
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    boolean hasParamValues();
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    lgraph.Lgraph.ListOfProtoFieldData getParamValues();
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder();
-
-    /**
-     * <code>required bool result_in_json_format = 4;</code>
-     */
-    boolean hasResultInJsonFormat();
-    /**
-     * <code>required bool result_in_json_format = 4;</code>
-     */
-    boolean getResultInJsonFormat();
-
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    boolean hasGraph();
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    java.lang.String getGraph();
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    com.google.protobuf.ByteString
-        getGraphBytes();
-
-    /**
-     * <code>optional double timeout = 6;</code>
-     */
-    boolean hasTimeout();
-    /**
-     * <code>optional double timeout = 6;</code>
-     */
-    double getTimeout();
-
-    /**
-     * <code>optional int64 per_node_limit = 7;</code>
-     */
-    boolean hasPerNodeLimit();
-    /**
-     * <code>optional int64 per_node_limit = 7;</code>
-     */
-    long getPerNodeLimit();
-  }
-  /**
-   * Protobuf type {@code lgraph.CypherRequest}
-   */
-  public  static final class CypherRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:lgraph.CypherRequest)
-      CypherRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use CypherRequest.newBuilder() to construct.
-    private CypherRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private CypherRequest() {
-      query_ = "";
-      paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      resultInJsonFormat_ = false;
-      graph_ = "";
-      timeout_ = 0D;
-      perNodeLimit_ = 0L;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private CypherRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              query_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                paramNames_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              paramNames_.add(bs);
-              break;
-            }
-            case 26: {
-              lgraph.Lgraph.ListOfProtoFieldData.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = paramValues_.toBuilder();
-              }
-              paramValues_ = input.readMessage(lgraph.Lgraph.ListOfProtoFieldData.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(paramValues_);
-                paramValues_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000004;
-              resultInJsonFormat_ = input.readBool();
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              graph_ = bs;
-              break;
-            }
-            case 49: {
-              bitField0_ |= 0x00000010;
-              timeout_ = input.readDouble();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000020;
-              perNodeLimit_ = input.readInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          paramNames_ = paramNames_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              lgraph.Lgraph.CypherRequest.class, lgraph.Lgraph.CypherRequest.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int QUERY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object query_;
-    /**
-     * <code>required string query = 1;</code>
-     */
-    public boolean hasQuery() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string query = 1;</code>
-     */
-    public java.lang.String getQuery() {
-      java.lang.Object ref = query_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          query_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string query = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getQueryBytes() {
-      java.lang.Object ref = query_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        query_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PARAM_NAMES_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList paramNames_;
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    public com.google.protobuf.ProtocolStringList
-        getParamNamesList() {
-      return paramNames_;
-    }
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    public int getParamNamesCount() {
-      return paramNames_.size();
-    }
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    public java.lang.String getParamNames(int index) {
-      return paramNames_.get(index);
-    }
-    /**
-     * <code>repeated string param_names = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getParamNamesBytes(int index) {
-      return paramNames_.getByteString(index);
-    }
-
-    public static final int PARAM_VALUES_FIELD_NUMBER = 3;
-    private lgraph.Lgraph.ListOfProtoFieldData paramValues_;
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    public boolean hasParamValues() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    public lgraph.Lgraph.ListOfProtoFieldData getParamValues() {
-      return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
-    }
-    /**
-     * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-     */
-    public lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder() {
-      return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
-    }
-
-    public static final int RESULT_IN_JSON_FORMAT_FIELD_NUMBER = 4;
-    private boolean resultInJsonFormat_;
-    /**
-     * <code>required bool result_in_json_format = 4;</code>
-     */
-    public boolean hasResultInJsonFormat() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required bool result_in_json_format = 4;</code>
-     */
-    public boolean getResultInJsonFormat() {
-      return resultInJsonFormat_;
-    }
-
-    public static final int GRAPH_FIELD_NUMBER = 5;
-    private volatile java.lang.Object graph_;
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    public boolean hasGraph() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    public java.lang.String getGraph() {
-      java.lang.Object ref = graph_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          graph_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string graph = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getGraphBytes() {
-      java.lang.Object ref = graph_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        graph_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TIMEOUT_FIELD_NUMBER = 6;
-    private double timeout_;
-    /**
-     * <code>optional double timeout = 6;</code>
-     */
-    public boolean hasTimeout() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional double timeout = 6;</code>
-     */
-    public double getTimeout() {
-      return timeout_;
-    }
-
-    public static final int PER_NODE_LIMIT_FIELD_NUMBER = 7;
-    private long perNodeLimit_;
-    /**
-     * <code>optional int64 per_node_limit = 7;</code>
-     */
-    public boolean hasPerNodeLimit() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional int64 per_node_limit = 7;</code>
-     */
-    public long getPerNodeLimit() {
-      return perNodeLimit_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasQuery()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasResultInJsonFormat()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, query_);
-      }
-      for (int i = 0; i < paramNames_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, paramNames_.getRaw(i));
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(3, getParamValues());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBool(4, resultInJsonFormat_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, graph_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeDouble(6, timeout_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt64(7, perNodeLimit_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, query_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < paramNames_.size(); i++) {
-          dataSize += computeStringSizeNoTag(paramNames_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getParamNamesList().size();
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getParamValues());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(4, resultInJsonFormat_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, graph_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(6, timeout_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(7, perNodeLimit_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof lgraph.Lgraph.CypherRequest)) {
-        return super.equals(obj);
-      }
-      lgraph.Lgraph.CypherRequest other = (lgraph.Lgraph.CypherRequest) obj;
-
-      boolean result = true;
-      result = result && (hasQuery() == other.hasQuery());
-      if (hasQuery()) {
-        result = result && getQuery()
-            .equals(other.getQuery());
-      }
-      result = result && getParamNamesList()
-          .equals(other.getParamNamesList());
-      result = result && (hasParamValues() == other.hasParamValues());
-      if (hasParamValues()) {
-        result = result && getParamValues()
-            .equals(other.getParamValues());
-      }
-      result = result && (hasResultInJsonFormat() == other.hasResultInJsonFormat());
-      if (hasResultInJsonFormat()) {
-        result = result && (getResultInJsonFormat()
-            == other.getResultInJsonFormat());
-      }
-      result = result && (hasGraph() == other.hasGraph());
-      if (hasGraph()) {
-        result = result && getGraph()
-            .equals(other.getGraph());
-      }
-      result = result && (hasTimeout() == other.hasTimeout());
-      if (hasTimeout()) {
-        result = result && (
-            java.lang.Double.doubleToLongBits(getTimeout())
-            == java.lang.Double.doubleToLongBits(
-                other.getTimeout()));
-      }
-      result = result && (hasPerNodeLimit() == other.hasPerNodeLimit());
-      if (hasPerNodeLimit()) {
-        result = result && (getPerNodeLimit()
-            == other.getPerNodeLimit());
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasQuery()) {
-        hash = (37 * hash) + QUERY_FIELD_NUMBER;
-        hash = (53 * hash) + getQuery().hashCode();
-      }
-      if (getParamNamesCount() > 0) {
-        hash = (37 * hash) + PARAM_NAMES_FIELD_NUMBER;
-        hash = (53 * hash) + getParamNamesList().hashCode();
-      }
-      if (hasParamValues()) {
-        hash = (37 * hash) + PARAM_VALUES_FIELD_NUMBER;
-        hash = (53 * hash) + getParamValues().hashCode();
-      }
-      if (hasResultInJsonFormat()) {
-        hash = (37 * hash) + RESULT_IN_JSON_FORMAT_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getResultInJsonFormat());
-      }
-      if (hasGraph()) {
-        hash = (37 * hash) + GRAPH_FIELD_NUMBER;
-        hash = (53 * hash) + getGraph().hashCode();
-      }
-      if (hasTimeout()) {
-        hash = (37 * hash) + TIMEOUT_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getTimeout()));
-      }
-      if (hasPerNodeLimit()) {
-        hash = (37 * hash) + PER_NODE_LIMIT_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getPerNodeLimit());
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static lgraph.Lgraph.CypherRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static lgraph.Lgraph.CypherRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static lgraph.Lgraph.CypherRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(lgraph.Lgraph.CypherRequest prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code lgraph.CypherRequest}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:lgraph.CypherRequest)
-        lgraph.Lgraph.CypherRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherRequest_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                lgraph.Lgraph.CypherRequest.class, lgraph.Lgraph.CypherRequest.Builder.class);
-      }
-
-      // Construct using lgraph.Lgraph.CypherRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getParamValuesFieldBuilder();
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        query_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (paramValuesBuilder_ == null) {
-          paramValues_ = null;
-        } else {
-          paramValuesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        resultInJsonFormat_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        graph_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        timeout_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        perNodeLimit_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherRequest_descriptor;
-      }
-
-      @java.lang.Override
-      public lgraph.Lgraph.CypherRequest getDefaultInstanceForType() {
-        return lgraph.Lgraph.CypherRequest.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public lgraph.Lgraph.CypherRequest build() {
-        lgraph.Lgraph.CypherRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public lgraph.Lgraph.CypherRequest buildPartial() {
-        lgraph.Lgraph.CypherRequest result = new lgraph.Lgraph.CypherRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.query_ = query_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          paramNames_ = paramNames_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.paramNames_ = paramNames_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (paramValuesBuilder_ == null) {
-          result.paramValues_ = paramValues_;
-        } else {
-          result.paramValues_ = paramValuesBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.resultInJsonFormat_ = resultInJsonFormat_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.graph_ = graph_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.timeout_ = timeout_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.perNodeLimit_ = perNodeLimit_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof lgraph.Lgraph.CypherRequest) {
-          return mergeFrom((lgraph.Lgraph.CypherRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(lgraph.Lgraph.CypherRequest other) {
-        if (other == lgraph.Lgraph.CypherRequest.getDefaultInstance()) return this;
-        if (other.hasQuery()) {
-          bitField0_ |= 0x00000001;
-          query_ = other.query_;
-          onChanged();
-        }
-        if (!other.paramNames_.isEmpty()) {
-          if (paramNames_.isEmpty()) {
-            paramNames_ = other.paramNames_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureParamNamesIsMutable();
-            paramNames_.addAll(other.paramNames_);
-          }
-          onChanged();
-        }
-        if (other.hasParamValues()) {
-          mergeParamValues(other.getParamValues());
-        }
-        if (other.hasResultInJsonFormat()) {
-          setResultInJsonFormat(other.getResultInJsonFormat());
-        }
-        if (other.hasGraph()) {
-          bitField0_ |= 0x00000010;
-          graph_ = other.graph_;
-          onChanged();
-        }
-        if (other.hasTimeout()) {
-          setTimeout(other.getTimeout());
-        }
-        if (other.hasPerNodeLimit()) {
-          setPerNodeLimit(other.getPerNodeLimit());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        if (!hasQuery()) {
-          return false;
-        }
-        if (!hasResultInJsonFormat()) {
-          return false;
-        }
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        lgraph.Lgraph.CypherRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (lgraph.Lgraph.CypherRequest) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object query_ = "";
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public boolean hasQuery() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public java.lang.String getQuery() {
-        java.lang.Object ref = query_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            query_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getQueryBytes() {
-        java.lang.Object ref = query_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          query_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public Builder setQuery(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        query_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public Builder clearQuery() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        query_ = getDefaultInstance().getQuery();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string query = 1;</code>
-       */
-      public Builder setQueryBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        query_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureParamNamesIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          paramNames_ = new com.google.protobuf.LazyStringArrayList(paramNames_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public com.google.protobuf.ProtocolStringList
-          getParamNamesList() {
-        return paramNames_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public int getParamNamesCount() {
-        return paramNames_.size();
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public java.lang.String getParamNames(int index) {
-        return paramNames_.get(index);
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getParamNamesBytes(int index) {
-        return paramNames_.getByteString(index);
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public Builder setParamNames(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureParamNamesIsMutable();
-        paramNames_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public Builder addParamNames(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureParamNamesIsMutable();
-        paramNames_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public Builder addAllParamNames(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureParamNamesIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, paramNames_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public Builder clearParamNames() {
-        paramNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string param_names = 2;</code>
-       */
-      public Builder addParamNamesBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureParamNamesIsMutable();
-        paramNames_.add(value);
-        onChanged();
-        return this;
-      }
-
-      private lgraph.Lgraph.ListOfProtoFieldData paramValues_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder> paramValuesBuilder_;
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public boolean hasParamValues() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public lgraph.Lgraph.ListOfProtoFieldData getParamValues() {
-        if (paramValuesBuilder_ == null) {
-          return paramValues_ == null ? lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
-        } else {
-          return paramValuesBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public Builder setParamValues(lgraph.Lgraph.ListOfProtoFieldData value) {
-        if (paramValuesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          paramValues_ = value;
-          onChanged();
-        } else {
-          paramValuesBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public Builder setParamValues(
-          lgraph.Lgraph.ListOfProtoFieldData.Builder builderForValue) {
-        if (paramValuesBuilder_ == null) {
-          paramValues_ = builderForValue.build();
-          onChanged();
-        } else {
-          paramValuesBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public Builder mergeParamValues(lgraph.Lgraph.ListOfProtoFieldData value) {
-        if (paramValuesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              paramValues_ != null &&
-              paramValues_ != lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance()) {
-            paramValues_ =
-              lgraph.Lgraph.ListOfProtoFieldData.newBuilder(paramValues_).mergeFrom(value).buildPartial();
-          } else {
-            paramValues_ = value;
-          }
-          onChanged();
-        } else {
-          paramValuesBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public Builder clearParamValues() {
-        if (paramValuesBuilder_ == null) {
-          paramValues_ = null;
-          onChanged();
-        } else {
-          paramValuesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public lgraph.Lgraph.ListOfProtoFieldData.Builder getParamValuesBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getParamValuesFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      public lgraph.Lgraph.ListOfProtoFieldDataOrBuilder getParamValuesOrBuilder() {
-        if (paramValuesBuilder_ != null) {
-          return paramValuesBuilder_.getMessageOrBuilder();
-        } else {
-          return paramValues_ == null ?
-              lgraph.Lgraph.ListOfProtoFieldData.getDefaultInstance() : paramValues_;
-        }
-      }
-      /**
-       * <code>optional .lgraph.ListOfProtoFieldData param_values = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder> 
-          getParamValuesFieldBuilder() {
-        if (paramValuesBuilder_ == null) {
-          paramValuesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              lgraph.Lgraph.ListOfProtoFieldData, lgraph.Lgraph.ListOfProtoFieldData.Builder, lgraph.Lgraph.ListOfProtoFieldDataOrBuilder>(
-                  getParamValues(),
-                  getParentForChildren(),
-                  isClean());
-          paramValues_ = null;
-        }
-        return paramValuesBuilder_;
-      }
-
-      private boolean resultInJsonFormat_ ;
-      /**
-       * <code>required bool result_in_json_format = 4;</code>
-       */
-      public boolean hasResultInJsonFormat() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required bool result_in_json_format = 4;</code>
-       */
-      public boolean getResultInJsonFormat() {
-        return resultInJsonFormat_;
-      }
-      /**
-       * <code>required bool result_in_json_format = 4;</code>
-       */
-      public Builder setResultInJsonFormat(boolean value) {
-        bitField0_ |= 0x00000008;
-        resultInJsonFormat_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool result_in_json_format = 4;</code>
-       */
-      public Builder clearResultInJsonFormat() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        resultInJsonFormat_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object graph_ = "";
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public boolean hasGraph() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public java.lang.String getGraph() {
-        java.lang.Object ref = graph_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            graph_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public com.google.protobuf.ByteString
-          getGraphBytes() {
-        java.lang.Object ref = graph_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          graph_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public Builder setGraph(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        graph_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public Builder clearGraph() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        graph_ = getDefaultInstance().getGraph();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string graph = 5;</code>
-       */
-      public Builder setGraphBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        graph_ = value;
-        onChanged();
-        return this;
-      }
-
-      private double timeout_ ;
-      /**
-       * <code>optional double timeout = 6;</code>
-       */
-      public boolean hasTimeout() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional double timeout = 6;</code>
-       */
-      public double getTimeout() {
-        return timeout_;
-      }
-      /**
-       * <code>optional double timeout = 6;</code>
-       */
-      public Builder setTimeout(double value) {
-        bitField0_ |= 0x00000020;
-        timeout_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional double timeout = 6;</code>
-       */
-      public Builder clearTimeout() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        timeout_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      private long perNodeLimit_ ;
-      /**
-       * <code>optional int64 per_node_limit = 7;</code>
-       */
-      public boolean hasPerNodeLimit() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int64 per_node_limit = 7;</code>
-       */
-      public long getPerNodeLimit() {
-        return perNodeLimit_;
-      }
-      /**
-       * <code>optional int64 per_node_limit = 7;</code>
-       */
-      public Builder setPerNodeLimit(long value) {
-        bitField0_ |= 0x00000040;
-        perNodeLimit_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 per_node_limit = 7;</code>
-       */
-      public Builder clearPerNodeLimit() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        perNodeLimit_ = 0L;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:lgraph.CypherRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:lgraph.CypherRequest)
-    private static final lgraph.Lgraph.CypherRequest DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new lgraph.Lgraph.CypherRequest();
-    }
-
-    public static lgraph.Lgraph.CypherRequest getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<CypherRequest>
-        PARSER = new com.google.protobuf.AbstractParser<CypherRequest>() {
-      @java.lang.Override
-      public CypherRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CypherRequest(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<CypherRequest> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CypherRequest> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public lgraph.Lgraph.CypherRequest getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface CypherResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:lgraph.CypherResponse)
+  public interface GraphQueryResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lgraph.GraphQueryResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -74359,33 +74394,33 @@ public final class Lgraph {
         getJsonResultBytes();
 
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
     boolean hasBinaryResult();
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
-    lgraph.Lgraph.CypherResult getBinaryResult();
+    lgraph.Lgraph.GraphQueryResult getBinaryResult();
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
-    lgraph.Lgraph.CypherResultOrBuilder getBinaryResultOrBuilder();
+    lgraph.Lgraph.GraphQueryResultOrBuilder getBinaryResultOrBuilder();
 
-    public lgraph.Lgraph.CypherResponse.ResultCase getResultCase();
+    public lgraph.Lgraph.GraphQueryResponse.ResultCase getResultCase();
   }
   /**
-   * Protobuf type {@code lgraph.CypherResponse}
+   * Protobuf type {@code lgraph.GraphQueryResponse}
    */
-  public  static final class CypherResponse extends
+  public  static final class GraphQueryResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:lgraph.CypherResponse)
-      CypherResponseOrBuilder {
+      // @@protoc_insertion_point(message_implements:lgraph.GraphQueryResponse)
+      GraphQueryResponseOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use CypherResponse.newBuilder() to construct.
-    private CypherResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use GraphQueryResponse.newBuilder() to construct.
+    private GraphQueryResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private CypherResponse() {
+    private GraphQueryResponse() {
     }
 
     @java.lang.Override
@@ -74393,7 +74428,7 @@ public final class Lgraph {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CypherResponse(
+    private GraphQueryResponse(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -74419,14 +74454,14 @@ public final class Lgraph {
               break;
             }
             case 18: {
-              lgraph.Lgraph.CypherResult.Builder subBuilder = null;
+              lgraph.Lgraph.GraphQueryResult.Builder subBuilder = null;
               if (resultCase_ == 2) {
-                subBuilder = ((lgraph.Lgraph.CypherResult) result_).toBuilder();
+                subBuilder = ((lgraph.Lgraph.GraphQueryResult) result_).toBuilder();
               }
               result_ =
-                  input.readMessage(lgraph.Lgraph.CypherResult.PARSER, extensionRegistry);
+                  input.readMessage(lgraph.Lgraph.GraphQueryResult.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((lgraph.Lgraph.CypherResult) result_);
+                subBuilder.mergeFrom((lgraph.Lgraph.GraphQueryResult) result_);
                 result_ = subBuilder.buildPartial();
               }
               resultCase_ = 2;
@@ -74453,15 +74488,15 @@ public final class Lgraph {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherResponse_descriptor;
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return lgraph.Lgraph.internal_static_lgraph_CypherResponse_fieldAccessorTable
+      return lgraph.Lgraph.internal_static_lgraph_GraphQueryResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              lgraph.Lgraph.CypherResponse.class, lgraph.Lgraph.CypherResponse.Builder.class);
+              lgraph.Lgraph.GraphQueryResponse.class, lgraph.Lgraph.GraphQueryResponse.Builder.class);
     }
 
     private int bitField0_;
@@ -74554,28 +74589,28 @@ public final class Lgraph {
 
     public static final int BINARY_RESULT_FIELD_NUMBER = 2;
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
     public boolean hasBinaryResult() {
       return resultCase_ == 2;
     }
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
-    public lgraph.Lgraph.CypherResult getBinaryResult() {
+    public lgraph.Lgraph.GraphQueryResult getBinaryResult() {
       if (resultCase_ == 2) {
-         return (lgraph.Lgraph.CypherResult) result_;
+         return (lgraph.Lgraph.GraphQueryResult) result_;
       }
-      return lgraph.Lgraph.CypherResult.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
     }
     /**
-     * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+     * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
      */
-    public lgraph.Lgraph.CypherResultOrBuilder getBinaryResultOrBuilder() {
+    public lgraph.Lgraph.GraphQueryResultOrBuilder getBinaryResultOrBuilder() {
       if (resultCase_ == 2) {
-         return (lgraph.Lgraph.CypherResult) result_;
+         return (lgraph.Lgraph.GraphQueryResult) result_;
       }
-      return lgraph.Lgraph.CypherResult.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -74602,7 +74637,7 @@ public final class Lgraph {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, result_);
       }
       if (resultCase_ == 2) {
-        output.writeMessage(2, (lgraph.Lgraph.CypherResult) result_);
+        output.writeMessage(2, (lgraph.Lgraph.GraphQueryResult) result_);
       }
       unknownFields.writeTo(output);
     }
@@ -74618,7 +74653,7 @@ public final class Lgraph {
       }
       if (resultCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (lgraph.Lgraph.CypherResult) result_);
+          .computeMessageSize(2, (lgraph.Lgraph.GraphQueryResult) result_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -74630,10 +74665,10 @@ public final class Lgraph {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof lgraph.Lgraph.CypherResponse)) {
+      if (!(obj instanceof lgraph.Lgraph.GraphQueryResponse)) {
         return super.equals(obj);
       }
-      lgraph.Lgraph.CypherResponse other = (lgraph.Lgraph.CypherResponse) obj;
+      lgraph.Lgraph.GraphQueryResponse other = (lgraph.Lgraph.GraphQueryResponse) obj;
 
       boolean result = true;
       result = result && getResultCase().equals(
@@ -74679,69 +74714,69 @@ public final class Lgraph {
       return hash;
     }
 
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(byte[] data)
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(java.io.InputStream input)
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResponse parseDelimitedFrom(java.io.InputStream input)
+    public static lgraph.Lgraph.GraphQueryResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResponse parseDelimitedFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static lgraph.Lgraph.CypherResponse parseFrom(
+    public static lgraph.Lgraph.GraphQueryResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -74754,7 +74789,7 @@ public final class Lgraph {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(lgraph.Lgraph.CypherResponse prototype) {
+    public static Builder newBuilder(lgraph.Lgraph.GraphQueryResponse prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -74770,26 +74805,26 @@ public final class Lgraph {
       return builder;
     }
     /**
-     * Protobuf type {@code lgraph.CypherResponse}
+     * Protobuf type {@code lgraph.GraphQueryResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:lgraph.CypherResponse)
-        lgraph.Lgraph.CypherResponseOrBuilder {
+        // @@protoc_insertion_point(builder_implements:lgraph.GraphQueryResponse)
+        lgraph.Lgraph.GraphQueryResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResponse_descriptor;
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResponse_fieldAccessorTable
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                lgraph.Lgraph.CypherResponse.class, lgraph.Lgraph.CypherResponse.Builder.class);
+                lgraph.Lgraph.GraphQueryResponse.class, lgraph.Lgraph.GraphQueryResponse.Builder.class);
       }
 
-      // Construct using lgraph.Lgraph.CypherResponse.newBuilder()
+      // Construct using lgraph.Lgraph.GraphQueryResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -74815,17 +74850,17 @@ public final class Lgraph {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return lgraph.Lgraph.internal_static_lgraph_CypherResponse_descriptor;
+        return lgraph.Lgraph.internal_static_lgraph_GraphQueryResponse_descriptor;
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResponse getDefaultInstanceForType() {
-        return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+      public lgraph.Lgraph.GraphQueryResponse getDefaultInstanceForType() {
+        return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResponse build() {
-        lgraph.Lgraph.CypherResponse result = buildPartial();
+      public lgraph.Lgraph.GraphQueryResponse build() {
+        lgraph.Lgraph.GraphQueryResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -74833,8 +74868,8 @@ public final class Lgraph {
       }
 
       @java.lang.Override
-      public lgraph.Lgraph.CypherResponse buildPartial() {
-        lgraph.Lgraph.CypherResponse result = new lgraph.Lgraph.CypherResponse(this);
+      public lgraph.Lgraph.GraphQueryResponse buildPartial() {
+        lgraph.Lgraph.GraphQueryResponse result = new lgraph.Lgraph.GraphQueryResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (resultCase_ == 1) {
@@ -74887,16 +74922,16 @@ public final class Lgraph {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof lgraph.Lgraph.CypherResponse) {
-          return mergeFrom((lgraph.Lgraph.CypherResponse)other);
+        if (other instanceof lgraph.Lgraph.GraphQueryResponse) {
+          return mergeFrom((lgraph.Lgraph.GraphQueryResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(lgraph.Lgraph.CypherResponse other) {
-        if (other == lgraph.Lgraph.CypherResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(lgraph.Lgraph.GraphQueryResponse other) {
+        if (other == lgraph.Lgraph.GraphQueryResponse.getDefaultInstance()) return this;
         switch (other.getResultCase()) {
           case JSON_RESULT: {
             resultCase_ = 1;
@@ -74932,11 +74967,11 @@ public final class Lgraph {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        lgraph.Lgraph.CypherResponse parsedMessage = null;
+        lgraph.Lgraph.GraphQueryResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (lgraph.Lgraph.CypherResponse) e.getUnfinishedMessage();
+          parsedMessage = (lgraph.Lgraph.GraphQueryResponse) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -75050,33 +75085,33 @@ public final class Lgraph {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherResult, lgraph.Lgraph.CypherResult.Builder, lgraph.Lgraph.CypherResultOrBuilder> binaryResultBuilder_;
+          lgraph.Lgraph.GraphQueryResult, lgraph.Lgraph.GraphQueryResult.Builder, lgraph.Lgraph.GraphQueryResultOrBuilder> binaryResultBuilder_;
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
       public boolean hasBinaryResult() {
         return resultCase_ == 2;
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
-      public lgraph.Lgraph.CypherResult getBinaryResult() {
+      public lgraph.Lgraph.GraphQueryResult getBinaryResult() {
         if (binaryResultBuilder_ == null) {
           if (resultCase_ == 2) {
-            return (lgraph.Lgraph.CypherResult) result_;
+            return (lgraph.Lgraph.GraphQueryResult) result_;
           }
-          return lgraph.Lgraph.CypherResult.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
         } else {
           if (resultCase_ == 2) {
             return binaryResultBuilder_.getMessage();
           }
-          return lgraph.Lgraph.CypherResult.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
-      public Builder setBinaryResult(lgraph.Lgraph.CypherResult value) {
+      public Builder setBinaryResult(lgraph.Lgraph.GraphQueryResult value) {
         if (binaryResultBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -75090,10 +75125,10 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
       public Builder setBinaryResult(
-          lgraph.Lgraph.CypherResult.Builder builderForValue) {
+          lgraph.Lgraph.GraphQueryResult.Builder builderForValue) {
         if (binaryResultBuilder_ == null) {
           result_ = builderForValue.build();
           onChanged();
@@ -75104,13 +75139,13 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
-      public Builder mergeBinaryResult(lgraph.Lgraph.CypherResult value) {
+      public Builder mergeBinaryResult(lgraph.Lgraph.GraphQueryResult value) {
         if (binaryResultBuilder_ == null) {
           if (resultCase_ == 2 &&
-              result_ != lgraph.Lgraph.CypherResult.getDefaultInstance()) {
-            result_ = lgraph.Lgraph.CypherResult.newBuilder((lgraph.Lgraph.CypherResult) result_)
+              result_ != lgraph.Lgraph.GraphQueryResult.getDefaultInstance()) {
+            result_ = lgraph.Lgraph.GraphQueryResult.newBuilder((lgraph.Lgraph.GraphQueryResult) result_)
                 .mergeFrom(value).buildPartial();
           } else {
             result_ = value;
@@ -75126,7 +75161,7 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
       public Builder clearBinaryResult() {
         if (binaryResultBuilder_ == null) {
@@ -75145,37 +75180,37 @@ public final class Lgraph {
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
-      public lgraph.Lgraph.CypherResult.Builder getBinaryResultBuilder() {
+      public lgraph.Lgraph.GraphQueryResult.Builder getBinaryResultBuilder() {
         return getBinaryResultFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
-      public lgraph.Lgraph.CypherResultOrBuilder getBinaryResultOrBuilder() {
+      public lgraph.Lgraph.GraphQueryResultOrBuilder getBinaryResultOrBuilder() {
         if ((resultCase_ == 2) && (binaryResultBuilder_ != null)) {
           return binaryResultBuilder_.getMessageOrBuilder();
         } else {
           if (resultCase_ == 2) {
-            return (lgraph.Lgraph.CypherResult) result_;
+            return (lgraph.Lgraph.GraphQueryResult) result_;
           }
-          return lgraph.Lgraph.CypherResult.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherResult binary_result = 2;</code>
+       * <code>optional .lgraph.GraphQueryResult binary_result = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherResult, lgraph.Lgraph.CypherResult.Builder, lgraph.Lgraph.CypherResultOrBuilder> 
+          lgraph.Lgraph.GraphQueryResult, lgraph.Lgraph.GraphQueryResult.Builder, lgraph.Lgraph.GraphQueryResultOrBuilder> 
           getBinaryResultFieldBuilder() {
         if (binaryResultBuilder_ == null) {
           if (!(resultCase_ == 2)) {
-            result_ = lgraph.Lgraph.CypherResult.getDefaultInstance();
+            result_ = lgraph.Lgraph.GraphQueryResult.getDefaultInstance();
           }
           binaryResultBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              lgraph.Lgraph.CypherResult, lgraph.Lgraph.CypherResult.Builder, lgraph.Lgraph.CypherResultOrBuilder>(
-                  (lgraph.Lgraph.CypherResult) result_,
+              lgraph.Lgraph.GraphQueryResult, lgraph.Lgraph.GraphQueryResult.Builder, lgraph.Lgraph.GraphQueryResultOrBuilder>(
+                  (lgraph.Lgraph.GraphQueryResult) result_,
                   getParentForChildren(),
                   isClean());
           result_ = null;
@@ -75197,41 +75232,41 @@ public final class Lgraph {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:lgraph.CypherResponse)
+      // @@protoc_insertion_point(builder_scope:lgraph.GraphQueryResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:lgraph.CypherResponse)
-    private static final lgraph.Lgraph.CypherResponse DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:lgraph.GraphQueryResponse)
+    private static final lgraph.Lgraph.GraphQueryResponse DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new lgraph.Lgraph.CypherResponse();
+      DEFAULT_INSTANCE = new lgraph.Lgraph.GraphQueryResponse();
     }
 
-    public static lgraph.Lgraph.CypherResponse getDefaultInstance() {
+    public static lgraph.Lgraph.GraphQueryResponse getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<CypherResponse>
-        PARSER = new com.google.protobuf.AbstractParser<CypherResponse>() {
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GraphQueryResponse>
+        PARSER = new com.google.protobuf.AbstractParser<GraphQueryResponse>() {
       @java.lang.Override
-      public CypherResponse parsePartialFrom(
+      public GraphQueryResponse parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CypherResponse(input, extensionRegistry);
+        return new GraphQueryResponse(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<CypherResponse> parser() {
+    public static com.google.protobuf.Parser<GraphQueryResponse> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<CypherResponse> getParserForType() {
+    public com.google.protobuf.Parser<GraphQueryResponse> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public lgraph.Lgraph.CypherResponse getDefaultInstanceForType() {
+    public lgraph.Lgraph.GraphQueryResponse getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -78740,6 +78775,15 @@ public final class Lgraph {
      * <code>optional bool in_process = 4;</code>
      */
     boolean getInProcess();
+
+    /**
+     * <code>optional bool result_in_json_format = 5;</code>
+     */
+    boolean hasResultInJsonFormat();
+    /**
+     * <code>optional bool result_in_json_format = 5;</code>
+     */
+    boolean getResultInJsonFormat();
   }
   /**
    * <pre>
@@ -78764,6 +78808,7 @@ public final class Lgraph {
       param_ = com.google.protobuf.ByteString.EMPTY;
       timeout_ = 0D;
       inProcess_ = false;
+      resultInJsonFormat_ = false;
     }
 
     @java.lang.Override
@@ -78809,6 +78854,11 @@ public final class Lgraph {
             case 32: {
               bitField0_ |= 0x00000008;
               inProcess_ = input.readBool();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              resultInJsonFormat_ = input.readBool();
               break;
             }
             default: {
@@ -78931,6 +78981,21 @@ public final class Lgraph {
       return inProcess_;
     }
 
+    public static final int RESULT_IN_JSON_FORMAT_FIELD_NUMBER = 5;
+    private boolean resultInJsonFormat_;
+    /**
+     * <code>optional bool result_in_json_format = 5;</code>
+     */
+    public boolean hasResultInJsonFormat() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool result_in_json_format = 5;</code>
+     */
+    public boolean getResultInJsonFormat() {
+      return resultInJsonFormat_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -78965,6 +79030,9 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBool(4, inProcess_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, resultInJsonFormat_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -78988,6 +79056,10 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, inProcess_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, resultInJsonFormat_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -79027,6 +79099,11 @@ public final class Lgraph {
         result = result && (getInProcess()
             == other.getInProcess());
       }
+      result = result && (hasResultInJsonFormat() == other.hasResultInJsonFormat());
+      if (hasResultInJsonFormat()) {
+        result = result && (getResultInJsonFormat()
+            == other.getResultInJsonFormat());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -79055,6 +79132,11 @@ public final class Lgraph {
         hash = (37 * hash) + IN_PROCESS_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getInProcess());
+      }
+      if (hasResultInJsonFormat()) {
+        hash = (37 * hash) + RESULT_IN_JSON_FORMAT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getResultInJsonFormat());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -79203,6 +79285,8 @@ public final class Lgraph {
         bitField0_ = (bitField0_ & ~0x00000004);
         inProcess_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
+        resultInJsonFormat_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -79247,6 +79331,10 @@ public final class Lgraph {
           to_bitField0_ |= 0x00000008;
         }
         result.inProcess_ = inProcess_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.resultInJsonFormat_ = resultInJsonFormat_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -79309,6 +79397,9 @@ public final class Lgraph {
         }
         if (other.hasInProcess()) {
           setInProcess(other.getInProcess());
+        }
+        if (other.hasResultInJsonFormat()) {
+          setResultInJsonFormat(other.getResultInJsonFormat());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -79520,6 +79611,38 @@ public final class Lgraph {
         onChanged();
         return this;
       }
+
+      private boolean resultInJsonFormat_ ;
+      /**
+       * <code>optional bool result_in_json_format = 5;</code>
+       */
+      public boolean hasResultInJsonFormat() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool result_in_json_format = 5;</code>
+       */
+      public boolean getResultInJsonFormat() {
+        return resultInJsonFormat_;
+      }
+      /**
+       * <code>optional bool result_in_json_format = 5;</code>
+       */
+      public Builder setResultInJsonFormat(boolean value) {
+        bitField0_ |= 0x00000010;
+        resultInJsonFormat_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool result_in_json_format = 5;</code>
+       */
+      public Builder clearResultInJsonFormat() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        resultInJsonFormat_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -79578,13 +79701,29 @@ public final class Lgraph {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required bytes reply = 1;</code>
+     * <code>optional bytes reply = 1;</code>
      */
     boolean hasReply();
     /**
-     * <code>required bytes reply = 1;</code>
+     * <code>optional bytes reply = 1;</code>
      */
     com.google.protobuf.ByteString getReply();
+
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    boolean hasJsonResult();
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    java.lang.String getJsonResult();
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getJsonResultBytes();
+
+    public lgraph.Lgraph.CallPluginResponse.CallPluginResultCase getCallPluginResultCase();
   }
   /**
    * Protobuf type {@code lgraph.CallPluginResponse}
@@ -79599,7 +79738,6 @@ public final class Lgraph {
       super(builder);
     }
     private CallPluginResponse() {
-      reply_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -79627,8 +79765,14 @@ public final class Lgraph {
               done = true;
               break;
             case 10: {
-              bitField0_ |= 0x00000001;
-              reply_ = input.readBytes();
+              callPluginResultCase_ = 1;
+              callPluginResult_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              callPluginResultCase_ = 2;
+              callPluginResult_ = bs;
               break;
             }
             default: {
@@ -79664,19 +79808,108 @@ public final class Lgraph {
     }
 
     private int bitField0_;
+    private int callPluginResultCase_ = 0;
+    private java.lang.Object callPluginResult_;
+    public enum CallPluginResultCase
+        implements com.google.protobuf.Internal.EnumLite {
+      REPLY(1),
+      JSON_RESULT(2),
+      CALLPLUGINRESULT_NOT_SET(0);
+      private final int value;
+      private CallPluginResultCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static CallPluginResultCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static CallPluginResultCase forNumber(int value) {
+        switch (value) {
+          case 1: return REPLY;
+          case 2: return JSON_RESULT;
+          case 0: return CALLPLUGINRESULT_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public CallPluginResultCase
+    getCallPluginResultCase() {
+      return CallPluginResultCase.forNumber(
+          callPluginResultCase_);
+    }
+
     public static final int REPLY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString reply_;
     /**
-     * <code>required bytes reply = 1;</code>
+     * <code>optional bytes reply = 1;</code>
      */
     public boolean hasReply() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return callPluginResultCase_ == 1;
     }
     /**
-     * <code>required bytes reply = 1;</code>
+     * <code>optional bytes reply = 1;</code>
      */
     public com.google.protobuf.ByteString getReply() {
-      return reply_;
+      if (callPluginResultCase_ == 1) {
+        return (com.google.protobuf.ByteString) callPluginResult_;
+      }
+      return com.google.protobuf.ByteString.EMPTY;
+    }
+
+    public static final int JSON_RESULT_FIELD_NUMBER = 2;
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    public boolean hasJsonResult() {
+      return callPluginResultCase_ == 2;
+    }
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    public java.lang.String getJsonResult() {
+      java.lang.Object ref = "";
+      if (callPluginResultCase_ == 2) {
+        ref = callPluginResult_;
+      }
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8() && (callPluginResultCase_ == 2)) {
+          callPluginResult_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string json_result = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getJsonResultBytes() {
+      java.lang.Object ref = "";
+      if (callPluginResultCase_ == 2) {
+        ref = callPluginResult_;
+      }
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        if (callPluginResultCase_ == 2) {
+          callPluginResult_ = b;
+        }
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -79686,10 +79919,6 @@ public final class Lgraph {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasReply()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -79697,8 +79926,12 @@ public final class Lgraph {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, reply_);
+      if (callPluginResultCase_ == 1) {
+        output.writeBytes(
+            1, (com.google.protobuf.ByteString) callPluginResult_);
+      }
+      if (callPluginResultCase_ == 2) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, callPluginResult_);
       }
       unknownFields.writeTo(output);
     }
@@ -79709,9 +79942,13 @@ public final class Lgraph {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      if (callPluginResultCase_ == 1) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, reply_);
+          .computeBytesSize(
+              1, (com.google.protobuf.ByteString) callPluginResult_);
+      }
+      if (callPluginResultCase_ == 2) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, callPluginResult_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -79729,10 +79966,20 @@ public final class Lgraph {
       lgraph.Lgraph.CallPluginResponse other = (lgraph.Lgraph.CallPluginResponse) obj;
 
       boolean result = true;
-      result = result && (hasReply() == other.hasReply());
-      if (hasReply()) {
-        result = result && getReply()
-            .equals(other.getReply());
+      result = result && getCallPluginResultCase().equals(
+          other.getCallPluginResultCase());
+      if (!result) return false;
+      switch (callPluginResultCase_) {
+        case 1:
+          result = result && getReply()
+              .equals(other.getReply());
+          break;
+        case 2:
+          result = result && getJsonResult()
+              .equals(other.getJsonResult());
+          break;
+        case 0:
+        default:
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -79745,9 +79992,17 @@ public final class Lgraph {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasReply()) {
-        hash = (37 * hash) + REPLY_FIELD_NUMBER;
-        hash = (53 * hash) + getReply().hashCode();
+      switch (callPluginResultCase_) {
+        case 1:
+          hash = (37 * hash) + REPLY_FIELD_NUMBER;
+          hash = (53 * hash) + getReply().hashCode();
+          break;
+        case 2:
+          hash = (37 * hash) + JSON_RESULT_FIELD_NUMBER;
+          hash = (53 * hash) + getJsonResult().hashCode();
+          break;
+        case 0:
+        default:
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -79882,8 +80137,8 @@ public final class Lgraph {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        reply_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        callPluginResultCase_ = 0;
+        callPluginResult_ = null;
         return this;
       }
 
@@ -79912,11 +80167,14 @@ public final class Lgraph {
         lgraph.Lgraph.CallPluginResponse result = new lgraph.Lgraph.CallPluginResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        if (callPluginResultCase_ == 1) {
+          result.callPluginResult_ = callPluginResult_;
         }
-        result.reply_ = reply_;
+        if (callPluginResultCase_ == 2) {
+          result.callPluginResult_ = callPluginResult_;
+        }
         result.bitField0_ = to_bitField0_;
+        result.callPluginResultCase_ = callPluginResultCase_;
         onBuilt();
         return result;
       }
@@ -79965,8 +80223,20 @@ public final class Lgraph {
 
       public Builder mergeFrom(lgraph.Lgraph.CallPluginResponse other) {
         if (other == lgraph.Lgraph.CallPluginResponse.getDefaultInstance()) return this;
-        if (other.hasReply()) {
-          setReply(other.getReply());
+        switch (other.getCallPluginResultCase()) {
+          case REPLY: {
+            setReply(other.getReply());
+            break;
+          }
+          case JSON_RESULT: {
+            callPluginResultCase_ = 2;
+            callPluginResult_ = other.callPluginResult_;
+            onChanged();
+            break;
+          }
+          case CALLPLUGINRESULT_NOT_SET: {
+            break;
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -79975,9 +80245,6 @@ public final class Lgraph {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasReply()) {
-          return false;
-        }
         return true;
       }
 
@@ -79999,39 +80266,145 @@ public final class Lgraph {
         }
         return this;
       }
+      private int callPluginResultCase_ = 0;
+      private java.lang.Object callPluginResult_;
+      public CallPluginResultCase
+          getCallPluginResultCase() {
+        return CallPluginResultCase.forNumber(
+            callPluginResultCase_);
+      }
+
+      public Builder clearCallPluginResult() {
+        callPluginResultCase_ = 0;
+        callPluginResult_ = null;
+        onChanged();
+        return this;
+      }
+
       private int bitField0_;
 
-      private com.google.protobuf.ByteString reply_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>required bytes reply = 1;</code>
+       * <code>optional bytes reply = 1;</code>
        */
       public boolean hasReply() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return callPluginResultCase_ == 1;
       }
       /**
-       * <code>required bytes reply = 1;</code>
+       * <code>optional bytes reply = 1;</code>
        */
       public com.google.protobuf.ByteString getReply() {
-        return reply_;
+        if (callPluginResultCase_ == 1) {
+          return (com.google.protobuf.ByteString) callPluginResult_;
+        }
+        return com.google.protobuf.ByteString.EMPTY;
       }
       /**
-       * <code>required bytes reply = 1;</code>
+       * <code>optional bytes reply = 1;</code>
        */
       public Builder setReply(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
-        reply_ = value;
+  callPluginResultCase_ = 1;
+        callPluginResult_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required bytes reply = 1;</code>
+       * <code>optional bytes reply = 1;</code>
        */
       public Builder clearReply() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        reply_ = getDefaultInstance().getReply();
+        if (callPluginResultCase_ == 1) {
+          callPluginResultCase_ = 0;
+          callPluginResult_ = null;
+          onChanged();
+        }
+        return this;
+      }
+
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public boolean hasJsonResult() {
+        return callPluginResultCase_ == 2;
+      }
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public java.lang.String getJsonResult() {
+        java.lang.Object ref = "";
+        if (callPluginResultCase_ == 2) {
+          ref = callPluginResult_;
+        }
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (callPluginResultCase_ == 2) {
+            if (bs.isValidUtf8()) {
+              callPluginResult_ = s;
+            }
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getJsonResultBytes() {
+        java.lang.Object ref = "";
+        if (callPluginResultCase_ == 2) {
+          ref = callPluginResult_;
+        }
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          if (callPluginResultCase_ == 2) {
+            callPluginResult_ = b;
+          }
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public Builder setJsonResult(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  callPluginResultCase_ = 2;
+        callPluginResult_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public Builder clearJsonResult() {
+        if (callPluginResultCase_ == 2) {
+          callPluginResultCase_ = 0;
+          callPluginResult_ = null;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>optional string json_result = 2;</code>
+       */
+      public Builder setJsonResultBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  callPluginResultCase_ = 2;
+        callPluginResult_ = value;
         onChanged();
         return this;
       }
@@ -83072,6 +83445,20 @@ public final class Lgraph {
   public interface ListPluginResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:lgraph.ListPluginResponse)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    boolean hasReply();
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    java.lang.String getReply();
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getReplyBytes();
   }
   /**
    * Protobuf type {@code lgraph.ListPluginResponse}
@@ -83086,6 +83473,7 @@ public final class Lgraph {
       super(builder);
     }
     private ListPluginResponse() {
+      reply_ = "";
     }
 
     @java.lang.Override
@@ -83101,6 +83489,7 @@ public final class Lgraph {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -83111,6 +83500,12 @@ public final class Lgraph {
             case 0:
               done = true;
               break;
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              reply_ = bs;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -83143,6 +83538,49 @@ public final class Lgraph {
               lgraph.Lgraph.ListPluginResponse.class, lgraph.Lgraph.ListPluginResponse.Builder.class);
     }
 
+    private int bitField0_;
+    public static final int REPLY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object reply_;
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    public boolean hasReply() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    public java.lang.String getReply() {
+      java.lang.Object ref = reply_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          reply_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string reply = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReplyBytes() {
+      java.lang.Object ref = reply_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        reply_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -83150,6 +83588,10 @@ public final class Lgraph {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasReply()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -83157,6 +83599,9 @@ public final class Lgraph {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, reply_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -83166,6 +83611,9 @@ public final class Lgraph {
       if (size != -1) return size;
 
       size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, reply_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -83182,6 +83630,11 @@ public final class Lgraph {
       lgraph.Lgraph.ListPluginResponse other = (lgraph.Lgraph.ListPluginResponse) obj;
 
       boolean result = true;
+      result = result && (hasReply() == other.hasReply());
+      if (hasReply()) {
+        result = result && getReply()
+            .equals(other.getReply());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -83193,6 +83646,10 @@ public final class Lgraph {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasReply()) {
+        hash = (37 * hash) + REPLY_FIELD_NUMBER;
+        hash = (53 * hash) + getReply().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -83326,6 +83783,8 @@ public final class Lgraph {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        reply_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -83352,6 +83811,13 @@ public final class Lgraph {
       @java.lang.Override
       public lgraph.Lgraph.ListPluginResponse buildPartial() {
         lgraph.Lgraph.ListPluginResponse result = new lgraph.Lgraph.ListPluginResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.reply_ = reply_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -83400,6 +83866,11 @@ public final class Lgraph {
 
       public Builder mergeFrom(lgraph.Lgraph.ListPluginResponse other) {
         if (other == lgraph.Lgraph.ListPluginResponse.getDefaultInstance()) return this;
+        if (other.hasReply()) {
+          bitField0_ |= 0x00000001;
+          reply_ = other.reply_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -83407,6 +83878,9 @@ public final class Lgraph {
 
       @java.lang.Override
       public final boolean isInitialized() {
+        if (!hasReply()) {
+          return false;
+        }
         return true;
       }
 
@@ -83426,6 +83900,83 @@ public final class Lgraph {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object reply_ = "";
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public boolean hasReply() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public java.lang.String getReply() {
+        java.lang.Object ref = reply_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            reply_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReplyBytes() {
+        java.lang.Object ref = reply_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          reply_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public Builder setReply(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        reply_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public Builder clearReply() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        reply_ = getDefaultInstance().getReply();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string reply = 1;</code>
+       */
+      public Builder setReplyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        reply_ = value;
+        onChanged();
         return this;
       }
       @java.lang.Override
@@ -83560,6 +84111,20 @@ public final class Lgraph {
     com.google.protobuf.ByteString
         getGraphBytes();
 
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    boolean hasVersion();
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
     public lgraph.Lgraph.PluginRequest.ReqCase getReqCase();
   }
   /**
@@ -83577,6 +84142,7 @@ public final class Lgraph {
     private PluginRequest() {
       type_ = 1;
       graph_ = "";
+      version_ = "";
     }
 
     @java.lang.Override
@@ -83677,6 +84243,12 @@ public final class Lgraph {
               graph_ = bs;
               break;
             }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              version_ = bs;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -83722,6 +84294,18 @@ public final class Lgraph {
        * <code>PYTHON = 2;</code>
        */
       PYTHON(2),
+      /**
+       * <pre>
+       * not supported yet
+       * </pre>
+       *
+       * <code>JAVA = 3;</code>
+       */
+      JAVA(3),
+      /**
+       * <code>ANY = 4;</code>
+       */
+      ANY(4),
       ;
 
       /**
@@ -83732,6 +84316,18 @@ public final class Lgraph {
        * <code>PYTHON = 2;</code>
        */
       public static final int PYTHON_VALUE = 2;
+      /**
+       * <pre>
+       * not supported yet
+       * </pre>
+       *
+       * <code>JAVA = 3;</code>
+       */
+      public static final int JAVA_VALUE = 3;
+      /**
+       * <code>ANY = 4;</code>
+       */
+      public static final int ANY_VALUE = 4;
 
 
       public final int getNumber() {
@@ -83750,6 +84346,8 @@ public final class Lgraph {
         switch (value) {
           case 1: return CPP;
           case 2: return PYTHON;
+          case 3: return JAVA;
+          case 4: return ANY;
           default: return null;
         }
       }
@@ -84005,6 +84603,48 @@ public final class Lgraph {
       }
     }
 
+    public static final int VERSION_FIELD_NUMBER = 7;
+    private volatile java.lang.Object version_;
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    public boolean hasVersion() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          version_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string version = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -84063,6 +84703,9 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, graph_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, version_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -84095,6 +84738,9 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, graph_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, version_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -84119,6 +84765,11 @@ public final class Lgraph {
       if (hasGraph()) {
         result = result && getGraph()
             .equals(other.getGraph());
+      }
+      result = result && (hasVersion() == other.hasVersion());
+      if (hasVersion()) {
+        result = result && getVersion()
+            .equals(other.getVersion());
       }
       result = result && getReqCase().equals(
           other.getReqCase());
@@ -84161,6 +84812,10 @@ public final class Lgraph {
       if (hasGraph()) {
         hash = (37 * hash) + GRAPH_FIELD_NUMBER;
         hash = (53 * hash) + getGraph().hashCode();
+      }
+      if (hasVersion()) {
+        hash = (37 * hash) + VERSION_FIELD_NUMBER;
+        hash = (53 * hash) + getVersion().hashCode();
       }
       switch (reqCase_) {
         case 2:
@@ -84319,6 +84974,8 @@ public final class Lgraph {
         bitField0_ = (bitField0_ & ~0x00000001);
         graph_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        version_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         reqCase_ = 0;
         req_ = null;
         return this;
@@ -84385,6 +85042,10 @@ public final class Lgraph {
           to_bitField0_ |= 0x00000020;
         }
         result.graph_ = graph_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.version_ = version_;
         result.bitField0_ = to_bitField0_;
         result.reqCase_ = reqCase_;
         onBuilt();
@@ -84441,6 +85102,11 @@ public final class Lgraph {
         if (other.hasGraph()) {
           bitField0_ |= 0x00000020;
           graph_ = other.graph_;
+          onChanged();
+        }
+        if (other.hasVersion()) {
+          bitField0_ |= 0x00000040;
+          version_ = other.version_;
           onChanged();
         }
         switch (other.getReqCase()) {
@@ -85186,6 +85852,82 @@ public final class Lgraph {
         onChanged();
         return this;
       }
+
+      private java.lang.Object version_ = "";
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public boolean hasVersion() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            version_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public Builder clearVersion() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string version = 7;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        version_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -85578,8 +86320,8 @@ public final class Lgraph {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasCallPluginResponse()) {
-        if (!getCallPluginResponse().isInitialized()) {
+      if (hasListPluginResponse()) {
+        if (!getListPluginResponse().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -85967,8 +86709,8 @@ public final class Lgraph {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (hasCallPluginResponse()) {
-          if (!getCallPluginResponse().isInitialized()) {
+        if (hasListPluginResponse()) {
+          if (!getListPluginResponse().isInitialized()) {
             return false;
           }
         }
@@ -94937,17 +95679,17 @@ public final class Lgraph {
     lgraph.Lgraph.GraphApiRequestOrBuilder getGraphApiRequestOrBuilder();
 
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    boolean hasCypherRequest();
+    boolean hasGraphQueryRequest();
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    lgraph.Lgraph.CypherRequest getCypherRequest();
+    lgraph.Lgraph.GraphQueryRequest getGraphQueryRequest();
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    lgraph.Lgraph.CypherRequestOrBuilder getCypherRequestOrBuilder();
+    lgraph.Lgraph.GraphQueryRequestOrBuilder getGraphQueryRequestOrBuilder();
 
     /**
      * <code>optional .lgraph.PluginRequest plugin_request = 13;</code>
@@ -95141,14 +95883,14 @@ public final class Lgraph {
               break;
             }
             case 98: {
-              lgraph.Lgraph.CypherRequest.Builder subBuilder = null;
+              lgraph.Lgraph.GraphQueryRequest.Builder subBuilder = null;
               if (reqCase_ == 12) {
-                subBuilder = ((lgraph.Lgraph.CypherRequest) req_).toBuilder();
+                subBuilder = ((lgraph.Lgraph.GraphQueryRequest) req_).toBuilder();
               }
               req_ =
-                  input.readMessage(lgraph.Lgraph.CypherRequest.PARSER, extensionRegistry);
+                  input.readMessage(lgraph.Lgraph.GraphQueryRequest.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((lgraph.Lgraph.CypherRequest) req_);
+                subBuilder.mergeFrom((lgraph.Lgraph.GraphQueryRequest) req_);
                 req_ = subBuilder.buildPartial();
               }
               reqCase_ = 12;
@@ -95304,7 +96046,7 @@ public final class Lgraph {
     public enum ReqCase
         implements com.google.protobuf.Internal.EnumLite {
       GRAPH_API_REQUEST(11),
-      CYPHER_REQUEST(12),
+      GRAPH_QUERY_REQUEST(12),
       PLUGIN_REQUEST(13),
       HA_REQUEST(14),
       IMPORT_REQUEST(15),
@@ -95329,7 +96071,7 @@ public final class Lgraph {
       public static ReqCase forNumber(int value) {
         switch (value) {
           case 11: return GRAPH_API_REQUEST;
-          case 12: return CYPHER_REQUEST;
+          case 12: return GRAPH_QUERY_REQUEST;
           case 13: return PLUGIN_REQUEST;
           case 14: return HA_REQUEST;
           case 15: return IMPORT_REQUEST;
@@ -95493,30 +96235,30 @@ public final class Lgraph {
       return lgraph.Lgraph.GraphApiRequest.getDefaultInstance();
     }
 
-    public static final int CYPHER_REQUEST_FIELD_NUMBER = 12;
+    public static final int GRAPH_QUERY_REQUEST_FIELD_NUMBER = 12;
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    public boolean hasCypherRequest() {
+    public boolean hasGraphQueryRequest() {
       return reqCase_ == 12;
     }
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    public lgraph.Lgraph.CypherRequest getCypherRequest() {
+    public lgraph.Lgraph.GraphQueryRequest getGraphQueryRequest() {
       if (reqCase_ == 12) {
-         return (lgraph.Lgraph.CypherRequest) req_;
+         return (lgraph.Lgraph.GraphQueryRequest) req_;
       }
-      return lgraph.Lgraph.CypherRequest.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
     }
     /**
-     * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+     * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
      */
-    public lgraph.Lgraph.CypherRequestOrBuilder getCypherRequestOrBuilder() {
+    public lgraph.Lgraph.GraphQueryRequestOrBuilder getGraphQueryRequestOrBuilder() {
       if (reqCase_ == 12) {
-         return (lgraph.Lgraph.CypherRequest) req_;
+         return (lgraph.Lgraph.GraphQueryRequest) req_;
       }
-      return lgraph.Lgraph.CypherRequest.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
     }
 
     public static final int PLUGIN_REQUEST_FIELD_NUMBER = 13;
@@ -95744,8 +96486,8 @@ public final class Lgraph {
           return false;
         }
       }
-      if (hasCypherRequest()) {
-        if (!getCypherRequest().isInitialized()) {
+      if (hasGraphQueryRequest()) {
+        if (!getGraphQueryRequest().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -95815,7 +96557,7 @@ public final class Lgraph {
         output.writeMessage(11, (lgraph.Lgraph.GraphApiRequest) req_);
       }
       if (reqCase_ == 12) {
-        output.writeMessage(12, (lgraph.Lgraph.CypherRequest) req_);
+        output.writeMessage(12, (lgraph.Lgraph.GraphQueryRequest) req_);
       }
       if (reqCase_ == 13) {
         output.writeMessage(13, (lgraph.Lgraph.PluginRequest) req_);
@@ -95870,7 +96612,7 @@ public final class Lgraph {
       }
       if (reqCase_ == 12) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, (lgraph.Lgraph.CypherRequest) req_);
+          .computeMessageSize(12, (lgraph.Lgraph.GraphQueryRequest) req_);
       }
       if (reqCase_ == 13) {
         size += com.google.protobuf.CodedOutputStream
@@ -95949,8 +96691,8 @@ public final class Lgraph {
               .equals(other.getGraphApiRequest());
           break;
         case 12:
-          result = result && getCypherRequest()
-              .equals(other.getCypherRequest());
+          result = result && getGraphQueryRequest()
+              .equals(other.getGraphQueryRequest());
           break;
         case 13:
           result = result && getPluginRequest()
@@ -96022,8 +96764,8 @@ public final class Lgraph {
           hash = (53 * hash) + getGraphApiRequest().hashCode();
           break;
         case 12:
-          hash = (37 * hash) + CYPHER_REQUEST_FIELD_NUMBER;
-          hash = (53 * hash) + getCypherRequest().hashCode();
+          hash = (37 * hash) + GRAPH_QUERY_REQUEST_FIELD_NUMBER;
+          hash = (53 * hash) + getGraphQueryRequest().hashCode();
           break;
         case 13:
           hash = (37 * hash) + PLUGIN_REQUEST_FIELD_NUMBER;
@@ -96261,10 +97003,10 @@ public final class Lgraph {
           }
         }
         if (reqCase_ == 12) {
-          if (cypherRequestBuilder_ == null) {
+          if (graphQueryRequestBuilder_ == null) {
             result.req_ = req_;
           } else {
-            result.req_ = cypherRequestBuilder_.build();
+            result.req_ = graphQueryRequestBuilder_.build();
           }
         }
         if (reqCase_ == 13) {
@@ -96394,8 +97136,8 @@ public final class Lgraph {
             mergeGraphApiRequest(other.getGraphApiRequest());
             break;
           }
-          case CYPHER_REQUEST: {
-            mergeCypherRequest(other.getCypherRequest());
+          case GRAPH_QUERY_REQUEST: {
+            mergeGraphQueryRequest(other.getGraphQueryRequest());
             break;
           }
           case PLUGIN_REQUEST: {
@@ -96449,8 +97191,8 @@ public final class Lgraph {
             return false;
           }
         }
-        if (hasCypherRequest()) {
-          if (!getCypherRequest().isInitialized()) {
+        if (hasGraphQueryRequest()) {
+          if (!getGraphQueryRequest().isInitialized()) {
             return false;
           }
         }
@@ -96880,67 +97622,67 @@ public final class Lgraph {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherRequest, lgraph.Lgraph.CypherRequest.Builder, lgraph.Lgraph.CypherRequestOrBuilder> cypherRequestBuilder_;
+          lgraph.Lgraph.GraphQueryRequest, lgraph.Lgraph.GraphQueryRequest.Builder, lgraph.Lgraph.GraphQueryRequestOrBuilder> graphQueryRequestBuilder_;
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public boolean hasCypherRequest() {
+      public boolean hasGraphQueryRequest() {
         return reqCase_ == 12;
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public lgraph.Lgraph.CypherRequest getCypherRequest() {
-        if (cypherRequestBuilder_ == null) {
+      public lgraph.Lgraph.GraphQueryRequest getGraphQueryRequest() {
+        if (graphQueryRequestBuilder_ == null) {
           if (reqCase_ == 12) {
-            return (lgraph.Lgraph.CypherRequest) req_;
+            return (lgraph.Lgraph.GraphQueryRequest) req_;
           }
-          return lgraph.Lgraph.CypherRequest.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
         } else {
           if (reqCase_ == 12) {
-            return cypherRequestBuilder_.getMessage();
+            return graphQueryRequestBuilder_.getMessage();
           }
-          return lgraph.Lgraph.CypherRequest.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public Builder setCypherRequest(lgraph.Lgraph.CypherRequest value) {
-        if (cypherRequestBuilder_ == null) {
+      public Builder setGraphQueryRequest(lgraph.Lgraph.GraphQueryRequest value) {
+        if (graphQueryRequestBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           req_ = value;
           onChanged();
         } else {
-          cypherRequestBuilder_.setMessage(value);
+          graphQueryRequestBuilder_.setMessage(value);
         }
         reqCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public Builder setCypherRequest(
-          lgraph.Lgraph.CypherRequest.Builder builderForValue) {
-        if (cypherRequestBuilder_ == null) {
+      public Builder setGraphQueryRequest(
+          lgraph.Lgraph.GraphQueryRequest.Builder builderForValue) {
+        if (graphQueryRequestBuilder_ == null) {
           req_ = builderForValue.build();
           onChanged();
         } else {
-          cypherRequestBuilder_.setMessage(builderForValue.build());
+          graphQueryRequestBuilder_.setMessage(builderForValue.build());
         }
         reqCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public Builder mergeCypherRequest(lgraph.Lgraph.CypherRequest value) {
-        if (cypherRequestBuilder_ == null) {
+      public Builder mergeGraphQueryRequest(lgraph.Lgraph.GraphQueryRequest value) {
+        if (graphQueryRequestBuilder_ == null) {
           if (reqCase_ == 12 &&
-              req_ != lgraph.Lgraph.CypherRequest.getDefaultInstance()) {
-            req_ = lgraph.Lgraph.CypherRequest.newBuilder((lgraph.Lgraph.CypherRequest) req_)
+              req_ != lgraph.Lgraph.GraphQueryRequest.getDefaultInstance()) {
+            req_ = lgraph.Lgraph.GraphQueryRequest.newBuilder((lgraph.Lgraph.GraphQueryRequest) req_)
                 .mergeFrom(value).buildPartial();
           } else {
             req_ = value;
@@ -96948,18 +97690,18 @@ public final class Lgraph {
           onChanged();
         } else {
           if (reqCase_ == 12) {
-            cypherRequestBuilder_.mergeFrom(value);
+            graphQueryRequestBuilder_.mergeFrom(value);
           }
-          cypherRequestBuilder_.setMessage(value);
+          graphQueryRequestBuilder_.setMessage(value);
         }
         reqCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public Builder clearCypherRequest() {
-        if (cypherRequestBuilder_ == null) {
+      public Builder clearGraphQueryRequest() {
+        if (graphQueryRequestBuilder_ == null) {
           if (reqCase_ == 12) {
             reqCase_ = 0;
             req_ = null;
@@ -96970,49 +97712,49 @@ public final class Lgraph {
             reqCase_ = 0;
             req_ = null;
           }
-          cypherRequestBuilder_.clear();
+          graphQueryRequestBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public lgraph.Lgraph.CypherRequest.Builder getCypherRequestBuilder() {
-        return getCypherRequestFieldBuilder().getBuilder();
+      public lgraph.Lgraph.GraphQueryRequest.Builder getGraphQueryRequestBuilder() {
+        return getGraphQueryRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
-      public lgraph.Lgraph.CypherRequestOrBuilder getCypherRequestOrBuilder() {
-        if ((reqCase_ == 12) && (cypherRequestBuilder_ != null)) {
-          return cypherRequestBuilder_.getMessageOrBuilder();
+      public lgraph.Lgraph.GraphQueryRequestOrBuilder getGraphQueryRequestOrBuilder() {
+        if ((reqCase_ == 12) && (graphQueryRequestBuilder_ != null)) {
+          return graphQueryRequestBuilder_.getMessageOrBuilder();
         } else {
           if (reqCase_ == 12) {
-            return (lgraph.Lgraph.CypherRequest) req_;
+            return (lgraph.Lgraph.GraphQueryRequest) req_;
           }
-          return lgraph.Lgraph.CypherRequest.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherRequest cypher_request = 12;</code>
+       * <code>optional .lgraph.GraphQueryRequest graph_query_request = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherRequest, lgraph.Lgraph.CypherRequest.Builder, lgraph.Lgraph.CypherRequestOrBuilder> 
-          getCypherRequestFieldBuilder() {
-        if (cypherRequestBuilder_ == null) {
+          lgraph.Lgraph.GraphQueryRequest, lgraph.Lgraph.GraphQueryRequest.Builder, lgraph.Lgraph.GraphQueryRequestOrBuilder> 
+          getGraphQueryRequestFieldBuilder() {
+        if (graphQueryRequestBuilder_ == null) {
           if (!(reqCase_ == 12)) {
-            req_ = lgraph.Lgraph.CypherRequest.getDefaultInstance();
+            req_ = lgraph.Lgraph.GraphQueryRequest.getDefaultInstance();
           }
-          cypherRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              lgraph.Lgraph.CypherRequest, lgraph.Lgraph.CypherRequest.Builder, lgraph.Lgraph.CypherRequestOrBuilder>(
-                  (lgraph.Lgraph.CypherRequest) req_,
+          graphQueryRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              lgraph.Lgraph.GraphQueryRequest, lgraph.Lgraph.GraphQueryRequest.Builder, lgraph.Lgraph.GraphQueryRequestOrBuilder>(
+                  (lgraph.Lgraph.GraphQueryRequest) req_,
                   getParentForChildren(),
                   isClean());
           req_ = null;
         }
         reqCase_ = 12;
         onChanged();;
-        return cypherRequestBuilder_;
+        return graphQueryRequestBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -98219,17 +98961,17 @@ public final class Lgraph {
     lgraph.Lgraph.GraphApiResponseOrBuilder getGraphApiResponseOrBuilder();
 
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    boolean hasCypherResponse();
+    boolean hasGraphQueryResponse();
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    lgraph.Lgraph.CypherResponse getCypherResponse();
+    lgraph.Lgraph.GraphQueryResponse getGraphQueryResponse();
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    lgraph.Lgraph.CypherResponseOrBuilder getCypherResponseOrBuilder();
+    lgraph.Lgraph.GraphQueryResponseOrBuilder getGraphQueryResponseOrBuilder();
 
     /**
      * <code>optional .lgraph.PluginResponse plugin_response = 13;</code>
@@ -98424,14 +99166,14 @@ public final class Lgraph {
               break;
             }
             case 98: {
-              lgraph.Lgraph.CypherResponse.Builder subBuilder = null;
+              lgraph.Lgraph.GraphQueryResponse.Builder subBuilder = null;
               if (respCase_ == 12) {
-                subBuilder = ((lgraph.Lgraph.CypherResponse) resp_).toBuilder();
+                subBuilder = ((lgraph.Lgraph.GraphQueryResponse) resp_).toBuilder();
               }
               resp_ =
-                  input.readMessage(lgraph.Lgraph.CypherResponse.PARSER, extensionRegistry);
+                  input.readMessage(lgraph.Lgraph.GraphQueryResponse.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((lgraph.Lgraph.CypherResponse) resp_);
+                subBuilder.mergeFrom((lgraph.Lgraph.GraphQueryResponse) resp_);
                 resp_ = subBuilder.buildPartial();
               }
               respCase_ = 12;
@@ -98722,7 +99464,7 @@ public final class Lgraph {
     public enum RespCase
         implements com.google.protobuf.Internal.EnumLite {
       GRAPH_API_RESPONSE(11),
-      CYPHER_RESPONSE(12),
+      GRAPH_QUERY_RESPONSE(12),
       PLUGIN_RESPONSE(13),
       HA_RESPONSE(14),
       IMPORT_RESPONSE(15),
@@ -98747,7 +99489,7 @@ public final class Lgraph {
       public static RespCase forNumber(int value) {
         switch (value) {
           case 11: return GRAPH_API_RESPONSE;
-          case 12: return CYPHER_RESPONSE;
+          case 12: return GRAPH_QUERY_RESPONSE;
           case 13: return PLUGIN_RESPONSE;
           case 14: return HA_RESPONSE;
           case 15: return IMPORT_RESPONSE;
@@ -98913,30 +99655,30 @@ public final class Lgraph {
       return lgraph.Lgraph.GraphApiResponse.getDefaultInstance();
     }
 
-    public static final int CYPHER_RESPONSE_FIELD_NUMBER = 12;
+    public static final int GRAPH_QUERY_RESPONSE_FIELD_NUMBER = 12;
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    public boolean hasCypherResponse() {
+    public boolean hasGraphQueryResponse() {
       return respCase_ == 12;
     }
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    public lgraph.Lgraph.CypherResponse getCypherResponse() {
+    public lgraph.Lgraph.GraphQueryResponse getGraphQueryResponse() {
       if (respCase_ == 12) {
-         return (lgraph.Lgraph.CypherResponse) resp_;
+         return (lgraph.Lgraph.GraphQueryResponse) resp_;
       }
-      return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
     }
     /**
-     * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+     * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
      */
-    public lgraph.Lgraph.CypherResponseOrBuilder getCypherResponseOrBuilder() {
+    public lgraph.Lgraph.GraphQueryResponseOrBuilder getGraphQueryResponseOrBuilder() {
       if (respCase_ == 12) {
-         return (lgraph.Lgraph.CypherResponse) resp_;
+         return (lgraph.Lgraph.GraphQueryResponse) resp_;
       }
-      return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+      return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
     }
 
     public static final int PLUGIN_RESPONSE_FIELD_NUMBER = 13;
@@ -99164,8 +99906,8 @@ public final class Lgraph {
           return false;
         }
       }
-      if (hasCypherResponse()) {
-        if (!getCypherResponse().isInitialized()) {
+      if (hasGraphQueryResponse()) {
+        if (!getGraphQueryResponse().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -99223,7 +99965,7 @@ public final class Lgraph {
         output.writeMessage(11, (lgraph.Lgraph.GraphApiResponse) resp_);
       }
       if (respCase_ == 12) {
-        output.writeMessage(12, (lgraph.Lgraph.CypherResponse) resp_);
+        output.writeMessage(12, (lgraph.Lgraph.GraphQueryResponse) resp_);
       }
       if (respCase_ == 13) {
         output.writeMessage(13, (lgraph.Lgraph.PluginResponse) resp_);
@@ -99278,7 +100020,7 @@ public final class Lgraph {
       }
       if (respCase_ == 12) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, (lgraph.Lgraph.CypherResponse) resp_);
+          .computeMessageSize(12, (lgraph.Lgraph.GraphQueryResponse) resp_);
       }
       if (respCase_ == 13) {
         size += com.google.protobuf.CodedOutputStream
@@ -99356,8 +100098,8 @@ public final class Lgraph {
               .equals(other.getGraphApiResponse());
           break;
         case 12:
-          result = result && getCypherResponse()
-              .equals(other.getCypherResponse());
+          result = result && getGraphQueryResponse()
+              .equals(other.getGraphQueryResponse());
           break;
         case 13:
           result = result && getPluginResponse()
@@ -99428,8 +100170,8 @@ public final class Lgraph {
           hash = (53 * hash) + getGraphApiResponse().hashCode();
           break;
         case 12:
-          hash = (37 * hash) + CYPHER_RESPONSE_FIELD_NUMBER;
-          hash = (53 * hash) + getCypherResponse().hashCode();
+          hash = (37 * hash) + GRAPH_QUERY_RESPONSE_FIELD_NUMBER;
+          hash = (53 * hash) + getGraphQueryResponse().hashCode();
           break;
         case 13:
           hash = (37 * hash) + PLUGIN_RESPONSE_FIELD_NUMBER;
@@ -99661,10 +100403,10 @@ public final class Lgraph {
           }
         }
         if (respCase_ == 12) {
-          if (cypherResponseBuilder_ == null) {
+          if (graphQueryResponseBuilder_ == null) {
             result.resp_ = resp_;
           } else {
-            result.resp_ = cypherResponseBuilder_.build();
+            result.resp_ = graphQueryResponseBuilder_.build();
           }
         }
         if (respCase_ == 13) {
@@ -99794,8 +100536,8 @@ public final class Lgraph {
             mergeGraphApiResponse(other.getGraphApiResponse());
             break;
           }
-          case CYPHER_RESPONSE: {
-            mergeCypherResponse(other.getCypherResponse());
+          case GRAPH_QUERY_RESPONSE: {
+            mergeGraphQueryResponse(other.getGraphQueryResponse());
             break;
           }
           case PLUGIN_RESPONSE: {
@@ -99849,8 +100591,8 @@ public final class Lgraph {
             return false;
           }
         }
-        if (hasCypherResponse()) {
-          if (!getCypherResponse().isInitialized()) {
+        if (hasGraphQueryResponse()) {
+          if (!getGraphQueryResponse().isInitialized()) {
             return false;
           }
         }
@@ -100275,67 +101017,67 @@ public final class Lgraph {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherResponse, lgraph.Lgraph.CypherResponse.Builder, lgraph.Lgraph.CypherResponseOrBuilder> cypherResponseBuilder_;
+          lgraph.Lgraph.GraphQueryResponse, lgraph.Lgraph.GraphQueryResponse.Builder, lgraph.Lgraph.GraphQueryResponseOrBuilder> graphQueryResponseBuilder_;
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public boolean hasCypherResponse() {
+      public boolean hasGraphQueryResponse() {
         return respCase_ == 12;
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public lgraph.Lgraph.CypherResponse getCypherResponse() {
-        if (cypherResponseBuilder_ == null) {
+      public lgraph.Lgraph.GraphQueryResponse getGraphQueryResponse() {
+        if (graphQueryResponseBuilder_ == null) {
           if (respCase_ == 12) {
-            return (lgraph.Lgraph.CypherResponse) resp_;
+            return (lgraph.Lgraph.GraphQueryResponse) resp_;
           }
-          return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
         } else {
           if (respCase_ == 12) {
-            return cypherResponseBuilder_.getMessage();
+            return graphQueryResponseBuilder_.getMessage();
           }
-          return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public Builder setCypherResponse(lgraph.Lgraph.CypherResponse value) {
-        if (cypherResponseBuilder_ == null) {
+      public Builder setGraphQueryResponse(lgraph.Lgraph.GraphQueryResponse value) {
+        if (graphQueryResponseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           resp_ = value;
           onChanged();
         } else {
-          cypherResponseBuilder_.setMessage(value);
+          graphQueryResponseBuilder_.setMessage(value);
         }
         respCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public Builder setCypherResponse(
-          lgraph.Lgraph.CypherResponse.Builder builderForValue) {
-        if (cypherResponseBuilder_ == null) {
+      public Builder setGraphQueryResponse(
+          lgraph.Lgraph.GraphQueryResponse.Builder builderForValue) {
+        if (graphQueryResponseBuilder_ == null) {
           resp_ = builderForValue.build();
           onChanged();
         } else {
-          cypherResponseBuilder_.setMessage(builderForValue.build());
+          graphQueryResponseBuilder_.setMessage(builderForValue.build());
         }
         respCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public Builder mergeCypherResponse(lgraph.Lgraph.CypherResponse value) {
-        if (cypherResponseBuilder_ == null) {
+      public Builder mergeGraphQueryResponse(lgraph.Lgraph.GraphQueryResponse value) {
+        if (graphQueryResponseBuilder_ == null) {
           if (respCase_ == 12 &&
-              resp_ != lgraph.Lgraph.CypherResponse.getDefaultInstance()) {
-            resp_ = lgraph.Lgraph.CypherResponse.newBuilder((lgraph.Lgraph.CypherResponse) resp_)
+              resp_ != lgraph.Lgraph.GraphQueryResponse.getDefaultInstance()) {
+            resp_ = lgraph.Lgraph.GraphQueryResponse.newBuilder((lgraph.Lgraph.GraphQueryResponse) resp_)
                 .mergeFrom(value).buildPartial();
           } else {
             resp_ = value;
@@ -100343,18 +101085,18 @@ public final class Lgraph {
           onChanged();
         } else {
           if (respCase_ == 12) {
-            cypherResponseBuilder_.mergeFrom(value);
+            graphQueryResponseBuilder_.mergeFrom(value);
           }
-          cypherResponseBuilder_.setMessage(value);
+          graphQueryResponseBuilder_.setMessage(value);
         }
         respCase_ = 12;
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public Builder clearCypherResponse() {
-        if (cypherResponseBuilder_ == null) {
+      public Builder clearGraphQueryResponse() {
+        if (graphQueryResponseBuilder_ == null) {
           if (respCase_ == 12) {
             respCase_ = 0;
             resp_ = null;
@@ -100365,49 +101107,49 @@ public final class Lgraph {
             respCase_ = 0;
             resp_ = null;
           }
-          cypherResponseBuilder_.clear();
+          graphQueryResponseBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public lgraph.Lgraph.CypherResponse.Builder getCypherResponseBuilder() {
-        return getCypherResponseFieldBuilder().getBuilder();
+      public lgraph.Lgraph.GraphQueryResponse.Builder getGraphQueryResponseBuilder() {
+        return getGraphQueryResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
-      public lgraph.Lgraph.CypherResponseOrBuilder getCypherResponseOrBuilder() {
-        if ((respCase_ == 12) && (cypherResponseBuilder_ != null)) {
-          return cypherResponseBuilder_.getMessageOrBuilder();
+      public lgraph.Lgraph.GraphQueryResponseOrBuilder getGraphQueryResponseOrBuilder() {
+        if ((respCase_ == 12) && (graphQueryResponseBuilder_ != null)) {
+          return graphQueryResponseBuilder_.getMessageOrBuilder();
         } else {
           if (respCase_ == 12) {
-            return (lgraph.Lgraph.CypherResponse) resp_;
+            return (lgraph.Lgraph.GraphQueryResponse) resp_;
           }
-          return lgraph.Lgraph.CypherResponse.getDefaultInstance();
+          return lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .lgraph.CypherResponse cypher_response = 12;</code>
+       * <code>optional .lgraph.GraphQueryResponse graph_query_response = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          lgraph.Lgraph.CypherResponse, lgraph.Lgraph.CypherResponse.Builder, lgraph.Lgraph.CypherResponseOrBuilder> 
-          getCypherResponseFieldBuilder() {
-        if (cypherResponseBuilder_ == null) {
+          lgraph.Lgraph.GraphQueryResponse, lgraph.Lgraph.GraphQueryResponse.Builder, lgraph.Lgraph.GraphQueryResponseOrBuilder> 
+          getGraphQueryResponseFieldBuilder() {
+        if (graphQueryResponseBuilder_ == null) {
           if (!(respCase_ == 12)) {
-            resp_ = lgraph.Lgraph.CypherResponse.getDefaultInstance();
+            resp_ = lgraph.Lgraph.GraphQueryResponse.getDefaultInstance();
           }
-          cypherResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              lgraph.Lgraph.CypherResponse, lgraph.Lgraph.CypherResponse.Builder, lgraph.Lgraph.CypherResponseOrBuilder>(
-                  (lgraph.Lgraph.CypherResponse) resp_,
+          graphQueryResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              lgraph.Lgraph.GraphQueryResponse, lgraph.Lgraph.GraphQueryResponse.Builder, lgraph.Lgraph.GraphQueryResponseOrBuilder>(
+                  (lgraph.Lgraph.GraphQueryResponse) resp_,
                   getParentForChildren(),
                   isClean());
           resp_ = null;
         }
         respCase_ = 12;
         onChanged();;
-        return cypherResponseBuilder_;
+        return graphQueryResponseBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -105159,6 +105901,830 @@ public final class Lgraph {
 
   }
 
+  public interface HttpRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lgraph.HttpRequest)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code lgraph.HttpRequest}
+   */
+  public  static final class HttpRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lgraph.HttpRequest)
+      HttpRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HttpRequest.newBuilder() to construct.
+    private HttpRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HttpRequest() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HttpRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return lgraph.Lgraph.internal_static_lgraph_HttpRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return lgraph.Lgraph.internal_static_lgraph_HttpRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              lgraph.Lgraph.HttpRequest.class, lgraph.Lgraph.HttpRequest.Builder.class);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof lgraph.Lgraph.HttpRequest)) {
+        return super.equals(obj);
+      }
+      lgraph.Lgraph.HttpRequest other = (lgraph.Lgraph.HttpRequest) obj;
+
+      boolean result = true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(lgraph.Lgraph.HttpRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lgraph.HttpRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lgraph.HttpRequest)
+        lgraph.Lgraph.HttpRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                lgraph.Lgraph.HttpRequest.class, lgraph.Lgraph.HttpRequest.Builder.class);
+      }
+
+      // Construct using lgraph.Lgraph.HttpRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpRequest getDefaultInstanceForType() {
+        return lgraph.Lgraph.HttpRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpRequest build() {
+        lgraph.Lgraph.HttpRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpRequest buildPartial() {
+        lgraph.Lgraph.HttpRequest result = new lgraph.Lgraph.HttpRequest(this);
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof lgraph.Lgraph.HttpRequest) {
+          return mergeFrom((lgraph.Lgraph.HttpRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(lgraph.Lgraph.HttpRequest other) {
+        if (other == lgraph.Lgraph.HttpRequest.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        lgraph.Lgraph.HttpRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (lgraph.Lgraph.HttpRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lgraph.HttpRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:lgraph.HttpRequest)
+    private static final lgraph.Lgraph.HttpRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new lgraph.Lgraph.HttpRequest();
+    }
+
+    public static lgraph.Lgraph.HttpRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<HttpRequest>
+        PARSER = new com.google.protobuf.AbstractParser<HttpRequest>() {
+      @java.lang.Override
+      public HttpRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HttpRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HttpRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HttpRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public lgraph.Lgraph.HttpRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HttpResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lgraph.HttpResponse)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code lgraph.HttpResponse}
+   */
+  public  static final class HttpResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lgraph.HttpResponse)
+      HttpResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HttpResponse.newBuilder() to construct.
+    private HttpResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HttpResponse() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HttpResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return lgraph.Lgraph.internal_static_lgraph_HttpResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return lgraph.Lgraph.internal_static_lgraph_HttpResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              lgraph.Lgraph.HttpResponse.class, lgraph.Lgraph.HttpResponse.Builder.class);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof lgraph.Lgraph.HttpResponse)) {
+        return super.equals(obj);
+      }
+      lgraph.Lgraph.HttpResponse other = (lgraph.Lgraph.HttpResponse) obj;
+
+      boolean result = true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static lgraph.Lgraph.HttpResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(lgraph.Lgraph.HttpResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lgraph.HttpResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lgraph.HttpResponse)
+        lgraph.Lgraph.HttpResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                lgraph.Lgraph.HttpResponse.class, lgraph.Lgraph.HttpResponse.Builder.class);
+      }
+
+      // Construct using lgraph.Lgraph.HttpResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return lgraph.Lgraph.internal_static_lgraph_HttpResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpResponse getDefaultInstanceForType() {
+        return lgraph.Lgraph.HttpResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpResponse build() {
+        lgraph.Lgraph.HttpResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public lgraph.Lgraph.HttpResponse buildPartial() {
+        lgraph.Lgraph.HttpResponse result = new lgraph.Lgraph.HttpResponse(this);
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof lgraph.Lgraph.HttpResponse) {
+          return mergeFrom((lgraph.Lgraph.HttpResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(lgraph.Lgraph.HttpResponse other) {
+        if (other == lgraph.Lgraph.HttpResponse.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        lgraph.Lgraph.HttpResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (lgraph.Lgraph.HttpResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lgraph.HttpResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:lgraph.HttpResponse)
+    private static final lgraph.Lgraph.HttpResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new lgraph.Lgraph.HttpResponse();
+    }
+
+    public static lgraph.Lgraph.HttpResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<HttpResponse>
+        PARSER = new com.google.protobuf.AbstractParser<HttpResponse>() {
+      @java.lang.Override
+      public HttpResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HttpResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HttpResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HttpResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public lgraph.Lgraph.HttpResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lgraph_Snapshot_descriptor;
   private static final 
@@ -105590,20 +107156,20 @@ public final class Lgraph {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lgraph_Header_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_lgraph_CypherResult_descriptor;
+    internal_static_lgraph_GraphQueryRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_lgraph_CypherResult_fieldAccessorTable;
+      internal_static_lgraph_GraphQueryRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_lgraph_CypherRequest_descriptor;
+    internal_static_lgraph_GraphQueryResult_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_lgraph_CypherRequest_fieldAccessorTable;
+      internal_static_lgraph_GraphQueryResult_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_lgraph_CypherResponse_descriptor;
+    internal_static_lgraph_GraphQueryResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_lgraph_CypherResponse_fieldAccessorTable;
+      internal_static_lgraph_GraphQueryResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lgraph_ImportRequest_descriptor;
   private static final 
@@ -105759,6 +107325,16 @@ public final class Lgraph {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lgraph_LogMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_lgraph_HttpRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_lgraph_HttpRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_lgraph_HttpResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_lgraph_HttpResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -105785,306 +107361,315 @@ public final class Lgraph {
       "oFieldData\">\n\010Property\022\013\n\003key\030\001 \002(\t\022%\n\005v" +
       "alue\030\002 \002(\0132\026.lgraph.ProtoFieldData\"6\n\016Ed" +
       "geConstraint\022\021\n\tsrc_label\030\001 \002(\t\022\021\n\tdst_l" +
-      "abel\030\002 \002(\t\"\261\001\n\017AddLabelRequest\022\021\n\tis_ver" +
+      "abel\030\002 \002(\t\"\236\001\n\017AddLabelRequest\022\021\n\tis_ver" +
       "tex\030\001 \002(\010\022\r\n\005label\030\002 \002(\t\022\017\n\007primary\030\003 \001(" +
-      "\t\022\021\n\ttid_order\030\004 \001(\t\0220\n\020edge_constraints" +
-      "\030\005 \003(\0132\026.lgraph.EdgeConstraint\022&\n\006fields" +
-      "\030\006 \003(\0132\026.lgraph.ProtoFieldSpec\"\022\n\020AddLab" +
-      "elResponse\"&\n\021ListLabelsRequest\022\021\n\tis_ve" +
-      "rtex\030\001 \002(\010\"$\n\022ListLabelsResponse\022\016\n\006labe" +
-      "ls\030\001 \003(\t\"$\n\017GetLabelRequest\022\021\n\tis_vertex" +
-      "\030\001 \002(\010\":\n\020GetLabelResponse\022&\n\006fields\030\001 \003" +
-      "(\0132\026.lgraph.ProtoFieldSpec\"B\n\017AddIndexRe" +
-      "quest\022\r\n\005label\030\001 \002(\t\022\r\n\005field\030\002 \002(\t\022\021\n\ti" +
-      "s_unique\030\003 \002(\010\"\022\n\020AddIndexResponse\"/\n\017De" +
-      "lIndexRequest\022\r\n\005label\030\001 \002(\t\022\r\n\005field\030\002 " +
-      "\002(\t\"\022\n\020DelIndexResponse\"c\n\022AddVertexesRe" +
-      "quest\022\r\n\005label\030\001 \002(\t\022\016\n\006fields\030\002 \003(\t\022.\n\010" +
-      "vertexes\030\003 \003(\0132\034.lgraph.ListOfProtoField" +
-      "Data\"\"\n\023AddVertexesResponse\022\013\n\003vid\030\001 \003(\003" +
-      "\"\037\n\020DelVertexRequest\022\013\n\003vid\030\001 \002(\003\"2\n\021Del" +
-      "VertexResponse\022\r\n\005n_ins\030\001 \002(\003\022\016\n\006n_outs\030" +
-      "\002 \002(\003\"l\n\020ModVertexRequest\022\013\n\003vid\030\001 \002(\003\022\r" +
-      "\n\005label\030\002 \001(\t\022\016\n\006fields\030\003 \003(\t\022,\n\006values\030" +
-      "\004 \002(\0132\034.lgraph.ListOfProtoFieldData\"\023\n\021M" +
-      "odVertexResponse\"Z\n\017AddEdgesRequest\022\r\n\005l" +
-      "abel\030\001 \002(\t\022\016\n\006fields\030\002 \003(\t\022(\n\005edges\030\003 \003(" +
-      "\0132\031.lgraph.SrcDstFieldValues\":\n\020AddEdges" +
-      "Response\022\013\n\003lid\030\001 \002(\003\022\013\n\003tid\030\002 \002(\003\022\014\n\004ei" +
-      "ds\030\003 \003(\003\"Q\n\016DelEdgeRequest\022\013\n\003src\030\001 \002(\003\022" +
-      "\013\n\003tid\030\002 \002(\003\022\013\n\003lid\030\003 \002(\003\022\013\n\003dst\030\004 \002(\003\022\013" +
-      "\n\003eid\030\005 \002(\003\"\021\n\017DelEdgeResponse\"\217\001\n\016ModEd" +
-      "geRequest\022\013\n\003src\030\001 \002(\003\022\013\n\003tid\030\002 \002(\003\022\013\n\003l" +
-      "id\030\003 \002(\003\022\013\n\003dst\030\004 \002(\003\022\013\n\003eid\030\005 \002(\003\022\016\n\006fi" +
-      "elds\030\006 \003(\t\022,\n\006values\030\007 \002(\0132\034.lgraph.List" +
-      "OfProtoFieldData\"\021\n\017ModEdgeResponse\"\016\n\014F" +
-      "lushRequest\"\017\n\rFlushResponse\"\037\n\017SubGraph" +
-      "Request\022\014\n\004vids\030\001 \003(\003\"N\n\nVertexData\022\013\n\003v" +
-      "id\030\001 \002(\003\022\r\n\005label\030\002 \002(\t\022$\n\nproperties\030\003 " +
-      "\003(\0132\020.lgraph.Property\"\200\001\n\010EdgeData\022\013\n\003sr" +
-      "c\030\001 \002(\003\022\013\n\003tid\030\002 \002(\003\022\013\n\003lid\030\003 \002(\003\022\013\n\003dst" +
-      "\030\004 \002(\003\022\013\n\003eid\030\005 \002(\003\022\r\n\005label\030\006 \002(\t\022$\n\npr" +
-      "operties\030\007 \003(\0132\020.lgraph.Property\"V\n\020SubG" +
-      "raphResponse\022!\n\005nodes\030\001 \003(\0132\022.lgraph.Ver" +
-      "texData\022\037\n\005edges\030\002 \003(\0132\020.lgraph.EdgeData" +
-      "\"\370\004\n\017GraphApiRequest\0224\n\021add_label_reques" +
-      "t\030\001 \001(\0132\027.lgraph.AddLabelRequestH\000\0224\n\021ad" +
-      "d_index_request\030\002 \001(\0132\027.lgraph.AddIndexR" +
-      "equestH\000\022:\n\024add_vertexes_request\030\003 \001(\0132\032" +
-      ".lgraph.AddVertexesRequestH\000\0224\n\021add_edge" +
-      "s_request\030\004 \001(\0132\027.lgraph.AddEdgesRequest" +
-      "H\000\0224\n\021del_index_request\030\005 \001(\0132\027.lgraph.D" +
-      "elIndexRequestH\000\0226\n\022del_vertex_request\030\006" +
-      " \001(\0132\030.lgraph.DelVertexRequestH\000\0222\n\020del_" +
-      "edge_request\030\007 \001(\0132\026.lgraph.DelEdgeReque" +
-      "stH\000\0226\n\022mod_vertex_request\030\010 \001(\0132\030.lgrap" +
-      "h.ModVertexRequestH\000\0222\n\020mod_edge_request" +
-      "\030\t \001(\0132\026.lgraph.ModEdgeRequestH\000\0224\n\021sub_" +
-      "graph_request\030\n \001(\0132\027.lgraph.SubGraphReq" +
-      "uestH\000\022-\n\rflush_request\030\013 \001(\0132\024.lgraph.F" +
-      "lushRequestH\000\022\r\n\005graph\030\014 \002(\tB\005\n\003Req\"\201\005\n\020" +
-      "GraphApiResponse\0226\n\022add_label_response\030\001" +
-      " \001(\0132\030.lgraph.AddLabelResponseH\000\0226\n\022add_" +
-      "index_response\030\002 \001(\0132\030.lgraph.AddIndexRe" +
-      "sponseH\000\022<\n\025add_vertexes_response\030\003 \001(\0132" +
-      "\033.lgraph.AddVertexesResponseH\000\0226\n\022add_ed" +
-      "ges_response\030\004 \001(\0132\030.lgraph.AddEdgesResp" +
-      "onseH\000\0226\n\022del_index_response\030\005 \001(\0132\030.lgr" +
-      "aph.DelIndexResponseH\000\0228\n\023del_vertex_res" +
-      "ponse\030\006 \001(\0132\031.lgraph.DelVertexResponseH\000" +
-      "\0224\n\021del_edge_response\030\007 \001(\0132\027.lgraph.Del" +
-      "EdgeResponseH\000\0228\n\023mod_vertex_response\030\010 " +
-      "\001(\0132\031.lgraph.ModVertexResponseH\000\0224\n\021mod_" +
-      "edge_response\030\t \001(\0132\027.lgraph.ModEdgeResp" +
-      "onseH\000\0226\n\022sub_graph_response\030\n \001(\0132\030.lgr" +
-      "aph.SubGraphResponseH\000\022/\n\016flush_response" +
-      "\030\013 \001(\0132\025.lgraph.FlushResponseH\000B\006\n\004Resp\"" +
-      "H\n\020ModConfigRequest\022\014\n\004keys\030\001 \003(\t\022&\n\006val" +
-      "ues\030\002 \003(\0132\026.lgraph.ProtoFieldData\"\023\n\021Mod" +
-      "ConfigResponse\"N\n\rConfigRequest\0226\n\022mod_c" +
-      "onfig_request\030\001 \001(\0132\030.lgraph.ModConfigRe" +
-      "questH\000B\005\n\003Req\"R\n\016ConfigResponse\0228\n\023mod_" +
-      "config_response\030\001 \001(\0132\031.lgraph.ModConfig" +
-      "ResponseH\000B\006\n\004Resp\"=\n\rProtoDBConfig\022\017\n\007d" +
-      "b_size\030\001 \002(\003\022\r\n\005async\030\002 \002(\010\022\014\n\004desc\030\003 \002(" +
-      "\t\"F\n\017AddGraphRequest\022\014\n\004name\030\001 \002(\t\022%\n\006co" +
-      "nfig\030\002 \002(\0132\025.lgraph.ProtoDBConfig\"\022\n\020Add" +
-      "GraphResponse\"\"\n\022DeleteGraphRequest\022\014\n\004n" +
-      "ame\030\001 \002(\t\"\025\n\023DeleteGraphResponse\"\023\n\021List" +
-      "GraphsRequest\"K\n\022ListGraphsResponse\022\r\n\005n" +
-      "ames\030\001 \003(\t\022&\n\007configs\030\002 \003(\0132\025.lgraph.Pro" +
-      "toDBConfig\"\301\001\n\014GraphRequest\0224\n\021add_graph" +
-      "_request\030\001 \001(\0132\027.lgraph.AddGraphRequestH" +
-      "\000\022:\n\024delete_graph_request\030\002 \001(\0132\032.lgraph" +
-      ".DeleteGraphRequestH\000\0228\n\023list_graphs_req" +
-      "uest\030\003 \001(\0132\031.lgraph.ListGraphsRequestH\000B" +
-      "\005\n\003Req\"\311\001\n\rGraphResponse\0226\n\022add_graph_re" +
-      "sponse\030\001 \001(\0132\030.lgraph.AddGraphResponseH\000" +
-      "\022<\n\025delete_graph_response\030\002 \001(\0132\033.lgraph" +
-      ".DeleteGraphResponseH\000\022:\n\024list_graphs_re" +
-      "sponse\030\003 \001(\0132\032.lgraph.ListGraphsResponse" +
-      "H\000B\006\n\004Resp\"g\n\013AuthRequest\022%\n\005login\030\001 \001(\013" +
-      "2\024.lgraph.LoginRequestH\000\022\'\n\006logout\030\002 \001(\013" +
-      "2\025.lgraph.LogoutRequestH\000B\010\n\006action\".\n\014L" +
-      "oginRequest\022\014\n\004user\030\001 \002(\t\022\020\n\010password\030\002 " +
-      "\002(\t\"\036\n\rLogoutRequest\022\r\n\005token\030\001 \002(\t\"\035\n\014A" +
-      "uthResponse\022\r\n\005token\030\001 \002(\t\"S\n\016AddUserReq" +
-      "uest\022\014\n\004user\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\022\023\n\013" +
-      "auth_method\030\003 \001(\t\022\014\n\004desc\030\004 \001(\t\"\021\n\017AddUs" +
-      "erResponse\"\036\n\014ListOfString\022\016\n\006values\030\001 \003" +
-      "(\t\"6\n\020SetPasswordParam\022\020\n\010old_pass\030\001 \001(\t" +
-      "\022\020\n\010new_pass\030\002 \002(\t\"\224\002\n\016ModUserRequest\022\014\n" +
-      "\004user\030\001 \002(\t\0220\n\014set_password\030\002 \001(\0132\030.lgra" +
-      "ph.SetPasswordParamH\000\022)\n\tset_roles\030\003 \001(\013" +
-      "2\024.lgraph.ListOfStringH\000\022)\n\tadd_roles\030\004 " +
-      "\001(\0132\024.lgraph.ListOfStringH\000\022)\n\tdel_roles" +
-      "\030\005 \001(\0132\024.lgraph.ListOfStringH\000\022\020\n\006enable" +
-      "\030\006 \001(\010H\000\022\021\n\007disable\030\007 \001(\010H\000\022\022\n\010set_desc\030" +
-      "\010 \001(\tH\000B\010\n\006action\"\021\n\017ModUserResponse\"\036\n\016" +
-      "DelUserRequest\022\014\n\004user\030\001 \002(\t\"\021\n\017DelUserR" +
-      "esponse\"\"\n\022GetUserInfoRequest\022\014\n\004user\030\001 " +
-      "\002(\t\"H\n\rProtoUserInfo\022\023\n\013is_disabled\030\001 \002(" +
-      "\010\022\r\n\005roles\030\002 \003(\t\022\023\n\013auth_method\030\003 \001(\t\":\n" +
-      "\023GetUserInfoResponse\022#\n\004info\030\001 \002(\0132\025.lgr" +
-      "aph.ProtoUserInfo\"\021\n\017ListUserRequest\"\213\001\n" +
-      "\020ListUserResponse\0222\n\005users\030\001 \003(\0132#.lgrap" +
-      "h.ListUserResponse.UsersEntry\032C\n\nUsersEn" +
-      "try\022\013\n\003key\030\001 \001(\t\022$\n\005value\030\002 \001(\0132\025.lgraph" +
-      ".ProtoUserInfo:\0028\001\"\221\001\n\020ProtoGraphAccess\022" +
-      "4\n\006values\030\001 \003(\0132$.lgraph.ProtoGraphAcces" +
-      "s.ValuesEntry\032G\n\013ValuesEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022\'\n\005value\030\002 \001(\0162\030.lgraph.ProtoAccessLev" +
-      "el:\0028\001\",\n\016AddRoleRequest\022\014\n\004role\030\001 \002(\t\022\014" +
-      "\n\004desc\030\002 \001(\t\"\021\n\017AddRoleResponse\"\036\n\016DelRo" +
-      "leRequest\022\014\n\004role\030\001 \002(\t\"\021\n\017DelRoleRespon" +
-      "se\"\327\001\n\016ModRoleRequest\022\014\n\004role\030\001 \002(\t\022\022\n\010m" +
-      "od_desc\030\002 \001(\tH\000\0229\n\025set_full_graph_access" +
-      "\030\003 \001(\0132\030.lgraph.ProtoGraphAccessH\000\0229\n\025se" +
-      "t_diff_graph_access\030\004 \001(\0132\030.lgraph.Proto" +
-      "GraphAccessH\000\022\020\n\006enable\030\005 \001(\010H\000\022\021\n\007disab" +
-      "le\030\006 \001(\010H\000B\010\n\006action\"\021\n\017ModRoleResponse\"" +
-      "\"\n\022GetRoleInfoRequest\022\014\n\004role\030\001 \002(\t\"b\n\rP" +
-      "rotoRoleInfo\022\023\n\013is_disabled\030\001 \002(\010\022\014\n\004des" +
-      "c\030\002 \002(\t\022.\n\014graph_access\030\003 \002(\0132\030.lgraph.P" +
-      "rotoGraphAccess\":\n\023GetRoleInfoResponse\022#" +
-      "\n\004info\030\001 \002(\0132\025.lgraph.ProtoRoleInfo\"\021\n\017L" +
-      "istRoleRequest\"\213\001\n\020ListRoleResponse\0222\n\005r" +
-      "oles\030\001 \003(\0132#.lgraph.ListRoleResponse.Rol" +
-      "esEntry\032C\n\nRolesEntry\022\013\n\003key\030\001 \001(\t\022$\n\005va" +
-      "lue\030\002 \001(\0132\025.lgraph.ProtoRoleInfo:\0028\001\"\340\004\n" +
-      "\nAclRequest\022+\n\014auth_request\030\001 \001(\0132\023.lgra" +
-      "ph.AuthRequestH\000\0222\n\020add_user_request\030\002 \001" +
-      "(\0132\026.lgraph.AddUserRequestH\000\0222\n\020mod_user" +
-      "_request\030\003 \001(\0132\026.lgraph.ModUserRequestH\000" +
-      "\0222\n\020del_user_request\030\004 \001(\0132\026.lgraph.DelU" +
-      "serRequestH\000\022<\n\026list_user_info_request\030\005" +
-      " \001(\0132\032.lgraph.GetUserInfoRequestH\000\0222\n\020ad" +
-      "d_role_request\030\006 \001(\0132\026.lgraph.AddRoleReq" +
-      "uestH\000\0222\n\020mod_role_request\030\007 \001(\0132\026.lgrap" +
-      "h.ModRoleRequestH\000\0222\n\020del_role_request\030\010" +
-      " \001(\0132\026.lgraph.DelRoleRequestH\000\022<\n\026list_r" +
-      "ole_info_request\030\t \001(\0132\032.lgraph.GetRoleI" +
-      "nfoRequestH\000\0224\n\021list_user_request\030\n \001(\0132" +
-      "\027.lgraph.ListUserRequestH\000\0224\n\021list_role_" +
-      "request\030\013 \001(\0132\027.lgraph.ListRoleRequestH\000" +
-      "B\005\n\003Req\"\370\004\n\013AclResponse\022-\n\rauth_response" +
-      "\030\001 \001(\0132\024.lgraph.AuthResponseH\000\0224\n\021add_us" +
-      "er_response\030\002 \001(\0132\027.lgraph.AddUserRespon" +
-      "seH\000\0224\n\021mod_user_response\030\003 \001(\0132\027.lgraph" +
-      ".ModUserResponseH\000\0224\n\021del_user_response\030" +
-      "\004 \001(\0132\027.lgraph.DelUserResponseH\000\022>\n\027list" +
-      "_user_info_response\030\005 \001(\0132\033.lgraph.GetUs" +
-      "erInfoResponseH\000\0224\n\021add_role_response\030\006 " +
-      "\001(\0132\027.lgraph.AddRoleResponseH\000\0224\n\021mod_ro" +
-      "le_response\030\007 \001(\0132\027.lgraph.ModRoleRespon" +
-      "seH\000\0224\n\021del_role_response\030\010 \001(\0132\027.lgraph" +
-      ".DelRoleResponseH\000\022>\n\027list_role_info_res" +
-      "ponse\030\t \001(\0132\033.lgraph.GetRoleInfoResponse" +
-      "H\000\0226\n\022list_user_response\030\n \001(\0132\030.lgraph." +
-      "ListUserResponseH\000\0226\n\022list_role_response" +
-      "\030\013 \001(\0132\030.lgraph.ListRoleResponseH\000B\006\n\004Re" +
-      "sp\"$\n\006Header\022\014\n\004name\030\001 \002(\t\022\014\n\004type\030\002 \002(\005" +
-      "\"m\n\014CypherResult\022\036\n\006header\030\001 \003(\0132\016.lgrap" +
-      "h.Header\022,\n\006result\030\002 \003(\0132\034.lgraph.ListOf" +
-      "ProtoFieldData\022\017\n\007elapsed\030\003 \002(\001\"\276\001\n\rCyph" +
-      "erRequest\022\r\n\005query\030\001 \002(\t\022\023\n\013param_names\030" +
-      "\002 \003(\t\0222\n\014param_values\030\003 \001(\0132\034.lgraph.Lis" +
-      "tOfProtoFieldData\022\035\n\025result_in_json_form" +
-      "at\030\004 \002(\010\022\r\n\005graph\030\005 \001(\t\022\017\n\007timeout\030\006 \001(\001" +
-      "\022\026\n\016per_node_limit\030\007 \001(\003\"`\n\016CypherRespon" +
-      "se\022\025\n\013json_result\030\001 \001(\tH\000\022-\n\rbinary_resu" +
-      "lt\030\002 \001(\0132\024.lgraph.CypherResultH\000B\010\n\006Resu" +
+      "\t\0220\n\020edge_constraints\030\004 \003(\0132\026.lgraph.Edg" +
+      "eConstraint\022&\n\006fields\030\005 \003(\0132\026.lgraph.Pro" +
+      "toFieldSpec\"\022\n\020AddLabelResponse\"&\n\021ListL" +
+      "abelsRequest\022\021\n\tis_vertex\030\001 \002(\010\"$\n\022ListL" +
+      "abelsResponse\022\016\n\006labels\030\001 \003(\t\"$\n\017GetLabe" +
+      "lRequest\022\021\n\tis_vertex\030\001 \002(\010\":\n\020GetLabelR" +
+      "esponse\022&\n\006fields\030\001 \003(\0132\026.lgraph.ProtoFi" +
+      "eldSpec\"B\n\017AddIndexRequest\022\r\n\005label\030\001 \002(" +
+      "\t\022\r\n\005field\030\002 \002(\t\022\021\n\tis_unique\030\003 \002(\010\"\022\n\020A" +
+      "ddIndexResponse\"/\n\017DelIndexRequest\022\r\n\005la" +
+      "bel\030\001 \002(\t\022\r\n\005field\030\002 \002(\t\"\022\n\020DelIndexResp" +
+      "onse\"c\n\022AddVertexesRequest\022\r\n\005label\030\001 \002(" +
+      "\t\022\016\n\006fields\030\002 \003(\t\022.\n\010vertexes\030\003 \003(\0132\034.lg" +
+      "raph.ListOfProtoFieldData\"\"\n\023AddVertexes" +
+      "Response\022\013\n\003vid\030\001 \003(\003\"\037\n\020DelVertexReques" +
+      "t\022\013\n\003vid\030\001 \002(\003\"2\n\021DelVertexResponse\022\r\n\005n" +
+      "_ins\030\001 \002(\003\022\016\n\006n_outs\030\002 \002(\003\"l\n\020ModVertexR" +
+      "equest\022\013\n\003vid\030\001 \002(\003\022\r\n\005label\030\002 \001(\t\022\016\n\006fi" +
+      "elds\030\003 \003(\t\022,\n\006values\030\004 \002(\0132\034.lgraph.List" +
+      "OfProtoFieldData\"\023\n\021ModVertexResponse\"Z\n" +
+      "\017AddEdgesRequest\022\r\n\005label\030\001 \002(\t\022\016\n\006field" +
+      "s\030\002 \003(\t\022(\n\005edges\030\003 \003(\0132\031.lgraph.SrcDstFi" +
+      "eldValues\":\n\020AddEdgesResponse\022\013\n\003lid\030\001 \002" +
+      "(\003\022\013\n\003tid\030\002 \002(\003\022\014\n\004eids\030\003 \003(\003\"Q\n\016DelEdge" +
+      "Request\022\013\n\003src\030\001 \002(\003\022\013\n\003tid\030\002 \002(\003\022\013\n\003lid" +
+      "\030\003 \002(\003\022\013\n\003dst\030\004 \002(\003\022\013\n\003eid\030\005 \002(\003\"\021\n\017DelE" +
+      "dgeResponse\"\217\001\n\016ModEdgeRequest\022\013\n\003src\030\001 " +
+      "\002(\003\022\013\n\003tid\030\002 \002(\003\022\013\n\003lid\030\003 \002(\003\022\013\n\003dst\030\004 \002" +
+      "(\003\022\013\n\003eid\030\005 \002(\003\022\016\n\006fields\030\006 \003(\t\022,\n\006value" +
+      "s\030\007 \002(\0132\034.lgraph.ListOfProtoFieldData\"\021\n" +
+      "\017ModEdgeResponse\"\016\n\014FlushRequest\"\017\n\rFlus" +
+      "hResponse\"\037\n\017SubGraphRequest\022\014\n\004vids\030\001 \003" +
+      "(\003\"N\n\nVertexData\022\013\n\003vid\030\001 \002(\003\022\r\n\005label\030\002" +
+      " \002(\t\022$\n\nproperties\030\003 \003(\0132\020.lgraph.Proper" +
+      "ty\"\200\001\n\010EdgeData\022\013\n\003src\030\001 \002(\003\022\013\n\003tid\030\002 \002(" +
+      "\003\022\013\n\003lid\030\003 \002(\003\022\013\n\003dst\030\004 \002(\003\022\013\n\003eid\030\005 \002(\003" +
+      "\022\r\n\005label\030\006 \002(\t\022$\n\nproperties\030\007 \003(\0132\020.lg" +
+      "raph.Property\"V\n\020SubGraphResponse\022!\n\005nod" +
+      "es\030\001 \003(\0132\022.lgraph.VertexData\022\037\n\005edges\030\002 " +
+      "\003(\0132\020.lgraph.EdgeData\"\370\004\n\017GraphApiReques" +
+      "t\0224\n\021add_label_request\030\001 \001(\0132\027.lgraph.Ad" +
+      "dLabelRequestH\000\0224\n\021add_index_request\030\002 \001" +
+      "(\0132\027.lgraph.AddIndexRequestH\000\022:\n\024add_ver" +
+      "texes_request\030\003 \001(\0132\032.lgraph.AddVertexes" +
+      "RequestH\000\0224\n\021add_edges_request\030\004 \001(\0132\027.l" +
+      "graph.AddEdgesRequestH\000\0224\n\021del_index_req" +
+      "uest\030\005 \001(\0132\027.lgraph.DelIndexRequestH\000\0226\n" +
+      "\022del_vertex_request\030\006 \001(\0132\030.lgraph.DelVe" +
+      "rtexRequestH\000\0222\n\020del_edge_request\030\007 \001(\0132" +
+      "\026.lgraph.DelEdgeRequestH\000\0226\n\022mod_vertex_" +
+      "request\030\010 \001(\0132\030.lgraph.ModVertexRequestH" +
+      "\000\0222\n\020mod_edge_request\030\t \001(\0132\026.lgraph.Mod" +
+      "EdgeRequestH\000\0224\n\021sub_graph_request\030\n \001(\013" +
+      "2\027.lgraph.SubGraphRequestH\000\022-\n\rflush_req" +
+      "uest\030\013 \001(\0132\024.lgraph.FlushRequestH\000\022\r\n\005gr" +
+      "aph\030\014 \002(\tB\005\n\003Req\"\201\005\n\020GraphApiResponse\0226\n" +
+      "\022add_label_response\030\001 \001(\0132\030.lgraph.AddLa" +
+      "belResponseH\000\0226\n\022add_index_response\030\002 \001(" +
+      "\0132\030.lgraph.AddIndexResponseH\000\022<\n\025add_ver" +
+      "texes_response\030\003 \001(\0132\033.lgraph.AddVertexe" +
+      "sResponseH\000\0226\n\022add_edges_response\030\004 \001(\0132" +
+      "\030.lgraph.AddEdgesResponseH\000\0226\n\022del_index" +
+      "_response\030\005 \001(\0132\030.lgraph.DelIndexRespons" +
+      "eH\000\0228\n\023del_vertex_response\030\006 \001(\0132\031.lgrap" +
+      "h.DelVertexResponseH\000\0224\n\021del_edge_respon" +
+      "se\030\007 \001(\0132\027.lgraph.DelEdgeResponseH\000\0228\n\023m" +
+      "od_vertex_response\030\010 \001(\0132\031.lgraph.ModVer" +
+      "texResponseH\000\0224\n\021mod_edge_response\030\t \001(\013" +
+      "2\027.lgraph.ModEdgeResponseH\000\0226\n\022sub_graph" +
+      "_response\030\n \001(\0132\030.lgraph.SubGraphRespons" +
+      "eH\000\022/\n\016flush_response\030\013 \001(\0132\025.lgraph.Flu" +
+      "shResponseH\000B\006\n\004Resp\"H\n\020ModConfigRequest" +
+      "\022\014\n\004keys\030\001 \003(\t\022&\n\006values\030\002 \003(\0132\026.lgraph." +
+      "ProtoFieldData\"\023\n\021ModConfigResponse\"N\n\rC" +
+      "onfigRequest\0226\n\022mod_config_request\030\001 \001(\013" +
+      "2\030.lgraph.ModConfigRequestH\000B\005\n\003Req\"R\n\016C" +
+      "onfigResponse\0228\n\023mod_config_response\030\001 \001" +
+      "(\0132\031.lgraph.ModConfigResponseH\000B\006\n\004Resp\"" +
+      "=\n\rProtoDBConfig\022\017\n\007db_size\030\001 \002(\003\022\r\n\005asy" +
+      "nc\030\002 \002(\010\022\014\n\004desc\030\003 \002(\t\"F\n\017AddGraphReques" +
+      "t\022\014\n\004name\030\001 \002(\t\022%\n\006config\030\002 \002(\0132\025.lgraph" +
+      ".ProtoDBConfig\"\022\n\020AddGraphResponse\"\"\n\022De" +
+      "leteGraphRequest\022\014\n\004name\030\001 \002(\t\"\025\n\023Delete" +
+      "GraphResponse\"\023\n\021ListGraphsRequest\"K\n\022Li" +
+      "stGraphsResponse\022\r\n\005names\030\001 \003(\t\022&\n\007confi" +
+      "gs\030\002 \003(\0132\025.lgraph.ProtoDBConfig\"\301\001\n\014Grap" +
+      "hRequest\0224\n\021add_graph_request\030\001 \001(\0132\027.lg" +
+      "raph.AddGraphRequestH\000\022:\n\024delete_graph_r" +
+      "equest\030\002 \001(\0132\032.lgraph.DeleteGraphRequest" +
+      "H\000\0228\n\023list_graphs_request\030\003 \001(\0132\031.lgraph" +
+      ".ListGraphsRequestH\000B\005\n\003Req\"\311\001\n\rGraphRes" +
+      "ponse\0226\n\022add_graph_response\030\001 \001(\0132\030.lgra" +
+      "ph.AddGraphResponseH\000\022<\n\025delete_graph_re" +
+      "sponse\030\002 \001(\0132\033.lgraph.DeleteGraphRespons" +
+      "eH\000\022:\n\024list_graphs_response\030\003 \001(\0132\032.lgra" +
+      "ph.ListGraphsResponseH\000B\006\n\004Resp\"g\n\013AuthR" +
+      "equest\022%\n\005login\030\001 \001(\0132\024.lgraph.LoginRequ" +
+      "estH\000\022\'\n\006logout\030\002 \001(\0132\025.lgraph.LogoutReq" +
+      "uestH\000B\010\n\006action\".\n\014LoginRequest\022\014\n\004user" +
+      "\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\"\036\n\rLogoutReques" +
+      "t\022\r\n\005token\030\001 \002(\t\"\035\n\014AuthResponse\022\r\n\005toke" +
+      "n\030\001 \002(\t\"S\n\016AddUserRequest\022\014\n\004user\030\001 \002(\t\022" +
+      "\020\n\010password\030\002 \002(\t\022\023\n\013auth_method\030\003 \001(\t\022\014" +
+      "\n\004desc\030\004 \001(\t\"\021\n\017AddUserResponse\"\036\n\014ListO" +
+      "fString\022\016\n\006values\030\001 \003(\t\"6\n\020SetPasswordPa" +
+      "ram\022\020\n\010old_pass\030\001 \001(\t\022\020\n\010new_pass\030\002 \002(\t\"" +
+      "\224\002\n\016ModUserRequest\022\014\n\004user\030\001 \002(\t\0220\n\014set_" +
+      "password\030\002 \001(\0132\030.lgraph.SetPasswordParam" +
+      "H\000\022)\n\tset_roles\030\003 \001(\0132\024.lgraph.ListOfStr" +
+      "ingH\000\022)\n\tadd_roles\030\004 \001(\0132\024.lgraph.ListOf" +
+      "StringH\000\022)\n\tdel_roles\030\005 \001(\0132\024.lgraph.Lis" +
+      "tOfStringH\000\022\020\n\006enable\030\006 \001(\010H\000\022\021\n\007disable" +
+      "\030\007 \001(\010H\000\022\022\n\010set_desc\030\010 \001(\tH\000B\010\n\006action\"\021" +
+      "\n\017ModUserResponse\"\036\n\016DelUserRequest\022\014\n\004u" +
+      "ser\030\001 \002(\t\"\021\n\017DelUserResponse\"\"\n\022GetUserI" +
+      "nfoRequest\022\014\n\004user\030\001 \002(\t\"H\n\rProtoUserInf" +
+      "o\022\023\n\013is_disabled\030\001 \002(\010\022\r\n\005roles\030\002 \003(\t\022\023\n" +
+      "\013auth_method\030\003 \001(\t\":\n\023GetUserInfoRespons" +
+      "e\022#\n\004info\030\001 \002(\0132\025.lgraph.ProtoUserInfo\"\021" +
+      "\n\017ListUserRequest\"\213\001\n\020ListUserResponse\0222" +
+      "\n\005users\030\001 \003(\0132#.lgraph.ListUserResponse." +
+      "UsersEntry\032C\n\nUsersEntry\022\013\n\003key\030\001 \001(\t\022$\n" +
+      "\005value\030\002 \001(\0132\025.lgraph.ProtoUserInfo:\0028\001\"" +
+      "\221\001\n\020ProtoGraphAccess\0224\n\006values\030\001 \003(\0132$.l" +
+      "graph.ProtoGraphAccess.ValuesEntry\032G\n\013Va" +
+      "luesEntry\022\013\n\003key\030\001 \001(\t\022\'\n\005value\030\002 \001(\0162\030." +
+      "lgraph.ProtoAccessLevel:\0028\001\",\n\016AddRoleRe" +
+      "quest\022\014\n\004role\030\001 \002(\t\022\014\n\004desc\030\002 \001(\t\"\021\n\017Add" +
+      "RoleResponse\"\036\n\016DelRoleRequest\022\014\n\004role\030\001" +
+      " \002(\t\"\021\n\017DelRoleResponse\"\327\001\n\016ModRoleReque" +
+      "st\022\014\n\004role\030\001 \002(\t\022\022\n\010mod_desc\030\002 \001(\tH\000\0229\n\025" +
+      "set_full_graph_access\030\003 \001(\0132\030.lgraph.Pro" +
+      "toGraphAccessH\000\0229\n\025set_diff_graph_access" +
+      "\030\004 \001(\0132\030.lgraph.ProtoGraphAccessH\000\022\020\n\006en" +
+      "able\030\005 \001(\010H\000\022\021\n\007disable\030\006 \001(\010H\000B\010\n\006actio" +
+      "n\"\021\n\017ModRoleResponse\"\"\n\022GetRoleInfoReque" +
+      "st\022\014\n\004role\030\001 \002(\t\"b\n\rProtoRoleInfo\022\023\n\013is_" +
+      "disabled\030\001 \002(\010\022\014\n\004desc\030\002 \002(\t\022.\n\014graph_ac" +
+      "cess\030\003 \002(\0132\030.lgraph.ProtoGraphAccess\":\n\023" +
+      "GetRoleInfoResponse\022#\n\004info\030\001 \002(\0132\025.lgra" +
+      "ph.ProtoRoleInfo\"\021\n\017ListRoleRequest\"\213\001\n\020" +
+      "ListRoleResponse\0222\n\005roles\030\001 \003(\0132#.lgraph" +
+      ".ListRoleResponse.RolesEntry\032C\n\nRolesEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022$\n\005value\030\002 \001(\0132\025.lgraph." +
+      "ProtoRoleInfo:\0028\001\"\340\004\n\nAclRequest\022+\n\014auth" +
+      "_request\030\001 \001(\0132\023.lgraph.AuthRequestH\000\0222\n" +
+      "\020add_user_request\030\002 \001(\0132\026.lgraph.AddUser" +
+      "RequestH\000\0222\n\020mod_user_request\030\003 \001(\0132\026.lg" +
+      "raph.ModUserRequestH\000\0222\n\020del_user_reques" +
+      "t\030\004 \001(\0132\026.lgraph.DelUserRequestH\000\022<\n\026lis" +
+      "t_user_info_request\030\005 \001(\0132\032.lgraph.GetUs" +
+      "erInfoRequestH\000\0222\n\020add_role_request\030\006 \001(" +
+      "\0132\026.lgraph.AddRoleRequestH\000\0222\n\020mod_role_" +
+      "request\030\007 \001(\0132\026.lgraph.ModRoleRequestH\000\022" +
+      "2\n\020del_role_request\030\010 \001(\0132\026.lgraph.DelRo" +
+      "leRequestH\000\022<\n\026list_role_info_request\030\t " +
+      "\001(\0132\032.lgraph.GetRoleInfoRequestH\000\0224\n\021lis" +
+      "t_user_request\030\n \001(\0132\027.lgraph.ListUserRe" +
+      "questH\000\0224\n\021list_role_request\030\013 \001(\0132\027.lgr" +
+      "aph.ListRoleRequestH\000B\005\n\003Req\"\370\004\n\013AclResp" +
+      "onse\022-\n\rauth_response\030\001 \001(\0132\024.lgraph.Aut" +
+      "hResponseH\000\0224\n\021add_user_response\030\002 \001(\0132\027" +
+      ".lgraph.AddUserResponseH\000\0224\n\021mod_user_re" +
+      "sponse\030\003 \001(\0132\027.lgraph.ModUserResponseH\000\022" +
+      "4\n\021del_user_response\030\004 \001(\0132\027.lgraph.DelU" +
+      "serResponseH\000\022>\n\027list_user_info_response" +
+      "\030\005 \001(\0132\033.lgraph.GetUserInfoResponseH\000\0224\n" +
+      "\021add_role_response\030\006 \001(\0132\027.lgraph.AddRol" +
+      "eResponseH\000\0224\n\021mod_role_response\030\007 \001(\0132\027" +
+      ".lgraph.ModRoleResponseH\000\0224\n\021del_role_re" +
+      "sponse\030\010 \001(\0132\027.lgraph.DelRoleResponseH\000\022" +
+      ">\n\027list_role_info_response\030\t \001(\0132\033.lgrap" +
+      "h.GetRoleInfoResponseH\000\0226\n\022list_user_res" +
+      "ponse\030\n \001(\0132\030.lgraph.ListUserResponseH\000\022" +
+      "6\n\022list_role_response\030\013 \001(\0132\030.lgraph.Lis" +
+      "tRoleResponseH\000B\006\n\004Resp\"$\n\006Header\022\014\n\004nam" +
+      "e\030\001 \002(\t\022\014\n\004type\030\002 \002(\005\"\355\001\n\021GraphQueryRequ" +
+      "est\022)\n\004type\030\001 \002(\0162\033.lgraph.ProtoGraphQue" +
+      "ryType\022\r\n\005query\030\002 \002(\t\022\023\n\013param_names\030\003 \003" +
+      "(\t\0222\n\014param_values\030\004 \001(\0132\034.lgraph.ListOf" +
+      "ProtoFieldData\022\035\n\025result_in_json_format\030" +
+      "\005 \002(\010\022\r\n\005graph\030\006 \001(\t\022\017\n\007timeout\030\007 \001(\001\022\026\n" +
+      "\016per_node_limit\030\010 \001(\003\"q\n\020GraphQueryResul" +
+      "t\022\036\n\006header\030\001 \003(\0132\016.lgraph.Header\022,\n\006res" +
+      "ult\030\002 \003(\0132\034.lgraph.ListOfProtoFieldData\022" +
+      "\017\n\007elapsed\030\003 \002(\001\"h\n\022GraphQueryResponse\022\025" +
+      "\n\013json_result\030\001 \001(\tH\000\0221\n\rbinary_result\030\002" +
+      " \001(\0132\030.lgraph.GraphQueryResultH\000B\010\n\006Resu" +
       "lt\"o\n\rImportRequest\022\r\n\005graph\030\003 \002(\t\022\023\n\013de" +
       "scription\030\004 \002(\t\022\014\n\004data\030\005 \002(\t\022\031\n\021continu" +
       "e_on_error\030\006 \002(\010\022\021\n\tdelimiter\030\007 \002(\t\"4\n\016I" +
       "mportResponse\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_mess" +
       "age\030\002 \001(\t\"3\n\rSchemaRequest\022\r\n\005graph\030\003 \002(" +
       "\t\022\023\n\013description\030\004 \002(\t\"4\n\016SchemaResponse" +
-      "\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_message\030\002 \001(\t\"U\n\021" +
+      "\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_message\030\002 \001(\t\"t\n\021" +
       "CallPluginRequest\022\014\n\004name\030\001 \002(\t\022\r\n\005param" +
       "\030\002 \002(\014\022\017\n\007timeout\030\003 \001(\001\022\022\n\nin_process\030\004 " +
-      "\001(\010\"#\n\022CallPluginResponse\022\r\n\005reply\030\001 \002(\014" +
-      "\"\265\001\n\021LoadPluginRequest\022\014\n\004name\030\001 \002(\t\022\021\n\t" +
-      "read_only\030\002 \002(\010\022\014\n\004code\030\003 \002(\014\022\014\n\004desc\030\004 " +
-      "\001(\t\0225\n\tcode_type\030\005 \001(\0162\".lgraph.LoadPlug" +
-      "inRequest.CodeType\",\n\010CodeType\022\006\n\002PY\020\001\022\006" +
-      "\n\002SO\020\002\022\007\n\003CPP\020\003\022\007\n\003ZIP\020\004\"\024\n\022LoadPluginRe" +
-      "sponse\" \n\020DelPluginRequest\022\014\n\004name\030\001 \002(\t" +
-      "\"\023\n\021DelPluginResponse\"\023\n\021ListPluginReque" +
-      "st\"\024\n\022ListPluginResponse\"\336\002\n\rPluginReque" +
-      "st\022.\n\004type\030\001 \002(\0162 .lgraph.PluginRequest." +
-      "PluginType\0228\n\023load_plugin_request\030\002 \001(\0132" +
-      "\031.lgraph.LoadPluginRequestH\000\0226\n\022del_plug" +
-      "in_request\030\003 \001(\0132\030.lgraph.DelPluginReque" +
-      "stH\000\0228\n\023call_plugin_request\030\004 \001(\0132\031.lgra" +
-      "ph.CallPluginRequestH\000\0228\n\023list_plugin_re" +
-      "quest\030\005 \001(\0132\031.lgraph.ListPluginRequestH\000" +
-      "\022\r\n\005graph\030\006 \002(\t\"!\n\nPluginType\022\007\n\003CPP\020\001\022\n" +
-      "\n\006PYTHON\020\002B\005\n\003Req\"\206\002\n\016PluginResponse\022:\n\024" +
-      "load_plugin_response\030\001 \001(\0132\032.lgraph.Load" +
-      "PluginResponseH\000\0228\n\023del_plugin_response\030" +
-      "\002 \001(\0132\031.lgraph.DelPluginResponseH\000\022:\n\024ca" +
-      "ll_plugin_response\030\003 \001(\0132\032.lgraph.CallPl" +
-      "uginResponseH\000\022:\n\024list_plugin_response\030\004" +
-      " \001(\0132\032.lgraph.ListPluginResponseH\000B\006\n\004Re" +
-      "sp\"Y\n\020HeartbeatRequest\022\020\n\010rpc_addr\030\001 \002(\t" +
-      "\022\021\n\trest_addr\030\002 \002(\t\022 \n\005state\030\003 \002(\0162\021.lgr" +
-      "aph.NodeState\"\023\n\021HeartbeatResponse\"Q\n\010Pe" +
-      "erInfo\022\020\n\010rpc_addr\030\001 \002(\t\022\021\n\trest_addr\030\002 " +
-      "\002(\t\022 \n\005state\030\003 \002(\0162\021.lgraph.NodeState\"\022\n" +
-      "\020ListPeersRequest\"4\n\021ListPeersResponse\022\037" +
-      "\n\005peers\030\001 \003(\0132\020.lgraph.PeerInfo\"\022\n\020GetMa" +
-      "sterRequest\"5\n\021GetMasterResponse\022 \n\006mast" +
-      "er\030\001 \002(\0132\020.lgraph.PeerInfo\"\"\n\017SyncMetaRe" +
-      "quest\022\017\n\007confirm\030\001 \002(\t\"\037\n\020SyncMetaRespon" +
-      "se\022\013\n\003ret\030\001 \002(\005\"\357\001\n\tHARequest\0225\n\021heartbe" +
-      "at_request\030\001 \001(\0132\030.lgraph.HeartbeatReque" +
-      "stH\000\0226\n\022list_peers_request\030\002 \001(\0132\030.lgrap" +
-      "h.ListPeersRequestH\000\0226\n\022get_master_reque" +
-      "st\030\003 \001(\0132\030.lgraph.GetMasterRequestH\000\0224\n\021" +
-      "sync_meta_request\030\004 \001(\0132\027.lgraph.SyncMet" +
-      "aRequestH\000B\005\n\003Req\"\371\001\n\nHAResponse\0227\n\022hear" +
-      "tbeat_response\030\001 \001(\0132\031.lgraph.HeartbeatR" +
-      "esponseH\000\0228\n\023list_peers_response\030\002 \001(\0132\031" +
-      ".lgraph.ListPeersResponseH\000\0228\n\023get_maste" +
-      "r_response\030\003 \001(\0132\031.lgraph.GetMasterRespo" +
-      "nseH\000\0226\n\022sync_meta_response\030\004 \001(\0132\030.lgra" +
-      "ph.SyncMetaResponseH\000B\006\n\004Resp\"\301\004\n\rLGraph" +
-      "Request\022\026\n\016client_version\030\001 \001(\003\022\r\n\005token" +
-      "\030\002 \002(\t\022\023\n\013is_write_op\030\003 \001(\010\022\014\n\004user\030\004 \001(" +
-      "\t\0224\n\021graph_api_request\030\013 \001(\0132\027.lgraph.Gr" +
-      "aphApiRequestH\000\022/\n\016cypher_request\030\014 \001(\0132" +
-      "\025.lgraph.CypherRequestH\000\022/\n\016plugin_reque" +
-      "st\030\r \001(\0132\025.lgraph.PluginRequestH\000\022\'\n\nha_" +
-      "request\030\016 \001(\0132\021.lgraph.HARequestH\000\022/\n\016im" +
-      "port_request\030\017 \001(\0132\025.lgraph.ImportReques" +
-      "tH\000\022-\n\rgraph_request\030\021 \001(\0132\024.lgraph.Grap" +
-      "hRequestH\000\022)\n\013acl_request\030\022 \001(\0132\022.lgraph" +
-      ".AclRequestH\000\022/\n\016config_request\030\023 \001(\0132\025." +
-      "lgraph.ConfigRequestH\000\0221\n\017restore_reques" +
-      "t\030\024 \001(\0132\026.lgraph.RestoreRequestH\000\022/\n\016sch" +
-      "ema_request\030\025 \001(\0132\025.lgraph.SchemaRequest" +
-      "H\000B\005\n\003Req\"\355\005\n\016LGraphResponse\0224\n\nerror_co" +
-      "de\030\001 \002(\0162 .lgraph.LGraphResponse.ErrorCo" +
-      "de\022\020\n\010redirect\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\022\026\n\016s" +
-      "erver_version\030\004 \001(\003\0226\n\022graph_api_respons" +
-      "e\030\013 \001(\0132\030.lgraph.GraphApiResponseH\000\0221\n\017c" +
-      "ypher_response\030\014 \001(\0132\026.lgraph.CypherResp" +
-      "onseH\000\0221\n\017plugin_response\030\r \001(\0132\026.lgraph" +
-      ".PluginResponseH\000\022)\n\013ha_response\030\016 \001(\0132\022" +
-      ".lgraph.HAResponseH\000\0221\n\017import_response\030" +
-      "\017 \001(\0132\026.lgraph.ImportResponseH\000\022/\n\016graph" +
-      "_response\030\021 \001(\0132\025.lgraph.GraphResponseH\000" +
-      "\022+\n\014acl_response\030\022 \001(\0132\023.lgraph.AclRespo" +
-      "nseH\000\0221\n\017config_response\030\023 \001(\0132\026.lgraph." +
-      "ConfigResponseH\000\0223\n\020restore_response\030\024 \001" +
-      "(\0132\027.lgraph.RestoreResponseH\000\0221\n\017schema_" +
-      "response\030\025 \001(\0132\026.lgraph.SchemaResponseH\000" +
-      "\"o\n\tErrorCode\022\013\n\007SUCCESS\020\001\022\017\n\013BAD_REQUES" +
-      "T\020\002\022\016\n\nAUTH_ERROR\020\003\022\n\n\006KILLED\020\004\022\014\n\010REDIR" +
-      "ECT\020\005\022\n\n\006FAILED\020\006\022\016\n\tEXCEPTION\020\377\001B\006\n\004Res" +
-      "p\"Q\n\016BackupLogEntry\022\r\n\005index\030\001 \002(\003\022\014\n\004ti" +
-      "me\030\002 \002(\003\022\"\n\003req\030\003 \002(\0132\025.lgraph.LGraphReq" +
-      "uest\"6\n\016RestoreRequest\022$\n\004logs\030\001 \003(\0132\026.l" +
-      "graph.BackupLogEntry\"+\n\017RestoreResponse\022" +
-      "\030\n\020last_success_idx\030\001 \002(\003\"\261\001\n\nLogMessage" +
-      "\022\r\n\005index\030\001 \002(\003\022\014\n\004time\030\002 \002(\003\022\021\n\tbegin_e" +
-      "nd\030\003 \002(\010\022\014\n\004user\030\004 \001(\t\022\r\n\005graph\030\005 \001(\t\022 \n" +
-      "\004type\030\006 \001(\0162\022.lgraph.LogApiType\022\022\n\nread_" +
-      "write\030\007 \001(\010\022\017\n\007success\030\010 \001(\010\022\017\n\007content\030" +
-      "\t \001(\t*\223\001\n\016ProtoFieldType\022\007\n\003NUL\020\000\022\010\n\004BOO" +
-      "L\020\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005I" +
-      "NT64\020\005\022\t\n\005FLOAT\020\006\022\n\n\006DOUBLE\020\007\022\010\n\004DATE\020\010\022" +
-      "\014\n\010DATETIME\020\t\022\n\n\006STRING\020\n\022\010\n\004BLOB\020\013*E\n\020P" +
-      "rotoAccessLevel\022\010\n\004NONE\020\000\022\r\n\tREAD_ONLY\020\001" +
-      "\022\016\n\nREAD_WRITE\020\002\022\010\n\004FULL\020\003*z\n\tNodeState\022" +
-      "\021\n\rUNINITIALIZED\020\001\022\024\n\020LOADING_SNAPSHOT\020\002" +
-      "\022\021\n\rREPLAYING_LOG\020\003\022\021\n\rJOINED_FOLLOW\020\004\022\021" +
-      "\n\rJOINED_MASTER\020\005\022\013\n\007OFFLINE\020\006*A\n\nLogApi" +
-      "Type\022\r\n\tSingleApi\020\000\022\014\n\010Security\020\001\022\n\n\006Plu" +
-      "gin\020\002\022\n\n\006Cypher\020\0032R\n\020LGraphRPCService\022>\n" +
-      "\rHandleRequest\022\025.lgraph.LGraphRequest\032\026." +
-      "lgraph.LGraphResponseB\003\200\001\001"
+      "\001(\010\022\035\n\025result_in_json_format\030\005 \001(\010\"P\n\022Ca" +
+      "llPluginResponse\022\017\n\005reply\030\001 \001(\014H\000\022\025\n\013jso" +
+      "n_result\030\002 \001(\tH\000B\022\n\020CallPluginResult\"\265\001\n" +
+      "\021LoadPluginRequest\022\014\n\004name\030\001 \002(\t\022\021\n\tread" +
+      "_only\030\002 \002(\010\022\014\n\004code\030\003 \002(\014\022\014\n\004desc\030\004 \001(\t\022" +
+      "5\n\tcode_type\030\005 \001(\0162\".lgraph.LoadPluginRe" +
+      "quest.CodeType\",\n\010CodeType\022\006\n\002PY\020\001\022\006\n\002SO" +
+      "\020\002\022\007\n\003CPP\020\003\022\007\n\003ZIP\020\004\"\024\n\022LoadPluginRespon" +
+      "se\" \n\020DelPluginRequest\022\014\n\004name\030\001 \002(\t\"\023\n\021" +
+      "DelPluginResponse\"\023\n\021ListPluginRequest\"#" +
+      "\n\022ListPluginResponse\022\r\n\005reply\030\001 \002(\t\"\202\003\n\r" +
+      "PluginRequest\022.\n\004type\030\001 \002(\0162 .lgraph.Plu" +
+      "ginRequest.PluginType\0228\n\023load_plugin_req" +
+      "uest\030\002 \001(\0132\031.lgraph.LoadPluginRequestH\000\022" +
+      "6\n\022del_plugin_request\030\003 \001(\0132\030.lgraph.Del" +
+      "PluginRequestH\000\0228\n\023call_plugin_request\030\004" +
+      " \001(\0132\031.lgraph.CallPluginRequestH\000\0228\n\023lis" +
+      "t_plugin_request\030\005 \001(\0132\031.lgraph.ListPlug" +
+      "inRequestH\000\022\r\n\005graph\030\006 \002(\t\022\017\n\007version\030\007 " +
+      "\001(\t\"4\n\nPluginType\022\007\n\003CPP\020\001\022\n\n\006PYTHON\020\002\022\010" +
+      "\n\004JAVA\020\003\022\007\n\003ANY\020\004B\005\n\003Req\"\206\002\n\016PluginRespo" +
+      "nse\022:\n\024load_plugin_response\030\001 \001(\0132\032.lgra" +
+      "ph.LoadPluginResponseH\000\0228\n\023del_plugin_re" +
+      "sponse\030\002 \001(\0132\031.lgraph.DelPluginResponseH" +
+      "\000\022:\n\024call_plugin_response\030\003 \001(\0132\032.lgraph" +
+      ".CallPluginResponseH\000\022:\n\024list_plugin_res" +
+      "ponse\030\004 \001(\0132\032.lgraph.ListPluginResponseH" +
+      "\000B\006\n\004Resp\"Y\n\020HeartbeatRequest\022\020\n\010rpc_add" +
+      "r\030\001 \002(\t\022\021\n\trest_addr\030\002 \002(\t\022 \n\005state\030\003 \002(" +
+      "\0162\021.lgraph.NodeState\"\023\n\021HeartbeatRespons" +
+      "e\"Q\n\010PeerInfo\022\020\n\010rpc_addr\030\001 \002(\t\022\021\n\trest_" +
+      "addr\030\002 \002(\t\022 \n\005state\030\003 \002(\0162\021.lgraph.NodeS" +
+      "tate\"\022\n\020ListPeersRequest\"4\n\021ListPeersRes" +
+      "ponse\022\037\n\005peers\030\001 \003(\0132\020.lgraph.PeerInfo\"\022" +
+      "\n\020GetMasterRequest\"5\n\021GetMasterResponse\022" +
+      " \n\006master\030\001 \002(\0132\020.lgraph.PeerInfo\"\"\n\017Syn" +
+      "cMetaRequest\022\017\n\007confirm\030\001 \002(\t\"\037\n\020SyncMet" +
+      "aResponse\022\013\n\003ret\030\001 \002(\005\"\357\001\n\tHARequest\0225\n\021" +
+      "heartbeat_request\030\001 \001(\0132\030.lgraph.Heartbe" +
+      "atRequestH\000\0226\n\022list_peers_request\030\002 \001(\0132" +
+      "\030.lgraph.ListPeersRequestH\000\0226\n\022get_maste" +
+      "r_request\030\003 \001(\0132\030.lgraph.GetMasterReques" +
+      "tH\000\0224\n\021sync_meta_request\030\004 \001(\0132\027.lgraph." +
+      "SyncMetaRequestH\000B\005\n\003Req\"\371\001\n\nHAResponse\022" +
+      "7\n\022heartbeat_response\030\001 \001(\0132\031.lgraph.Hea" +
+      "rtbeatResponseH\000\0228\n\023list_peers_response\030" +
+      "\002 \001(\0132\031.lgraph.ListPeersResponseH\000\0228\n\023ge" +
+      "t_master_response\030\003 \001(\0132\031.lgraph.GetMast" +
+      "erResponseH\000\0226\n\022sync_meta_response\030\004 \001(\013" +
+      "2\030.lgraph.SyncMetaResponseH\000B\006\n\004Resp\"\312\004\n" +
+      "\rLGraphRequest\022\026\n\016client_version\030\001 \001(\003\022\r" +
+      "\n\005token\030\002 \002(\t\022\023\n\013is_write_op\030\003 \001(\010\022\014\n\004us" +
+      "er\030\004 \001(\t\0224\n\021graph_api_request\030\013 \001(\0132\027.lg" +
+      "raph.GraphApiRequestH\000\0228\n\023graph_query_re" +
+      "quest\030\014 \001(\0132\031.lgraph.GraphQueryRequestH\000" +
+      "\022/\n\016plugin_request\030\r \001(\0132\025.lgraph.Plugin" +
+      "RequestH\000\022\'\n\nha_request\030\016 \001(\0132\021.lgraph.H" +
+      "ARequestH\000\022/\n\016import_request\030\017 \001(\0132\025.lgr" +
+      "aph.ImportRequestH\000\022-\n\rgraph_request\030\021 \001" +
+      "(\0132\024.lgraph.GraphRequestH\000\022)\n\013acl_reques" +
+      "t\030\022 \001(\0132\022.lgraph.AclRequestH\000\022/\n\016config_" +
+      "request\030\023 \001(\0132\025.lgraph.ConfigRequestH\000\0221" +
+      "\n\017restore_request\030\024 \001(\0132\026.lgraph.Restore" +
+      "RequestH\000\022/\n\016schema_request\030\025 \001(\0132\025.lgra" +
+      "ph.SchemaRequestH\000B\005\n\003Req\"\366\005\n\016LGraphResp" +
+      "onse\0224\n\nerror_code\030\001 \002(\0162 .lgraph.LGraph" +
+      "Response.ErrorCode\022\020\n\010redirect\030\002 \001(\t\022\r\n\005" +
+      "error\030\003 \001(\t\022\026\n\016server_version\030\004 \001(\003\0226\n\022g" +
+      "raph_api_response\030\013 \001(\0132\030.lgraph.GraphAp" +
+      "iResponseH\000\022:\n\024graph_query_response\030\014 \001(" +
+      "\0132\032.lgraph.GraphQueryResponseH\000\0221\n\017plugi" +
+      "n_response\030\r \001(\0132\026.lgraph.PluginResponse" +
+      "H\000\022)\n\013ha_response\030\016 \001(\0132\022.lgraph.HARespo" +
+      "nseH\000\0221\n\017import_response\030\017 \001(\0132\026.lgraph." +
+      "ImportResponseH\000\022/\n\016graph_response\030\021 \001(\013" +
+      "2\025.lgraph.GraphResponseH\000\022+\n\014acl_respons" +
+      "e\030\022 \001(\0132\023.lgraph.AclResponseH\000\0221\n\017config" +
+      "_response\030\023 \001(\0132\026.lgraph.ConfigResponseH" +
+      "\000\0223\n\020restore_response\030\024 \001(\0132\027.lgraph.Res" +
+      "toreResponseH\000\0221\n\017schema_response\030\025 \001(\0132" +
+      "\026.lgraph.SchemaResponseH\000\"o\n\tErrorCode\022\013" +
+      "\n\007SUCCESS\020\001\022\017\n\013BAD_REQUEST\020\002\022\016\n\nAUTH_ERR" +
+      "OR\020\003\022\n\n\006KILLED\020\004\022\014\n\010REDIRECT\020\005\022\n\n\006FAILED" +
+      "\020\006\022\016\n\tEXCEPTION\020\377\001B\006\n\004Resp\"Q\n\016BackupLogE" +
+      "ntry\022\r\n\005index\030\001 \002(\003\022\014\n\004time\030\002 \002(\003\022\"\n\003req" +
+      "\030\003 \002(\0132\025.lgraph.LGraphRequest\"6\n\016Restore" +
+      "Request\022$\n\004logs\030\001 \003(\0132\026.lgraph.BackupLog" +
+      "Entry\"+\n\017RestoreResponse\022\030\n\020last_success" +
+      "_idx\030\001 \002(\003\"\261\001\n\nLogMessage\022\r\n\005index\030\001 \002(\003" +
+      "\022\014\n\004time\030\002 \002(\003\022\021\n\tbegin_end\030\003 \002(\010\022\014\n\004use" +
+      "r\030\004 \001(\t\022\r\n\005graph\030\005 \001(\t\022 \n\004type\030\006 \001(\0162\022.l" +
+      "graph.LogApiType\022\022\n\nread_write\030\007 \001(\010\022\017\n\007" +
+      "success\030\010 \001(\010\022\017\n\007content\030\t \001(\t\"\r\n\013HttpRe" +
+      "quest\"\016\n\014HttpResponse*\223\001\n\016ProtoFieldType" +
+      "\022\007\n\003NUL\020\000\022\010\n\004BOOL\020\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003" +
+      "\022\t\n\005INT32\020\004\022\t\n\005INT64\020\005\022\t\n\005FLOAT\020\006\022\n\n\006DOU" +
+      "BLE\020\007\022\010\n\004DATE\020\010\022\014\n\010DATETIME\020\t\022\n\n\006STRING\020" +
+      "\n\022\010\n\004BLOB\020\013*E\n\020ProtoAccessLevel\022\010\n\004NONE\020" +
+      "\000\022\r\n\tREAD_ONLY\020\001\022\016\n\nREAD_WRITE\020\002\022\010\n\004FULL" +
+      "\020\003**\n\023ProtoGraphQueryType\022\n\n\006CYPHER\020\000\022\007\n" +
+      "\003GQL\020\001*z\n\tNodeState\022\021\n\rUNINITIALIZED\020\001\022\024" +
+      "\n\020LOADING_SNAPSHOT\020\002\022\021\n\rREPLAYING_LOG\020\003\022" +
+      "\021\n\rJOINED_FOLLOW\020\004\022\021\n\rJOINED_MASTER\020\005\022\013\n" +
+      "\007OFFLINE\020\006*J\n\nLogApiType\022\r\n\tSingleApi\020\000\022" +
+      "\014\n\010Security\020\001\022\n\n\006Plugin\020\002\022\n\n\006Cypher\020\003\022\007\n" +
+      "\003Gql\020\0042R\n\020LGraphRPCService\022>\n\rHandleRequ" +
+      "est\022\025.lgraph.LGraphRequest\032\026.lgraph.LGra" +
+      "phResponse2G\n\021LGraphHttpService\0222\n\005Query" +
+      "\022\023.lgraph.HttpRequest\032\024.lgraph.HttpRespo" +
+      "nseB\003\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -106151,7 +107736,7 @@ public final class Lgraph {
     internal_static_lgraph_AddLabelRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_AddLabelRequest_descriptor,
-        new java.lang.String[] { "IsVertex", "Label", "Primary", "TidOrder", "EdgeConstraints", "Fields", });
+        new java.lang.String[] { "IsVertex", "Label", "Primary", "EdgeConstraints", "Fields", });
     internal_static_lgraph_AddLabelResponse_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_lgraph_AddLabelResponse_fieldAccessorTable = new
@@ -106614,23 +108199,23 @@ public final class Lgraph {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_Header_descriptor,
         new java.lang.String[] { "Name", "Type", });
-    internal_static_lgraph_CypherResult_descriptor =
+    internal_static_lgraph_GraphQueryRequest_descriptor =
       getDescriptor().getMessageTypes().get(83);
-    internal_static_lgraph_CypherResult_fieldAccessorTable = new
+    internal_static_lgraph_GraphQueryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_lgraph_CypherResult_descriptor,
-        new java.lang.String[] { "Header", "Result", "Elapsed", });
-    internal_static_lgraph_CypherRequest_descriptor =
+        internal_static_lgraph_GraphQueryRequest_descriptor,
+        new java.lang.String[] { "Type", "Query", "ParamNames", "ParamValues", "ResultInJsonFormat", "Graph", "Timeout", "PerNodeLimit", });
+    internal_static_lgraph_GraphQueryResult_descriptor =
       getDescriptor().getMessageTypes().get(84);
-    internal_static_lgraph_CypherRequest_fieldAccessorTable = new
+    internal_static_lgraph_GraphQueryResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_lgraph_CypherRequest_descriptor,
-        new java.lang.String[] { "Query", "ParamNames", "ParamValues", "ResultInJsonFormat", "Graph", "Timeout", "PerNodeLimit", });
-    internal_static_lgraph_CypherResponse_descriptor =
+        internal_static_lgraph_GraphQueryResult_descriptor,
+        new java.lang.String[] { "Header", "Result", "Elapsed", });
+    internal_static_lgraph_GraphQueryResponse_descriptor =
       getDescriptor().getMessageTypes().get(85);
-    internal_static_lgraph_CypherResponse_fieldAccessorTable = new
+    internal_static_lgraph_GraphQueryResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_lgraph_CypherResponse_descriptor,
+        internal_static_lgraph_GraphQueryResponse_descriptor,
         new java.lang.String[] { "JsonResult", "BinaryResult", "Result", });
     internal_static_lgraph_ImportRequest_descriptor =
       getDescriptor().getMessageTypes().get(86);
@@ -106661,13 +108246,13 @@ public final class Lgraph {
     internal_static_lgraph_CallPluginRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_CallPluginRequest_descriptor,
-        new java.lang.String[] { "Name", "Param", "Timeout", "InProcess", });
+        new java.lang.String[] { "Name", "Param", "Timeout", "InProcess", "ResultInJsonFormat", });
     internal_static_lgraph_CallPluginResponse_descriptor =
       getDescriptor().getMessageTypes().get(91);
     internal_static_lgraph_CallPluginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_CallPluginResponse_descriptor,
-        new java.lang.String[] { "Reply", });
+        new java.lang.String[] { "Reply", "JsonResult", "CallPluginResult", });
     internal_static_lgraph_LoadPluginRequest_descriptor =
       getDescriptor().getMessageTypes().get(92);
     internal_static_lgraph_LoadPluginRequest_fieldAccessorTable = new
@@ -106703,13 +108288,13 @@ public final class Lgraph {
     internal_static_lgraph_ListPluginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_ListPluginResponse_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "Reply", });
     internal_static_lgraph_PluginRequest_descriptor =
       getDescriptor().getMessageTypes().get(98);
     internal_static_lgraph_PluginRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_PluginRequest_descriptor,
-        new java.lang.String[] { "Type", "LoadPluginRequest", "DelPluginRequest", "CallPluginRequest", "ListPluginRequest", "Graph", "Req", });
+        new java.lang.String[] { "Type", "LoadPluginRequest", "DelPluginRequest", "CallPluginRequest", "ListPluginRequest", "Graph", "Version", "Req", });
     internal_static_lgraph_PluginResponse_descriptor =
       getDescriptor().getMessageTypes().get(99);
     internal_static_lgraph_PluginResponse_fieldAccessorTable = new
@@ -106787,13 +108372,13 @@ public final class Lgraph {
     internal_static_lgraph_LGraphRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_LGraphRequest_descriptor,
-        new java.lang.String[] { "ClientVersion", "Token", "IsWriteOp", "User", "GraphApiRequest", "CypherRequest", "PluginRequest", "HaRequest", "ImportRequest", "GraphRequest", "AclRequest", "ConfigRequest", "RestoreRequest", "SchemaRequest", "Req", });
+        new java.lang.String[] { "ClientVersion", "Token", "IsWriteOp", "User", "GraphApiRequest", "GraphQueryRequest", "PluginRequest", "HaRequest", "ImportRequest", "GraphRequest", "AclRequest", "ConfigRequest", "RestoreRequest", "SchemaRequest", "Req", });
     internal_static_lgraph_LGraphResponse_descriptor =
       getDescriptor().getMessageTypes().get(112);
     internal_static_lgraph_LGraphResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_LGraphResponse_descriptor,
-        new java.lang.String[] { "ErrorCode", "Redirect", "Error", "ServerVersion", "GraphApiResponse", "CypherResponse", "PluginResponse", "HaResponse", "ImportResponse", "GraphResponse", "AclResponse", "ConfigResponse", "RestoreResponse", "SchemaResponse", "Resp", });
+        new java.lang.String[] { "ErrorCode", "Redirect", "Error", "ServerVersion", "GraphApiResponse", "GraphQueryResponse", "PluginResponse", "HaResponse", "ImportResponse", "GraphResponse", "AclResponse", "ConfigResponse", "RestoreResponse", "SchemaResponse", "Resp", });
     internal_static_lgraph_BackupLogEntry_descriptor =
       getDescriptor().getMessageTypes().get(113);
     internal_static_lgraph_BackupLogEntry_fieldAccessorTable = new
@@ -106818,6 +108403,18 @@ public final class Lgraph {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_LogMessage_descriptor,
         new java.lang.String[] { "Index", "Time", "BeginEnd", "User", "Graph", "Type", "ReadWrite", "Success", "Content", });
+    internal_static_lgraph_HttpRequest_descriptor =
+      getDescriptor().getMessageTypes().get(117);
+    internal_static_lgraph_HttpRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_lgraph_HttpRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_lgraph_HttpResponse_descriptor =
+      getDescriptor().getMessageTypes().get(118);
+    internal_static_lgraph_HttpResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_lgraph_HttpResponse_descriptor,
+        new java.lang.String[] { });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
