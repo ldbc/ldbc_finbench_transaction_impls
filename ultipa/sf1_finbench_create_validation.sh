@@ -1,1 +1,1 @@
-java -classpath target/ultipa-0.1.0-alpha.jar org.ldbcouncil.finbench.driver.driver.Driver -P sf1_finbench_create_validation.properties
+java -classpath target/ultipa-0.2.0-alpha.jar org.ldbcouncil.finbench.driver.driver.Driver -P sf1_finbench_create_validation.properties
