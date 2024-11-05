@@ -6,12 +6,12 @@
     <parent>
         <artifactId>impls</artifactId>
         <groupId>org.ldbcouncil.finbench</groupId>
-        <version>0.1.0-alpha</version>
+        <version>0.2.0-alpha</version>
     </parent>
 
     <artifactId>dummy</artifactId>
     <name>dummy</name>
-    <version>0.1.0-alpha</version>
+    <version>0.2.0-alpha</version>
     <description>A dummy implementation to help debug queries</description>
 
     <properties>

@@ -5,20 +5,20 @@
     <parent>
         <artifactId>impls</artifactId>
         <groupId>org.ldbcouncil.finbench</groupId>
-        <version>0.1.0-alpha</version>
+        <version>0.2.0-alpha</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>galaxybase-cypher</artifactId>
     <name>galaxybase-cypher</name>
-    <version>0.1.0-alpha</version>
+    <version>0.2.0-alpha</version>
     <description>A Galaxybase Cypher implementation for reference</description>
 
     <dependencies>
         <dependency>
             <groupId>org.ldbcouncil.finbench</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-alpha</version>
+            <version>0.2.0-alpha</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
