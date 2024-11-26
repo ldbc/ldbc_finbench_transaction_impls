@@ -21,10 +21,11 @@ print(r.status_code)
 print(r.content)
 
 data = {'name':'%s' % plugin_name}
-content = open('%s.so' % plugin_name, 'rb').read()
+content = open('%s.cpp' % plugin_name, 'rb').read()
 data['code_base64'] = base64.b64encode(content).decode()
 data['description'] = '%s' % plugin_name
 data['read_only'] = read_only
+data['code_type'] = 'cpp'
 js = json.dumps(data)
 r = requests.post(url='http://%s/db/default/cpp_plugin' % endpoint, data=js, headers={'Content-Type':'application/json', 'Authorization':'Bearer %s' % jwt})
 print(r.status_code)

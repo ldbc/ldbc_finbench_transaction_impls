@@ -156,9 +156,9 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     for (auto deposit =
              LabeledOutEdgeIterator(loan.GetOutEdgeIterator(), loan.GetId(), 0, deposit_id, limit);
          deposit.IsValid(); deposit.Next()) {
-        auto ts = deposit.Eit().GetField(TIMESTAMP).AsInt64();
+        auto timestamp = deposit.Eit().GetField(TIMESTAMP).AsInt64();
         auto amount = deposit.Eit().GetField(AMOUNT).AsDouble();
-        if (ts > start_time && ts < end_time) {
+        if (timestamp > start_time && timestamp < end_time) {
             auto dst = deposit.Eit().GetDst();
             src_set.emplace(dst);
             add_amount(min_amount, dst, amount);
@@ -170,10 +170,10 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
             for (auto eit = LabeledOutEdgeIterator(vit.GetOutEdgeIterator(), vit.GetId(), 0,
                                                    edge_label_ids, limit);
                  eit.IsValid(); eit.Next()) {
-                auto ts = eit.Eit().GetField(TIMESTAMP).AsInt64();
+                auto timestamp = eit.Eit().GetField(TIMESTAMP).AsInt64();
                 auto amount = eit.Eit().GetField(AMOUNT).AsDouble();
                 auto dst_vid = eit.Eit().GetDst();
-                if (ts > start_time && ts < end_time) {
+                if (timestamp > start_time && timestamp < end_time) {
                     add_amount(min_amount, dst_vid, amount);
                     add_dst(merged_in, min_amount, dst_vid, vid, eit.Eit().GetUid().ToString(),
                             amount, threshold, i);
@@ -208,12 +208,11 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     lgraph_api::Result api_result(
         {{"i", LGraphType::INTEGER}, {"r", LGraphType::DOUBLE}, {"d", LGraphType::INTEGER}});
     for (auto& item : result) {
-        auto& r = api_result.NewRecord();
-        r.Insert("i", FieldData::Int64(std::get<2>(item)));
-        r.Insert("r", FieldData::Double(std::get<0>(item)));
-        r.Insert("d", FieldData::Int64(std::get<1>(item)));
+        auto r = api_result.MutableRecord();
+        r->Insert("i", FieldData::Int64(std::get<2>(item)));
+        r->Insert("r", FieldData::Double(std::get<0>(item)));
+        r->Insert("d", FieldData::Int64(std::get<1>(item)));
     }
     response = api_result.Dump();
     return true;
 }
-

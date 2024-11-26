@@ -60,21 +60,21 @@ public class TuGraphDbRpcClient {
     }
 
     private String handleCypherRequest(String query, String graph, double timeout, long perNodeLimit) {
-        Lgraph.CypherRequest.Builder builder = Lgraph.CypherRequest.newBuilder();
-        builder.setQuery(query).setResultInJsonFormat(true).setGraph(graph).setTimeout(timeout);
+        Lgraph.GraphQueryRequest.Builder builder = Lgraph.GraphQueryRequest.newBuilder();
+        builder.setType(Lgraph.ProtoGraphQueryType.CYPHER).setQuery(query).setResultInJsonFormat(true).setGraph(graph).setTimeout(timeout);
         if (perNodeLimit >= 0) {
             builder.setPerNodeLimit(perNodeLimit);
         }
-        Lgraph.CypherRequest cypherRequest = builder.build();
+        Lgraph.GraphQueryRequest cypherRequest = builder.build();
         Lgraph.LGraphRequest request =
-                Lgraph.LGraphRequest.newBuilder().setCypherRequest(cypherRequest).setToken(this.token)
+                Lgraph.LGraphRequest.newBuilder().setGraphQueryRequest(cypherRequest).setToken(this.token)
                                     .setClientVersion(serverVersion).build();
         Lgraph.LGraphResponse response = tuGraphService.HandleRequest(request);
         if (response.getErrorCode().getNumber() != Lgraph.LGraphResponse.ErrorCode.SUCCESS_VALUE) {
             throw new TuGraphDbRpcException(response.getErrorCode(), response.getError(), "CallCypher");
         }
         serverVersion = response.getServerVersion() > serverVersion ? response.getServerVersion() : serverVersion;
-        return response.getCypherResponse().getJsonResult();
+        return response.getGraphQueryResponse().getJsonResult();
     }
 
     // parse delimiter and process strings like \r \n \002 \0xA

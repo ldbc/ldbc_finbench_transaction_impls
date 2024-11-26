@@ -95,8 +95,8 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     static const std::string TRANSFER_TIMESTAMP = "timestamp";
     static const std::vector<std::string> TRANSFER_FIELD_NAMES = {"timestamp", "amount"};
     lgraph_api::Result api_result({{"msg", LGraphType::STRING}, {"txn", LGraphType::STRING}});
-    auto& record = api_result.NewRecord();
-    record.Insert("txn", FieldData::String("abort"));
+    auto record = api_result.MutableRecord();
+    record->Insert("txn", FieldData::String("abort"));
     int64_t src_id, dst_id, time, amt, start_time, end_time;
     int64_t limit = -1;
     try {
@@ -109,7 +109,7 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         parse_from_json(end_time, "endTime", input);
         parse_from_json(limit, "limit", input);
     } catch (std::exception& e) {
-        record.Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
+        record->Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
         response = api_result.Dump();
         return false;
     }
@@ -120,13 +120,13 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         (int16_t)txn.GetEdgeLabelId(TRANSFER_LABEL),
     };
     if (!src.IsValid() || !dst.IsValid()) {
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         txn.Abort();
         return false;
     }
     if (src.GetField(ACCOUNT_ISBLOCKED).AsBool() || dst.GetField(ACCOUNT_ISBLOCKED).AsBool()) {
-        record.Insert("msg", FieldData::String("src/dst is blocked"));
+        record->Insert("msg", FieldData::String("src/dst is blocked"));
         response = api_result.Dump();
         txn.Abort();
         return true;
@@ -138,14 +138,14 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     for (auto src_eit =
              LabeledInEdgeIterator(src.GetInEdgeIterator(), 0, src.GetId(), transfer_id, limit);
          src_eit.IsValid(); src_eit.Next()) {
-        auto ts = src_eit.Eit().GetField(TRANSFER_TIMESTAMP);
-        if (ts.AsInt64() > start_time && ts.AsInt64() < end_time) {
+        auto timestamp = src_eit.Eit().GetField(TRANSFER_TIMESTAMP);
+        if (timestamp.AsInt64() > start_time && timestamp.AsInt64() < end_time) {
             src_in.emplace(src_eit.Eit().GetSrc());
         }
     }
     if (src_in.empty()) {
-        record.Insert("msg", FieldData::String("not detected"));
-        record.Insert("txn", FieldData::String("commit"));
+        record->Insert("msg", FieldData::String("not detected"));
+        record->Insert("txn", FieldData::String("commit"));
         response = api_result.Dump();
         txn.Commit();
         return true;
@@ -153,16 +153,16 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     for (auto dst_eit =
              LabeledOutEdgeIterator(dst.GetOutEdgeIterator(), dst.GetId(), 0, transfer_id, limit);
          dst_eit.IsValid(); dst_eit.Next()) {
-        auto ts = dst_eit.Eit().GetField(TRANSFER_TIMESTAMP);
-        if (ts.AsInt64() > start_time && ts.AsInt64() < end_time &&
+        auto timestamp = dst_eit.Eit().GetField(TRANSFER_TIMESTAMP);
+        if (timestamp.AsInt64() > start_time && timestamp.AsInt64() < end_time &&
             src_in.find(dst_eit.Eit().GetDst()) != src_in.end()) {
             txn.Abort();
             break;
         }
     }
     if (txn.IsValid()) {
-        record.Insert("msg", FieldData::String("not detected"));
-        record.Insert("txn", FieldData::String("commit"));
+        record->Insert("msg", FieldData::String("not detected"));
+        record->Insert("txn", FieldData::String("commit"));
         response = api_result.Dump();
         txn.Commit();
         return true;
@@ -172,16 +172,15 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     dst = txn.GetVertexByUniqueIndex(ACCOUNT_LABEL, ACCOUNT_ID, FieldData(dst_id));
     if (!src.IsValid() || !dst.IsValid()) {
         txn.Abort();
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         return false;
     }
     src.SetField(ACCOUNT_ISBLOCKED, FieldData(true));
     dst.SetField(ACCOUNT_ISBLOCKED, FieldData(true));
-    record.Insert("msg", FieldData::String("block src/dst"));
-    record.Insert("txn", FieldData::String("commit"));
+    record->Insert("msg", FieldData::String("block src/dst"));
+    record->Insert("txn", FieldData::String("commit"));
     response = api_result.Dump();
     txn.Commit();
     return true;
 }
-

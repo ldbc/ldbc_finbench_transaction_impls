@@ -28,9 +28,9 @@ using json = nlohmann::json;
 #define COUNT_TRANSFER(eit)                                         \
     count = 0;                                                      \
     while (eit.IsValid()) {                                         \
-        auto ts = eit.Eit().GetField(TRANSFER_TIMESTAMP);           \
+        auto timestamp = eit.Eit().GetField(TRANSFER_TIMESTAMP);           \
         auto amount = eit.Eit().GetField(TRANSFER_AMOUNT);          \
-        if (ts.AsInt64() > start_time && ts.AsInt64() < end_time && \
+        if (timestamp.AsInt64() > start_time && timestamp.AsInt64() < end_time && \
             amount.AsDouble() > threshold) {                        \
             count += 1;                                             \
             break;                                                  \
@@ -38,8 +38,8 @@ using json = nlohmann::json;
         eit.Next();                                                 \
     }                                                               \
     if (count == 0) {                                               \
-        record.Insert("msg", FieldData::String("not detected"));    \
-        record.Insert("txn", FieldData::String("commit"));          \
+        record->Insert("msg", FieldData::String("not detected"));    \
+        record->Insert("txn", FieldData::String("commit"));          \
         response = api_result.Dump();                               \
         txn.Commit();                                               \
         return true;                                                \
@@ -118,8 +118,8 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     static const std::string TRANSFER_AMOUNT = "amount";
     static const std::vector<std::string> TRANSFER_FIELD_NAMES = {"timestamp", "amount"};
     lgraph_api::Result api_result({{"msg", LGraphType::STRING}, {"txn", LGraphType::STRING}});
-    auto& record = api_result.NewRecord();
-    record.Insert("txn", FieldData::String("abort"));
+    auto record = api_result.MutableRecord();
+    record->Insert("txn", FieldData::String("abort"));
     int64_t src_id, dst_id, time, start_time, end_time;
     int64_t limit = -1;
     double amt, threshold;
@@ -134,7 +134,7 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         parse_from_json(end_time, "endTime", input);
         parse_from_json(limit, "limit", input);
     } catch (std::exception& e) {
-        record.Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
+        record->Insert("msg", FieldData::String("json parse error: " + std::string(e.what())));
         response = api_result.Dump();
         return false;
     }
@@ -142,13 +142,13 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     auto src = txn.GetVertexByUniqueIndex(ACCOUNT_LABEL, ACCOUNT_ID, FieldData(src_id));
     auto dst = txn.GetVertexByUniqueIndex(ACCOUNT_LABEL, ACCOUNT_ID, FieldData(dst_id));
     if (!src.IsValid() || !dst.IsValid()) {
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         txn.Abort();
         return false;
     }
     if (src.GetField(ACCOUNT_ISBLOCKED).AsBool() || dst.GetField(ACCOUNT_ISBLOCKED).AsBool()) {
-        record.Insert("msg", FieldData::String("src/dst is blocked"));
+        record->Insert("msg", FieldData::String("src/dst is blocked"));
         response = api_result.Dump();
         txn.Abort();
         return true;
@@ -180,16 +180,15 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     dst = txn.GetVertexByUniqueIndex(ACCOUNT_LABEL, ACCOUNT_ID, FieldData(dst_id));
     if (!src.IsValid() || !dst.IsValid()) {
         txn.Abort();
-        record.Insert("msg", FieldData::String("src/dst invalid"));
+        record->Insert("msg", FieldData::String("src/dst invalid"));
         response = api_result.Dump();
         return false;
     }
     src.SetField(ACCOUNT_ISBLOCKED, FieldData(true));
     dst.SetField(ACCOUNT_ISBLOCKED, FieldData(true));
-    record.Insert("msg", FieldData::String("block src/dst"));
-    record.Insert("txn", FieldData::String("commit"));
+    record->Insert("msg", FieldData::String("block src/dst"));
+    record->Insert("txn", FieldData::String("commit"));
     response = api_result.Dump();
     txn.Commit();
     return true;
 }
-
