@@ -2,6 +2,8 @@
 
 This module presents a Ultipa implementation for the FinBench benchmark.
 
+*Note*: This implementation only passes validation mode. It has not been tested under benchmarking mode.
+
 - https://www.ultipa.com/
 - https://www.ultipa.cn/
 
