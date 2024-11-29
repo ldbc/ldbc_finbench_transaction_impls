@@ -14,4 +14,4 @@ This repo has multiple modules for reference. Please refer to the README in each
 - FinBench Specification: https://github.com/ldbc/ldbc_finbench_docs
 - FinBench DataGen: https://github.com/ldbc/ldbc_finbench_datagen
 - FinBench Driver: https://github.com/ldbc/ldbc_finbench_driver
-- FinBench Transaction Reference Implementation: https://github.com/ldbc/ldbc_finbench_transaction_impls 
+- FinBench Transaction Reference Implementation: https://github.com/ldbc/ldbc_finbench_transaction_impls
