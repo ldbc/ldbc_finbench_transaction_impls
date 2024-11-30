@@ -1,0 +1,29 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tsr5(
+  VERTEX<Account> id,
+  DOUBLE threshold,
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  SumAccum<INT> @sum_count;
+  SumAccum<DOUBLE> @sum_amount;
+  Nodes = {id};
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(transfer_REVERSE:e)- :t
+    WHERE  e.amount > threshold
+           AND e.timestamp > startTime
+           AND e.timestamp < endTime
+    ACCUM  t.@sum_count += 1,
+           t.@sum_amount += e.amount
+    POST-ACCUM
+           t.@sum_amount = round(t.@sum_amount, 3)
+    ORDER  BY t.@sum_amount DESC,
+           t.id ASC
+  ;
+  PRINT Nodes[
+          Nodes.id AS srcId,
+          Nodes.@sum_count AS numEdges,
+          Nodes.@sum_amount AS sumAmount
+        ];
+}

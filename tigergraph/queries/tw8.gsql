@@ -1,0 +1,4 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw8(UINT personId, UINT companyId, UINT time, DOUBLE ratio){
+  INSERT INTO invest VALUES (personId Person, companyId, time, ratio);
+}

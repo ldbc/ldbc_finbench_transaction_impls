@@ -1,0 +1,5 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw7(UINT companyId, UINT loanId, DOUBLE loanAmount, DOUBLE balance, UINT time){
+  INSERT INTO Loan VALUES (loanId, loanAmount, balance, _, _);
+  INSERT INTO apply VALUES (companyId Company, loanId Loan, time, _);
+}
