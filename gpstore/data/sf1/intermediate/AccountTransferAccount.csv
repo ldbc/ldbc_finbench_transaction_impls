@@ -1,0 +1,9 @@
+fromId START_ID
+toId END_ID
+amount FLOAT
+createTime LONG
+orderNum LONG
+comment STRING
+payType STRING
+goodsType STRING
+ 

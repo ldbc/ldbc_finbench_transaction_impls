@@ -1,0 +1,10 @@
+companyId ID
+companyName STRING
+isBlocked BOOLEAN
+createTime LONG
+country STRING
+city STRING
+business STRING
+description STRING
+url STRING
+ 

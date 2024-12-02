@@ -1,0 +1,19 @@
+bin/gpbuild -db finbench-sf10\
+     --nodes=Medium=../data/sf10/snapshot/headers/Medium.csv,../data/sf10/snapshot/content_long/Medium.csv\
+     --nodes=Person=../data/sf10/snapshot/headers/Person.csv,../data/sf10/snapshot/content_long/Person.csv\
+     --nodes=Loan=../data/sf10/snapshot/headers/Loan.csv,../data/sf10/snapshot/content_long/Loan.csv\
+     --nodes=Account=../data/sf10/snapshot/headers/Account.csv,../data/sf10/snapshot/content_long/Account.csv\
+     --nodes=Company=../data/sf10/snapshot/headers/Company.csv,../data/sf10/snapshot/content_long/Company.csv\
+     --relationships=ACCOUNT_TRANSFER_ACCOUNT=../data/sf10/snapshot/headers/AccountTransferAccount.csv,../data/sf10/snapshot/content_long/AccountTransferAccount.csv\
+     --relationships=COMPANY_GUARANTEE_COMPANY=../data/sf10/snapshot/headers/CompanyGuaranteeCompany.csv,../data/sf10/snapshot/content_long/CompanyGuaranteeCompany.csv\
+     --relationships=PERSON_APPLY_LOAN=../data/sf10/snapshot/headers/PersonApplyLoan.csv,../data/sf10/snapshot/content_long/PersonApplyLoan.csv\
+     --relationships=LOAN_DEPOSIT_ACCOUNT=../data/sf10/snapshot/headers/LoanDepositAccount.csv,../data/sf10/snapshot/content_long/LoanDepositAccount.csv\
+     --relationships=COMPANY_INVEST_COMPANY=../data/sf10/snapshot/headers/CompanyInvestCompany.csv,../data/sf10/snapshot/content_long/CompanyInvestCompany.csv\
+     --relationships=PERSON_GUARANTEE_PERSON=../data/sf10/snapshot/headers/PersonGuaranteePerson.csv,../data/sf10/snapshot/content_long/PersonGuaranteePerson.csv\
+     --relationships=MEDIUM_SIGN_INACCOUNT=../data/sf10/snapshot/headers/MediumSignInAccount.csv,../data/sf10/snapshot/content_long/MediumSignInAccount.csv\
+     --relationships=COMPANY_OWN_ACCOUNT=../data/sf10/snapshot/headers/CompanyOwnAccount.csv,../data/sf10/snapshot/content_long/CompanyOwnAccount.csv\
+     --relationships=COMPANY_APPLY_LOAN=../data/sf10/snapshot/headers/CompanyApplyLoan.csv,../data/sf10/snapshot/content_long/CompanyApplyLoan.csv\
+     --relationships=PERSON_INVEST_COMPANY=../data/sf10/snapshot/headers/PersonInvestCompany.csv,../data/sf10/snapshot/content_long/PersonInvestCompany.csv\
+     --relationships=PERSON_OWN_ACCOUNT=../data/sf10/snapshot/headers/PersonOwnAccount.csv,../data/sf10/snapshot/content_long/PersonOwnAccount.csv\
+     --relationships=ACCOUNT_REPAY_LOAN=../data/sf10/snapshot/headers/AccountRepayLoan.csv,../data/sf10/snapshot/content_long/AccountRepayLoan.csv\
+     --relationships=ACCOUNT_WITHDRAW_ACCOUNT=../data/sf10/snapshot/headers/AccountWithdrawAccount.csv,../data/sf10/snapshot/content_long/AccountWithdrawAccount.csv

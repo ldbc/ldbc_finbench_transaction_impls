@@ -1,0 +1,1 @@
+CALL tw3($mediumId, $mediumType, $isBlocked)

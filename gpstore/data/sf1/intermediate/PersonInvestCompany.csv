@@ -1,0 +1,6 @@
+investorId START_ID
+companyId END_ID
+ratio FLOAT
+createTime LONG
+comment STRING
+ 

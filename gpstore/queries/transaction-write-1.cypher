@@ -1,0 +1,1 @@
+CALL tw1($personId, $personName, $isBlocked)
