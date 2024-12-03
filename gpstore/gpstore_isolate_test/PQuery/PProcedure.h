@@ -33,7 +33,7 @@ struct EdgeInfoList
         Reset();
     }
 };
-double LL2double(long long a)
+inline double LL2double(long long a)
 {
     union U
     {
