@@ -6,6 +6,8 @@ Note: These two experiments are conducted in docker.
 
 Docker image: tugraph/tugraph-compile-centos8:1.3.1
 
+Hardware: Alibaba Cloud ecs.r6.8xlarge 32xIntel Xeon Platinum 8269CY vCPUs, 256GiB RAM 
+
 # Temporal Locality in Storage
 
 The temporal loacality experiment is executed on TuGraph-DB with FinBench SF100 dataset.
@@ -14,7 +16,7 @@ The temporal loacality experiment is executed on TuGraph-DB with FinBench SF100 
 
 - Package:
     
-- Datasets:
+- Datasets: https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz
 
 ## Experiment Steps
 
@@ -37,17 +39,6 @@ Download the FinBench sf100 dataset into experiment package directory
 $ cd ./temporal_locality
 $ wget https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz
 $ tar -xf ./sf100.tar.xz
-$ cd ..
-```
-
-#### Clone TuGraph-DB
-clone the tugraph-db into experiment package directory，then checkout to finbench branch.
-
-```shell
-$ cd ./temporal_locality
-$ git clone --recursive https://github.com/TuGraph-family/tugraph-db.git
-$ cd ./tugraph-db
-$ git checkout finbench
 $ cd ..
 ```
 
@@ -117,24 +108,27 @@ $ docker run -it -v ./temporal_locality:/root/temporal_locality -p 7071:7071 -p 
 $ exit
 ```
 
-#### Compile TuGraph-DB
+#### Install TuGraph-DB
 
-Compile tugraph-db inside docker container.
+Install tugraph-db with `tugraph-4.0.0-1.el8.x86_64.rpm` inside docker container.
 
 ```shell
 $ docker exec -it finbench_temporal_loaclity /bin/bash
-$ cd /root/temporal_locality/tugraph-db
-$ deps/build_deps.sh
-$ mkdir build && cd build
-$ cmake .. -DOURSYSTEM=centos -DENABLE_PREDOWNLOAD_DEPENDS_PACKAGE=1
-$ make
-$ make package
-$ make install
+$ cd /root/temporal_locality/
+$ rpm -ivh tugraph-4.0.0-1.el8.x86_64.rpm --nodeps
 ```
 
 use the following command to test if tugraph-db is successfully compile and installed.
 ```shell
-$ lgraph_server -h
+$ lgraph_server --version
+```
+
+the output should be like this.
+
+```shell
+TuGraph v4.0.0, compiled from "finbench" branch, commit "335335f" (web commit "8253763").
+  CPP compiler version: "GNU" "8.4.0".
+  Python version : "3.6.9".
 ```
 
 if installed successfully, exit current container
@@ -182,7 +176,7 @@ Start tugraph-db server.
 
 ```shell
 $ docker exec -it finbench_temporal_loaclity /bin/bash
-$ cd /root/temporal_locality/tugraph-db/build
+$ cd /root/temporal_locality/
 $ lgraph_server -c /root/temporal_locality/lgraph_sf100.json -d start
 $ exit
 ```
@@ -212,10 +206,13 @@ $ ../tugraph/scripts/load_procedure_temporal.sh
 
 #### Run Benchmark
 
-Go to `ldbc_finbench_transaction_impls/tugraph` to run temporal locality benchmark
+Go to `ldbc_finbench_transaction_impls/tugraph`, link sf100 dataset to `./data` directory, then run temporal locality benchmark
 
 ```shell
 $ cd ../tugraph/
+$ cd ./data
+$ ln -s ../../misc/temporal_locality/sf100 ./sf100
+$ cd ..
 $ bash run.sh ../misc/temporal_locality/benchmark.properties > temporal_locality.log
 $ cd ../misc
 ```
@@ -228,6 +225,17 @@ The execution time and iteration time in ComplexRead1 is recorded in `temporal_l
 $ cd ./temporal_locality
 $ python log_data_collector.py ../../tugraph/temporal_locality.log
 $ cd ..
+```
+
+#### Stop TuGraph-DB
+
+Stop tugraph-db server.
+
+```shell
+$ docker exec -it finbench_temporal_loaclity /bin/bash
+$ cd /root/temporal_locality/
+$ lgraph_server -d stop
+$ exit
 ```
 
 # Recursive Path Filtering

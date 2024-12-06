@@ -8,6 +8,5 @@
     "ssl_auth": false,
     "server_key": "./server-key.pem",
     "server_cert": "./server-cert.pem",
-    "web": "/root/temporal_locality/tugraph-db/dist",
     "directory": "/root/lgraph_db_sf100"
 }
