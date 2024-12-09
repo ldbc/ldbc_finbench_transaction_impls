@@ -14,7 +14,7 @@ The temporal loacality experiment is executed on TuGraph-DB with FinBench SF100 
 
 ## Resources
 
-- Package:
+- Package: https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/experiments/temporal_locality.zip
     
 - Datasets: https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz
 
@@ -28,7 +28,7 @@ Execute following steps under current doc's directory, `ldbc_finbench_transactio
 Download temporal locality experiment package into current directory.
 
 ```shell
-$ wget {url of temporal locality experiment package}
+$ wget https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/experiments/temporal_locality.zip
 $ unzip temporal_locality.zip
 ```
 
