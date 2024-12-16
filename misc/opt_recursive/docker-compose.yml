@@ -1,0 +1,22 @@
+version: "3"
+services:
+  tugraph:
+    image: tugraph/tugraph-compile-centos8:1.2.9
+    command: tail -f
+    tty: true
+    volumes:
+      - /data/dataset:/root/datasets/
+      - ./scripts:/root/scripts/
+    expose:
+      - 7070
+      - 9090
+
+  finbench:
+    depends_on:
+      - tugraph
+    image: tugraph/tugraph-bdci-finbench:cent8
+    command: tail -f
+    tty: true
+    volumes:
+      - /data/dataset:/root/datasets/
+      - ./scripts:/root/scripts/
