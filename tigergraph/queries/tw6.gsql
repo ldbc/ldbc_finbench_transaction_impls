@@ -1,0 +1,11 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tw6(
+  VERTEX<Person> personId,
+  UINT loanId, 
+  DOUBLE loanAmount,
+  DOUBLE balance,
+  UINT time
+) FOR GRAPH ldbc_fin syntax v1{
+  INSERT INTO Loan (PRIMARY_ID, loanAmount, balance) VALUES (loanId, loanAmount, balance);
+  INSERT INTO EDGE apply VALUES (personId, loanId, time, _);
+}

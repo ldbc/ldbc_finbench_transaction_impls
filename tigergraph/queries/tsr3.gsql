@@ -1,0 +1,18 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tsr3(VERTEX<Account> dstId, DOUBLE threshold, UINT startTime, UINT endTime) syntax v1{
+    SumAccum<INT> @@countEdge1;
+    int countEdge2 = dstId.outdegree("transfer_REVERSE");
+
+    DstAccount = {dstId};
+    IF countEdge2 == 0 THEN
+        PRINT -1 AS blockRatio;
+    ELSE
+        Result = SELECT dst FROM DstAccount:dst - (transfer_REVERSE:e)-> Account:s
+                    WHERE e.timestamp > startTime AND e.timestamp < endTime
+                      AND e.amount > threshold
+                      AND s.isBlocked
+                    ACCUM @@countEdge1 += 1
+                    ;
+        PRINT round(@@countEdge1 * 1.0/countEdge2, 3) AS blockRatio;
+    END;
+}

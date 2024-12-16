@@ -1,0 +1,37 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tsr2(
+  VERTEX<Account> id, 
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin syntax v1{
+  SumAccum<DOUBLE> @@sumEdge1Amount;
+  MaxAccum<DOUBLE> @@maxEdge1Amount = -1;
+  SumAccum<INT> @@numEdge1;
+  SumAccum<DOUBLE> @@sumEdge2Amount;
+  MaxAccum<DOUBLE> @@maxEdge2Amount = -1;
+  SumAccum<INT> @@numEdge2;
+
+  Start = {id};
+  
+  R1 = 
+    SELECT t
+    FROM Start:s - (transfer:e) -> Account:t
+    WHERE e.timestamp > startTime and e.timestamp < endTime
+    ACCUM 
+      @@sumEdge1Amount += e.amount,
+      @@maxEdge1Amount += e.amount,
+      @@numEdge1 += 1
+    ;
+  R2 = 
+    SELECT t
+    FROM Start:s - (transfer_REVERSE:e) -> Account:t
+    WHERE e.timestamp > startTime and e.timestamp < endTime
+    ACCUM 
+      @@sumEdge2Amount += e.amount,
+      @@maxEdge2Amount += e.amount,
+      @@numEdge2 += 1
+  ;
+  
+  PRINT round(@@sumEdge1Amount, 3) as sumEdge1Amount, round(@@maxEdge1Amount,3) as maxEdge1Amount, @@numEdge1 as numEdge1,
+    round(@@sumEdge2Amount, 3) as sumEdge2Amount, round(@@maxEdge2Amount,3) as maxEdge2Amount, @@numEdge2 as numEdge2;
+}

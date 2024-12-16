@@ -1,0 +1,73 @@
+USE GRAPH ldbc_fin
+CREATE QUERY trw3(
+  UINT srcId,
+  UINT dstId,
+  UINT time,
+  DOUBLE threshold,
+  UINT startTime,
+  UINT endTime,
+  INT truncationLimit,
+  STRING truncationOrder = "TIMESTAMP_DESCENDING"
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  Nodes = SELECT s FROM Person:s WHERE s.id IN (srcId,dstId) AND s.isBlocked == TRUE;
+  IF Nodes.size() > 0 THEN
+    PRINT "One of the persons is blocked!";
+    RETURN;
+  END;
+
+  OrAccum @visited;
+  SumAccum<DOUBLE> @@sumLoanAmount;
+  Nodes = SELECT s FROM Person:s WHERE s.id == srcId;
+  All_Nodes = Nodes;
+  Nodes =
+    SELECT s
+    FROM   Nodes:s
+    POST-ACCUM
+           s.@visited = TRUE
+  ;
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(guarantee:e)- :t
+    WHERE  t.@visited == FALSE
+           AND e.timestamp > startTime
+           AND e.timestamp < endTime
+    POST-ACCUM
+           t.@visited = TRUE
+  ;
+  All_Nodes = All_Nodes UNION Nodes;
+  IF time > startTime AND time < endTime THEN
+    Dst_Nodes = SELECT t FROM Person:t WHERE t.id == dstId;
+    Dst_Nodes =
+      SELECT s
+      FROM   Dst_Nodes:s
+      POST-ACCUM
+             s.@visited = TRUE
+    ;
+    Nodes = Nodes UNION Dst_Nodes;
+    All_Nodes = All_Nodes UNION Dst_Nodes;
+  END;
+  WHILE Nodes.size() > 0 DO
+    Nodes =
+      SELECT t
+      FROM   Nodes:s -(guarantee:e)- :t
+      WHERE  t.@visited == FALSE
+             AND e.timestamp > startTime
+             AND e.timestamp < endTime
+      POST-ACCUM
+             t.@visited = TRUE
+    ;
+    All_Nodes = All_Nodes UNION Nodes;
+  END;
+  All_Nodes =
+    SELECT t
+    FROM   All_Nodes:s -(apply:e)- :t
+    POST-ACCUM
+           @@sumLoanAmount += t.loanAmount
+  ;
+
+  IF @@sumLoanAmount > threshold THEN
+    UPDATE s FROM Person:s SET s.isBlocked = true WHERE s.id IN (srcId,dstId);
+  ELSE
+    INSERT INTO guarantee VALUES (srcId Person, dstId Person, time, _);
+  END;
+}
