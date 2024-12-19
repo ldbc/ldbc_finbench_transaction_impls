@@ -1,0 +1,1 @@
+CALL tw12($accountId1, $accountId2, $time, $amount)

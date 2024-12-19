@@ -1,0 +1,1 @@
+java -cp target/gpstore-0.2.0-alpha.jar:lib/gpstore-api-sdk-0.0.1-alpha.jar org.ldbcouncil.finbench.driver.driver.Driver -P benchmark.properties

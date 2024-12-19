@@ -1,0 +1,7 @@
+personId START_ID
+loanId END_ID
+loanAmount FLOAT
+createTime LONG
+org STRING
+comment STRING
+ 

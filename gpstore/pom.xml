@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.ldbcouncil.finbench</groupId>
+        <artifactId>impls</artifactId>
+        <version>0.2.0-alpha</version>
+    </parent>
+
+    <groupId>org.pkumod</groupId>
+    <artifactId>gpstore</artifactId>
+    <version>0.2.0-alpha</version>
+    <description>A GPStore implementation for reference</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.version>1.8</jdk.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.pkumod</groupId>
+            <artifactId>gpstore-api-sdk</artifactId>
+            <version>0.0.1-alpha</version>
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/gpstore-api-sdk-0.0.1-alpha.jar</systemPath>-->
+        </dependency>
+        <dependency>
+            <groupId>org.ldbcouncil.finbench</groupId>
+            <artifactId>common</artifactId>
+            <version>0.2.0-alpha</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <!-- put your configurations here -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

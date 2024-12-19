@@ -1,0 +1,11 @@
+accountId ID
+createTime LONG
+isBlocked BOOLEAN
+accountType STRING
+nickname STRING
+phonenum STRING
+email STRING
+freqLoginType STRING
+lastLoginTime LONG
+accountLevel STRING
+ 

@@ -1,0 +1,1 @@
+CALL tw2($companyId, $companyName, $isBlocked)
