@@ -37,8 +37,10 @@ Please download our compressed docker image `gpstore-finbench-docker.tar.gz` via
 Download FinBench data, decompress it and integrate it into the existing `data/` directory so that the directory hierarchy looks like the following:
 
 ```bash
-$ tree -d /data/ldbc_finbench_transaction_impls/gpstore/data
-/data/ldbc_finbench_transaction_impls/gpstore/data
+$ cp -r data/intermediate data/finbench-sf1/intermediate
+$ cp -r data/intermediate data/finbench-sf10/intermediate
+$ tree -d data/ldbc_finbench_transaction_impls/gpstore/data
+data/ldbc_finbench_transaction_impls/gpstore/data
 ├── finbench-sf1
 │   ├── incremental
 │   ├── intermedidate
