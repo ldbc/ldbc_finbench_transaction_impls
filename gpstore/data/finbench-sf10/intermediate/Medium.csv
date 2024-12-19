@@ -1,7 +1,0 @@
-mediumId ID
-mediumType STRING
-isBlocked BOOLEAN
-createTime LONG
-lastLoginTime LONG
-riskLevel STRING
- 

@@ -1,7 +1,0 @@
-loanId ID
-loanAmount FLOAT 
-balance FLOAT
-createTime LONG
-loanUsage STRING
-interestRate FLOAT
- 

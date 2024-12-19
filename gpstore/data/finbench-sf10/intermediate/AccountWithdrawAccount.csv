@@ -1,8 +1,0 @@
-fromId START_ID
-toId END_ID
-fromType STRING
-toType STRING
-amount FLOAT
-createTime LONG
-comment STRING
- 

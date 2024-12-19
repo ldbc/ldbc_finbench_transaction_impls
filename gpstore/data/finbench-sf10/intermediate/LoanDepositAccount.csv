@@ -1,6 +1,0 @@
-loanId START_ID
-accountId END_ID
-amount FLOAT
-createTime LONG
-comment STRING
- 

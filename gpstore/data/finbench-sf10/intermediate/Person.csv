@@ -1,9 +1,0 @@
-personId ID
-personName STRING
-isBlocked BOOLEAN
-createTime LONG
-gender STRING
-birthday LONG
-country STRING
-city STRING
- 

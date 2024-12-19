@@ -1,6 +1,0 @@
-fromId START_ID
-toId END_ID
-createTime LONG
-relation STRING
-comment STRING
- 
