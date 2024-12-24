@@ -1,33 +1,26 @@
 # README
 
-This README elaborates how to run the experiments for choke-points analysis.
+This document elaborates how to run the experiments for choke-points analysis.
 
-## Experiments Environment
+## Environment and Datasets
 
 These two experiments are conducted in docker.
 - Docker image: `tugraph/tugraph-compile-centos8:1.3.1`
 - Hardware: Alibaba Cloud `ecs.r6.8xlarge`, 32xIntel Xeon Platinum 8269CY vCPUs, 256GiB RAM
 
-## FinBench Datasets
+FinBench Datasets:
+- [SF 0.1](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf0.1/sf0.1.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf0.1/sf0.1.tar.xz.md5sum)
+- [SF 1](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf1/sf1.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf1/sf1.tar.xz.md5sum)
+- [SF 3](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf3/sf3.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf3/sf3.tar.xz.md5sum)
+- [SF 10](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf10/sf10.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf10/sf10.tar.xz.md5sum)
+- [SF 30](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf30/sf30.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf30/sf30.tar.xz.md5sum)
+- [SF 100](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz) with [md5 checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz.md5sum)
 
-- [SF 0.1](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf0.1/sf0.1.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf0.1/sf0.1.tar.xz.md5sum)
-- [SF 1](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf1/sf1.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf1/sf1.tar.xz.md5sum)
-- [SF 3](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf3/sf3.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf3/sf3.tar.xz.md5sum)
-- [SF 10](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf10/sf10.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf10/sf10.tar.xz.md5sum)
-- [SF 30](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf30/sf30.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf30/sf30.tar.xz.md5sum)
-- [SF 100](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz) with [md5
-  checksum](oss://tugraph-web/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz.md5sum)
-
-## Temporal Locality in Storage
+## Experiment 1: Temporal Locality in Storage
 
 The temporal locality experiment is executed on TuGraph-DB with FinBench SF100 dataset. The following steps show how to reproduce the temporal locality experiment. Execute following steps under current doc's directory `ldbc_finbench_transaction_impls/misc`.
 
-### Download Experiment Resources
+### 1. Download Experiment Resources
 
 Download temporal locality experiment package into current directory and download the FinBench sf100 dataset into experiment package directory.
 
@@ -40,7 +33,7 @@ $ tar -xf ./sf100.tar.xz
 $ cd ..
 ```
 
-### Update Source Code in Query Implementation
+### 2. Update Source Code in Query Implementation
 
 The experiment uses procedure to execute `ComplexRead1` instead of Cypher, which requires a modification in the `ComplexRead1Handler` in `ldbc_finbench_transaction_impls/tugraph/src/main/java/org/ldbcouncil/finbench/impls/tugraph/TuGraphTransactionDb.java:100` with the following code.
 
@@ -80,13 +73,12 @@ public static class ComplexRead1Handler implements OperationHandler<ComplexRead1
                 e.printStackTrace();
             }
         }
-
     }
 ```
 
-### Compile Benchmark Implementation
+### 3. Compile Benchmark Implementation
 
-compile the implementation.
+Compile the implementation.
 
 ```shell
 $ cd ..
@@ -94,7 +86,7 @@ $ mvn clean package
 $ cd ./misc
 ```
 
-### Start TuGraph-DB in Docker Container
+### 4. Install TuGraph-DB in Docker Container
 
 To run temporal locality experiment in docker `tugraph/tugraph-compile-centos8:1.3.1`, install `tugraph-4.0.0-1.el8.x86_64.rpm` first.
 
@@ -114,7 +106,7 @@ TuGraph v4.0.0, compiled from "finbench" branch, commit "335335f" (web commit "8
   Python version : "3.6.9".
 ```
 
-### Preprocess SF100 Dataset
+### 5. Preprocess SF100 Dataset
 
 Before importing SF100 dataset，we need to preprocess the snapshot of SF100 dataset in terms of the data format. This can be done outside of docker container.
 
@@ -128,7 +120,7 @@ $ cd ..
 ```
 
 
-### Run Baseline Version
+### 6. Run Baseline Version
 
 Import SF100 dataset with temporal sorting feature disabled. Then start TuGraph-DB server.
 
@@ -165,7 +157,7 @@ $ python log_data_collector.py ../../tugraph/temporal_locality.log
 $ cd ..
 ```
 
-Stop tugraph-db server.
+Stop TuGraph-DB server.
 
 ```shell
 $ docker exec -it finbench_temporal_loaclity /bin/bash
@@ -174,7 +166,7 @@ $ lgraph_server -d stop
 $ exit
 ```
 
-### Run Optimized Version
+### 7. Run Optimized Version
 
 Import SF100 dataset with temporal sorting feature enabled. Then start TuGraph-DB server.
 
@@ -211,7 +203,7 @@ $ python log_data_collector.py ../../tugraph/temporal_locality.log
 $ cd ..
 ```
 
-Stop tugraph-db server.
+Stop TuGraph-DB server.
 
 ```shell
 $ docker exec -it finbench_temporal_loaclity /bin/bash
@@ -220,128 +212,56 @@ $ lgraph_server -d stop
 $ exit
 ```
 
-# Recursive Path Filtering
+## Experiment 2: Recursive Path Filtering
 
-## Resources
+### 1. Preparation
 
-- Pull Request:
-- Package:
-    - Baseline: 
-    - Optimized:
-- Datasets:
-    - SF100：https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/sf100/sf100.tar.xz
-    - Parameter of SF100：https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/finbench/v0.2.0/sf100/substitute_parameters.tar.gz.
+Download SF100 dataset and parameter. Move them to the dataset directory, e.g., the directory `/data/dataset`.
 
-## Experiment Steps
-
-### Move to directory
-Download dataset and parameter and move them to the dataset directory, for example, the directory '/data/dataset'.
-
-Modify docker-compose.yml to attach local file to volume '/root/datasets/' in container, for example, 
+Modify docker-compose.yml to attach local file to volume `/root/datasets/` in container, for example, 
 ```
 volumes: 
     - /data/dataset:/root/datasets/
-    - ./scripts:/root/scripts/
+    - /data/scripts:/root/scripts/
 ```
 
-Start docker containers.
-```
-docker-compose up -d
-```
-
-After that, will see two containers.
+Start docker containers with `docker-compose up -d`. After that, two containers start.
 - [directory name]_tugraph_1
 - [directory name]_finbench_1
 
-Benchmark is based on a large-scale SF100 dataset, and the following scripts are required.
 
-### Install package
-First, attach to the 'finbench-easyrun_tugraph_1' container.
+### 2. Benchmark Baseline
 
-Then install the package.
-```
-rpm -i base.rpm
-```
+- Attach to the `xxx_tugraph_1` container. Then install the package with `rpm -i base.rpm`.
+- In the container `xxx_tugraph_1`, Enter the `/root/scripts` directory. Import data with `bash sf100_import.sh` and start the server with `bash sf100_start.sh`
+- Switch to another container `xxx_finbench_1`. Enter the `/root/scripts` directory. Install C++ plugins with `bash load_procedure.sh`
+- In the container `xxx_finbench_1`, copy the file `benchmark_sf100.properties` in scripts to the directory `/root/ldbc/ldbc_finbench_transaction_impls/tugraph/benchmark.properties`.
+- In the container `xxx_finbench_1`,  enter the `/root/scripts` directory and run the benchmark with `bash sf100_benchmark.sh`.
 
-### Import data
-Enter the '/root/scripts' directory.
-```
-bash sf100_import.sh
-```
+### 3. Benchmark Optimization
 
-### Start tugraph server
-Also in the same container 'finbench-easyrun_tugraph_1' and same directory'/root/scripts', start the server.
-```
-bash sf100_start.sh
-```
-
-### C++ Plugin
-Switch to another container 'finbench'.
-
-Enter the '/root/scripts' directory.
-```
-bash load_procedure.sh
-```
-To install C++ plugins.
-
-### Benchmark Baseline
-Before benchmark, in the container 'finbench', copy the file 'benchmark_sf100.properties' in scripts to the directory '/root/ldbc/ldbc_finbench_transaction_impls/tugraph/benchmark.properties'.
-
-Also in the 'finbench' container and enter the '/root/scripts' directory.
-```
-bash sf100_benchmark.sh
-```
-
-### Benchmark Opt
-Attach to container 'tugraph'.
-
-Uninstall the baseline package.
-```
-rpm -e tugraph-4.0.0-1.x86_64
-```
-Install the opt version.
-```
-rpm -i opt.rpm
-```
-
-Switch to '/root/scripts'.
-
-Delete the old data directory.
-
-```
-rm -r /root/lgraph_db_sf100
-rm -r /root/lgraph_log_sf100
-
-bash sf100_import.sh
-bash sf100_start.sh
-```
-
-Attach to 'finbench' container, and enter '/root/scripts'.
-```
-bash load_procedure.sh
-```
-
-Before benchmark, comment the line
+- Attach to the `xxx_tugraph_1` container. Uninstall the baseline package with `rpm -e tugraph-4.0.0-1.x86_64` and then install the package with `rpm -i opt.rpm`.
+- In the container `xxx_tugraph_1`, enter the `/root/scripts` directory. Delete the old data directory with `rm -r /root/lgraph_db_sf100` and `rm -r /root/lgraph_log_sf100`.
+- Import data with `bash sf100_import.sh` and start the server with `bash sf100_start.sh`
+- Switch to another container `xxx_finbench_1`. Enter the `/root/scripts` directory. Install C++ plugins with `bash load_procedure.sh`
+- In the container `xxx_finbench_1`, copy the file `benchmark_sf100.properties` in scripts to the directory
+  `/root/ldbc/ldbc_finbench_transaction_impls/tugraph/benchmark.properties`.
+- Comment the line in the file `sf100_benchmark.properties`.
 ```
 # cd data && ln -s /root/datasets/sf100 ./sf100 && cd ..
 ```
-in the file 'sf100_benchmark.properties'
+- In the container `xxx_finbench_1`, enter the `/root/scripts` directory and run the benchmark with `bash sf100_benchmark.sh`.
 
-Then run the benchmark.
-```
-bash sf100_benchmark.sh
-```
-
-# End to End Evaluation
+## Experiment 3: End to End Evaluation
 
 - [Galaxybase Official Website](https://createlink.com)
 
-## 1. Resources
+### 1. Resources
 
-- Download the `galaxybase.zip` file from [here](https://drive.google.com/file/d/1euXCtu-oEzeh6M3Z4mP6LxofbhaYHHxs/view?usp=sharing), unzip it, and you will find `galaxybase.tar.gz` and the JSON files.
+- Download the [`galaxybase.zip`] file from [here](https://drive.google.com/file/d/1euXCtu-oEzeh6M3Z4mP6LxofbhaYHHxs/view?usp=sharing), unzip it, and you will find `galaxybase.tar.gz` and the JSON files.
 - Prepare the data files for both `sf10` and `sf100` datasets.
 
-## 2. Installation & Data Loading
+### 2. Installation & Data Loading
 
 - **Package Extraction**
 
@@ -379,7 +299,7 @@ docker exec -i CONTAINER_ID gtools graph auth-check
 Then, input the authorization code:
 
 ```
-docker exec -i CONTAINER_ID gtools graph auth --code 'AUTH_CODE'
+docker exec -i CONTAINER_ID gtools graph auth --code `AUTH_CODE`
 ```
 
 *Note: You can acquire the authorization code by contacting the support team at support@createlink.com.*
@@ -400,7 +320,7 @@ Load the `sf10` dataset into Galaxybase using the provided schema and mapping fi
 ./galaxybase-*/bin/galaxybase-load -s json/schema_sf10.json -m json/mapping_sf10.json -g sf10
 ```
 
-## 3. Benchmark Execution
+### 3. Benchmark Execution
 
 - **Compilation**
 
