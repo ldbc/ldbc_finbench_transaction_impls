@@ -1,0 +1,33 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tcr7(
+ VERTEX<Account> accountId,
+ DOUBLE threshold,
+ UINT startTime,
+ UINT endTime,
+ INT truncationLimit,
+ STRING truncationOrder = "TIMESTAMP_DESCENDING"
+ ) syntax v1{
+  SumAccum<DOUBLE> @@sumAmountE1, @@sumAmountE2;
+
+  Seed = {accountId};
+
+  transfersIn = SELECT s FROM Seed:t - (transfer_REVERSE:e1) -> Account:s
+                        WHERE e1.amount > threshold
+                          AND e1.timestamp > startTime
+                          AND e1.timestamp < endTime
+                        ACCUM @@sumAmountE1 += e1.amount
+                          ;
+
+  transfersOut = SELECT t FROM Seed:s - (transfer:e2) -> Account:t
+                        WHERE e2.amount > threshold
+                          AND e2.timestamp > startTime
+                          AND e2.timestamp < endTime
+                        ACCUM @@sumAmountE2 += e2.amount
+                          ;
+
+   IF transfersOut.size() == 0 THEN
+     PRINT transfersIn.size() AS numSrc, transfersOut.size() AS numDst, -1 AS inOutRatio;
+   ELSE
+     PRINT transfersIn.size() AS numSrc, transfersOut.size() AS numDst, round(@@sumAmountE1 * 1.0/@@sumAmountE2, 3) AS inOutRatio;
+   END;
+}

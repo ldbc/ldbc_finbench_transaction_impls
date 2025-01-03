@@ -1,0 +1,34 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tcr6(
+ UINT accountId,
+ DOUBLE threshold1,
+ DOUBLE threshold2,
+ UINT startTime,
+ UINT endTime,
+ INT truncationLimit,
+ STRING truncationOrder = "TIMESTAMP_DESCENDING"
+ ) syntax v1{
+    TYPEDEF TUPLE <UINT midId, DOUBLE sumEdge1Amount, DOUBLE sumEdge2Amount> RESULT;
+    HeapAccum<RESULT>(sumEdge2Amount DESC,midId ASC) @@result;
+    SumAccum<DOUBLE> @sumAmountE1;
+    SumAccum<DOUBLE> @sumAmountE2;
+    SumAccum<INT> @transferInE1Count;
+
+    Seed = SELECT src FROM Account:src WHERE src.id == accountId and src.accountType like "%card%";
+
+    S = SELECT mid FROM Seed:dst -(withdraw_REVERSE:e2)->Account:mid
+                  WHERE e2.timestamp > startTime AND e2.timestamp < endTime AND e2.amount > threshold2
+                  ACCUM mid.@sumAmountE2 += e2.amount
+                  ;
+
+    S = SELECT mid FROM S:mid - (transfer_REVERSE:e1)->Account:src
+                  WHERE e1.timestamp > startTime AND e1.timestamp < endTime AND e1.amount > threshold1
+                  ACCUM mid.@sumAmountE1 += e1.amount,
+                        mid.@transferInE1Count += 1
+                  POST-ACCUM
+                        IF mid.@transferInE1Count > 3 THEN
+                           @@result += RESULT(mid.id, round(mid.@sumAmountE1, 3), round(mid.@sumAmountE2, 3))
+                        END
+                   ;
+    print @@result;
+}
