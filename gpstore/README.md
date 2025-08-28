@@ -39,8 +39,8 @@ Download FinBench data, decompress it and integrate it into the existing `data/`
 ```bash
 $ cp -r data/intermediate data/finbench-sf1/intermediate
 $ cp -r data/intermediate data/finbench-sf10/intermediate
-$ tree -d data/ldbc_finbench_transaction_impls/gpstore/data
-data/ldbc_finbench_transaction_impls/gpstore/data
+$ tree -d /data/ldbc_finbench_transaction_impls/gpstore/data
+/data/ldbc_finbench_transaction_impls/gpstore/data
 ├── finbench-sf1
 │   ├── incremental
 │   ├── intermedidate
@@ -122,14 +122,14 @@ curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","userna
 ```shell
 # create validation
 cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf10_finbench_create_validation.sh
+bash sf1_finbench_create_validation.sh
 ```
 
 ### 3.1.2 Validate
 
 ```shell
 cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf10_finbench_validation_database.sh
+bash sf1_finbench_validation_database.sh
 ```
 
 ## 3.2 Run benchmark
