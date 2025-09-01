@@ -24,8 +24,8 @@
             <groupId>org.pkumod</groupId>
             <artifactId>gpstore-api-sdk</artifactId>
             <version>0.0.1-alpha</version>
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/lib/gpstore-api-sdk-0.0.1-alpha.jar</systemPath>-->
+           <scope>system</scope>
+           <systemPath>${project.basedir}/lib/gpstore-api-sdk-0.0.1-alpha.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.ldbcouncil.finbench</groupId>
