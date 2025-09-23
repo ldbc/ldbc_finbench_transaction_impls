@@ -1,1 +1,1 @@
-CALL tw16($mediumId, $accountId, $time)
+CALL plugin.tw16($mediumId, $accountId, $time)

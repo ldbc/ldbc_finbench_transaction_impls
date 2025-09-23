@@ -1,1 +1,1 @@
-CALL tw15($loanId, $accountId, $time, $amount)
+CALL plugin.tw15($loanId, $accountId, $time, $amount)

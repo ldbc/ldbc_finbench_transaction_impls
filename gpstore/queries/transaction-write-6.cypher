@@ -1,1 +1,1 @@
-CALL tw6($personId, $loanId, $loanAmount, $balance, $time)
+CALL plugin.tw6($personId, $loanId, $loanAmount, $balance, $time)

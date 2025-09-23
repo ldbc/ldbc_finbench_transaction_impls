@@ -1,1 +1,1 @@
-CALL tw4($personId, $accountId, $time, $accountBlocked, $accountType)
+CALL plugin.tw4($personId, $accountId, $time, $accountBlocked, $accountType)

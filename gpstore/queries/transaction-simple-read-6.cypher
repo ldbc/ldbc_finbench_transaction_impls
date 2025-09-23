@@ -1,3 +1,3 @@
-CALL tsr6($id, $startTime, $endTime)
+CALL plugin.tsr6($id, $startTime, $endTime)
 YIELD dstId
 RETURN dstId

@@ -1,1 +1,1 @@
-CALL tw11($companyId1, $companyId2, $time)
+CALL plugin.tw11($companyId1, $companyId2, $time)

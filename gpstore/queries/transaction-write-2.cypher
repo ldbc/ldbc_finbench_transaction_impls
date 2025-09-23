@@ -1,1 +1,1 @@
-CALL tw2($companyId, $companyName, $isBlocked)
+CALL plugin.tw2($companyId, $companyName, $isBlocked)

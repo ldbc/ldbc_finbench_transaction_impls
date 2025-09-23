@@ -1,1 +1,1 @@
-CALL tw3($mediumId, $mediumType, $isBlocked)
+CALL plugin.tw3($mediumId, $mediumType, $isBlocked)

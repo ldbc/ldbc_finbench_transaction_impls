@@ -1,1 +1,1 @@
-CALL tw9($companyId1, $companyId2, $time, $ratio)
+CALL plugin.tw9($companyId1, $companyId2, $time, $ratio)

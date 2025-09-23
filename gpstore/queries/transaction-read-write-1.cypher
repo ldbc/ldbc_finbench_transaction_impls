@@ -1,1 +1,1 @@
-CALL trw1($srcId, $dstId, $time, $amount, $startTime, $endTime)
+CALL plugin.trw1($srcId, $dstId, $time, $amount, $startTime, $endTime)

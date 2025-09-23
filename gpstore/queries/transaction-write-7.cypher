@@ -1,1 +1,1 @@
-CALL tw7($companyId, $loanId, $loanAmount, $balance, $time)
+CALL plugin.tw7($companyId, $loanId, $loanAmount, $balance, $time)

@@ -1,1 +1,1 @@
-CALL tw18($accountId)
+CALL plugin.tw18($accountId)

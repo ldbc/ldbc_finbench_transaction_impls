@@ -1,1 +1,1 @@
-CALL tw1($personId, $personName, $isBlocked)
+CALL plugin.tw1($personId, $personName, $isBlocked)

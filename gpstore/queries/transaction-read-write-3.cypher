@@ -1,1 +1,1 @@
-CALL trw3($srcId, $dstId, $time, $threshold, $startTime, $endTime, $truncationLimit, $truncationOrder)
+CALL plugin.trw3($srcId, $dstId, $time, $threshold, $startTime, $endTime, $truncationLimit, $truncationOrder)
