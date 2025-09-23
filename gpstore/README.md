@@ -106,16 +106,23 @@ exit
 docker restart gpstore-server
 ```
 
-## 2.3 Load data
+## 2.3 Build & load database
 
 ```bash
+# Build database
 curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
+# Load database
 curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
 ```
 
 # 3. Benchmark
 
 ## 3.1 Validate
+
+Please note that, typically, *either 3.1.1 or 3.1.2 will be executed across a run*, since they serve different purposes:
+
+- "Create validation" is for generating a `validation_params.csv` file from gpstore's outputs, so as this CSV file can be used as the ground truth to validate other systems.
+- "Validate" is for validating gpstore against an existing, correct `validation_params.csv` file, such as that provided under this directory.
 
 ### 3.1.1 Create validation
 
