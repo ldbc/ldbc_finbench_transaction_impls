@@ -1,0 +1,34 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tcr12(
+  VERTEX<Person> id,
+  UINT startTime,
+  UINT endTime,
+  INT truncationLimit,
+  STRING truncationOrder = "TIMESTAMP_DESCENDING"
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  SumAccum<DOUBLE> @sum_amount;
+  Nodes = {id};
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(own:e)- :t
+  ;
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(transfer:e)- :t
+    WHERE  e.timestamp > startTime
+           AND e.timestamp < endTime
+    ACCUM  t.@sum_amount += e.amount
+  ;
+  Nodes =
+    SELECT s
+    FROM   Nodes:s -(own_REVERSE:e)- Company:t
+    POST-ACCUM
+           s.@sum_amount = s.@sum_amount
+    ORDER  BY s.@sum_amount DESC,
+           s.id ASC
+  ;
+  PRINT Nodes[
+          Nodes.id AS compAccountId,
+          round(Nodes.@sum_amount, 3) AS sumEdge2Amount
+        ];
+}

@@ -1,0 +1,57 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tcr8(
+ VERTEX<Loan> loanId,
+ FLOAT threshold,
+ UINT startTime,
+ UINT endTime,
+ INT truncationLimit,
+ STRING truncationOrder = "TIMESTAMP_DESCENDING"
+ ) syntax v1{
+   TYPEDEF TUPLE <UINT dstId, INT distanceFromLoan, FLOAT final_ratio> RESULT;
+   HeapAccum<RESULT>(distanceFromLoan DESC, final_ratio DESC, dstId ASC) @@result;
+   MaxAccum<double> @upstreamAmount;
+   SumAccum<double> @totalFlowInAmount;
+   MinAccum<INT> @minDist;
+   OrAccum @processed;
+   LoanV = {loanId};
+   DOUBLE loanAmt=loanId.loanAmount;
+   INT maxDistLimit = 4;
+
+   Nodes = SELECT t FROM LoanV:s -(deposit:e1) -> Account:t
+                   WHERE e1.timestamp > startTime AND e1.timestamp < endTime
+                   ACCUM t.@upstreamAmount += e1.amount,
+                         t.@minDist = maxDistLimit + 1
+                   ;
+
+   All_Nodes = Nodes;
+   INT distance = 1;
+   WHILE Nodes.size() > 0 LIMIT 3 DO
+    distance = distance + 1;
+    Nodes = SELECT t
+              FROM Nodes:s -((transfer | withdraw):e) -> :t
+             WHERE e.timestamp > startTime AND e.timestamp < endTime
+               AND e.amount > s.@upstreamAmount * threshold   // threshold must be positive
+             ACCUM t.@upstreamAmount += e.amount
+           POST-ACCUM
+             IF t.@processed == FALSE THEN
+                t.@minDist += distance
+             END,
+             t.@processed += TRUE
+           ;
+    All_Nodes = All_Nodes UNION Nodes;
+    END;
+
+    P = SELECT s FROM All_Nodes:s -((transfer | withdraw):e) -> Account:t
+                WHERE t.@processed != FALSE
+                  AND s.@minDist != maxDistLimit
+                  AND e.timestamp > startTime AND e.timestamp < endTime
+                ACCUM t.@totalFlowInAmount += e.amount
+               ;
+
+    R = SELECT s FROM Account:s
+         WHERE s.@processed != FALSE
+         ACCUM @@result += RESULT(s.id, s.@minDist, round(s.@totalFlowInAmount/loanAmt, 3))
+        ;
+
+    print @@result;
+}

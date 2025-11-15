@@ -1,0 +1,33 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tcr3(
+  VERTEX<Account> id1,
+  VERTEX<Account> id2,
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin{
+  INT shortestPathLength = -1;
+
+  StepNodes = {id1};
+  OrAccum  @@is_found; // (default value = FALSE)
+  OrAccum  @is_visited; // (default value = FALSE)
+  INT cur_len = 0;
+
+  WHILE @@is_found == FALSE AND StepNodes.size() > 0 DO
+    StepNodes =
+          SELECT t
+          FROM StepNodes:s - (transfer>:e) - Account:t
+          WHERE e.timestamp > startTime and e.timestamp < endTime
+                and t.@is_visited == FALSE
+          POST-ACCUM
+            t.@is_visited += TRUE,
+            IF t == id2 THEN
+              @@is_found += TRUE
+            END
+          ;
+    cur_len = cur_len + 1;
+  END;
+  IF @@is_found THEN
+    shortestPathLength = cur_len;
+  END;
+  PRINT shortestPathLength;
+}

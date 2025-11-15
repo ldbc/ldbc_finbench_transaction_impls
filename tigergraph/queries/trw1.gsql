@@ -1,0 +1,42 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY trw1(
+  UINT srcId,
+  UINT dstId,
+  UINT time,
+  DOUBLE amount,
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin syntax v1{
+
+  # check is_blocked
+  Nodes = SELECT s FROM Account:s WHERE s.id IN (srcId,dstId) AND s.isBlocked == TRUE;
+  IF Nodes.size() > 0 THEN
+    PRINT "Have Account blocked, abort";
+    RETURN;
+  END;
+
+  # check whether other Account exist
+  Src = SELECT s FROM Account:s WHERE s.id == srcId;
+  Dst = SELECT t FROM Account:t WHERE t.id == dstId;
+
+  MidDst =
+    SELECT m
+    FROM Dst:t - (transfer:e3) -> Account:m
+    WHERE e3.timestamp > startTime and e3.timestamp < endTime
+    ;
+  MidSrc =
+    SELECT m
+    FROM Src:s - (transfer_REVERSE:e2) -> Account:m
+    WHERE e2.timestamp > startTime and e2.timestamp < endTime
+    ;
+  Other = MidDst INTERSECT MidSrc;
+
+  IF Other.size() == 0 THEN // not exist, insert
+    PRINT "No cycle, will commit";
+    INSERT INTO transfer (FROM, TO, timestamp, amount) VALUES (srcId, dstId, time, amount);
+  ELSE // exists, update
+    PRINT "Have cycle, will mark blocked";
+    UPDATE s FROM Src:s SET s.isBlocked = true;
+    UPDATE t FROM Dst:t SET t.isBlocked = true;
+  END;
+}

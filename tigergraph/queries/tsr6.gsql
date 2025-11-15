@@ -1,0 +1,26 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tsr6(
+  VERTEX<Account> id,
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  Nodes = {id};
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(transfer_REVERSE:e)- :t
+    WHERE  e.timestamp > startTime
+           AND e.timestamp < endTime
+  ;
+  Nodes =
+    SELECT t
+    FROM   Nodes:s -(transfer:e)- :t
+    WHERE  t != id
+           AND e.timestamp > startTime
+           AND e.timestamp < endTime
+           AND t.isBlocked == TRUE
+    ORDER  BY t.id ASC
+  ;
+  PRINT Nodes[
+          Nodes.id AS dstId
+        ];
+}

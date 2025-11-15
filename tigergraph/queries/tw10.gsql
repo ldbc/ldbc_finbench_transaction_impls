@@ -1,0 +1,8 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw10(
+  VERTEX<Person> personId1,
+  VERTEX<Person> personId2,
+  UINT time
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  INSERT INTO guarantee VALUES (personId1, personId2, time, _);
+}

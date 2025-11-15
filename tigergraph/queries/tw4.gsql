@@ -1,0 +1,11 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tw4(
+  VERTEX<Person> personId,
+  UINT accountId, 
+  UINT time,
+  BOOL accountBlocked,
+  STRING accountType
+) FOR GRAPH ldbc_fin syntax v1{
+  INSERT INTO Account(PRIMARY_ID, createTime, isBlocked, accountType) VALUES (accountId, time, accountBlocked, accountType);
+  INSERT INTO EDGE own VALUES (personId, accountId, time);
+}

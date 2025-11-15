@@ -1,0 +1,9 @@
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw13(
+  UINT accountId1,
+  UINT accountId2,
+  UINT time,
+  DOUBLE amount
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  INSERT INTO withdraw VALUES (accountId1, accountId2, time, amount);
+}

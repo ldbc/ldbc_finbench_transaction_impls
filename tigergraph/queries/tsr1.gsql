@@ -1,0 +1,11 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tsr1(
+  VERTEX<Account> id
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  Nodes = {id};
+  PRINT Nodes[
+          Nodes.createTime AS createTime,
+          Nodes.isBlocked AS isBlocked,
+          Nodes.accountType AS accountType
+        ];
+}

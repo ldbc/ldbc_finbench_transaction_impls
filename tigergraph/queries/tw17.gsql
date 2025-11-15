@@ -1,0 +1,19 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tw17(
+  VERTEX<Account> accountId
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  Nodes = {accountId};
+  Tmp =
+    SELECT s
+    FROM   Nodes:s -((repay|deposit_REVERSE):e)- :t
+    ACCUM  DELETE (e)
+    POST-ACCUM (t)
+           DELETE (t)
+  ;
+  DELETE e
+  FROM   Nodes:s -(:e)- :t
+  ;
+  DELETE s
+  FROM   Nodes:s
+  ;
+}

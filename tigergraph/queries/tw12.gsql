@@ -1,0 +1,7 @@
+/**
+Add a transfer edge from an Account to another Account.
+*/
+USE GRAPH ldbc_fin
+CREATE OR REPLACE QUERY tw12(UINT accountId1, UINT accountId2, UINT time, DOUBLE amount){
+  INSERT INTO transfer VALUES (accountId1, accountId2, time, _, amount, _, _, _);
+}
