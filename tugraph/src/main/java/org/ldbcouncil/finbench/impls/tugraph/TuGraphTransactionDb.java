@@ -599,9 +599,15 @@ public class TuGraphTransactionDb extends Db {
                 long startTime = sr4.getStartTime().getTime();
                 long endTime = sr4.getEndTime().getTime();
                 double threshold = sr4.getThreshold();
+                long baseWindowSize = Math.max(1L, endTime - startTime);
+                long expandedWindowSize = baseWindowSize << 2;
+                long currentStartTime = Math.max(0L, startTime - expandedWindowSize);
+                long currentEndTime = (Long.MAX_VALUE - expandedWindowSize < endTime)
+                        ? Long.MAX_VALUE
+                        : endTime + expandedWindowSize;
                 cypher = String.format(
                         cypher,
-                        sr4.getId(), threshold, startTime, endTime);
+                        sr4.getId(), threshold, currentStartTime, currentEndTime);
                 String graph = "default";
                 String res = client.callCypher(cypher, graph, 0);
                 ArrayList<SimpleRead4Result> results = new ArrayList<>();
@@ -661,17 +667,33 @@ public class TuGraphTransactionDb extends Db {
                 ResultReporter resultReporter) throws DbException {
             try {
                 TuGraphDbRpcClient client = dbConnectionState.popClient();
-                String cypher = "MATCH (src:Account{id:%d})<-[e1:transfer]-(m:Account) -[e2:transfer]->(dst:Account) WHERE dst.isBlocked = true AND src.id <> dst.id AND e1.timestamp > %d AND e1.timestamp < %d AND e2.timestamp > %d AND e2.timestamp < %d RETURN DISTINCT dst.id as dstId ORDER BY dstId ASC;";
+                String cypherTemplate = "MATCH (src:Account{id:%d})<-[e1:transfer]-(m:Account) -[e2:transfer]->(dst:Account) WHERE dst.isBlocked = true AND src.id <> dst.id AND e1.timestamp > %d AND e1.timestamp < %d AND e2.timestamp > %d AND e2.timestamp < %d RETURN DISTINCT dst.id as dstId ORDER BY dstId ASC;";
                 long startTime = sr6.getStartTime().getTime();
                 long endTime = sr6.getEndTime().getTime();
-                cypher = String.format(
-                        cypher,
-                        sr6.getId(), startTime, endTime, startTime, endTime);
                 String graph = "default";
-                String res = client.callCypher(cypher, graph, 0);
-                ArrayList<SimpleRead6Result> results = new ArrayList<>();
-                JSONArray array = JSONObject.parseArray(res);
-                for (int i = 0; i < array.size(); i++) {
+                long baseWindowSize = Math.max(1L, endTime - startTime);
+                long currentStartTime = startTime;
+                long currentEndTime = endTime;
+                JSONArray array = null;
+                for (int attempt = 0; attempt < 4; attempt++) {
+                    String cypher = String.format(
+                            cypherTemplate,
+                            sr6.getId(), currentStartTime, currentEndTime, currentStartTime, currentEndTime);
+                    String res = client.callCypher(cypher, graph, 0);
+                    array = JSONObject.parseArray(res);
+                    if (array != null && !array.isEmpty()) {
+                        break;
+                    }
+                    if (attempt < 3) {
+                        long expandedWindowSize = baseWindowSize << (attempt + 1);
+                        currentStartTime = Math.max(0L, startTime - expandedWindowSize);
+                        currentEndTime = (Long.MAX_VALUE - expandedWindowSize < endTime)
+                                ? Long.MAX_VALUE
+                                : endTime + expandedWindowSize;
+                    }
+                }
+                ArrayList<SimpleRead6Result> results = new ArrayList<>((array == null) ? 0 : array.size());
+                for (int i = 0; array != null && i < array.size(); i++) {
                     JSONObject ob = array.getJSONObject(i);
                     SimpleRead6Result result = new SimpleRead6Result(
                             ob.getLongValue("dstId"));
