@@ -5,8 +5,12 @@ extern "C" void tcr3(const std::vector<GPStore::Value> &args, std::unique_ptr<PT
 const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     Node src_account("Account", "id", &args[0], kvstore, txn);
     Node dst_account("Account", "id", &args[1], kvstore, txn);
-    if (src_account.node_id_ == -1 || dst_account.node_id_ == -1)
+    if (src_account.node_id_ == -1 || dst_account.node_id_ == -1) {
+        new_result->rows_.emplace_back();
+        new_result->rows_.back().values_.reserve(1);
+        new_result->rows_.back().values_.emplace_back(-1);
         return;
+    }
     int dst_id = dst_account.node_id_;
     double startTime = args[2].data_.Long, endTime = args[3].data_.Long;
     
