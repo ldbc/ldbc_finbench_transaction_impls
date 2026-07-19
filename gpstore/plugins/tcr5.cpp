@@ -79,6 +79,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
         {
             double edgeTime = l.edge_props[j * l.edge_prop_num + 1];
             if(edgeTime >= endTime || edgeTime <= startTime) continue;
+            if(l.dst_ids[j] == paths.start_id) continue;
 
             // Node node(l.dst_ids[j],kvstore,txn);
             // cout<<"len1: "<<start_acc["id"]->data_.Long<<' '<<node["id"]->data_.Long<<' '<<edgeTime<<endl;
@@ -107,6 +108,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
                 double edgeTime = l.edge_props[j * l.edge_prop_num + 1];
                 if(edgeTime >= endTime || edgeTime <= startTime) continue;
                 if(mid_create_time >= edgeTime) continue;
+                if(l.dst_ids[j] == paths.start_id || l.dst_ids[j] == path_mid) continue;
 
                 // Node node(l.dst_ids[j],kvstore,txn);
                 // cout<<"len2: "<<mid_acc["id"]->data_.Long<<' '<<node["id"]->data_.Long<<' '<<edgeTime<<endl;
@@ -135,6 +137,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
                 double edgeTime = l.edge_props[j * l.edge_prop_num + 1];
                 if(edgeTime >= endTime || edgeTime <= startTime) continue;
                 if(mid_create_time >= edgeTime) continue;
+                if(l.dst_ids[j] == paths.start_id || l.dst_ids[j] == path_mid.first || l.dst_ids[j] == path_mid.second) continue;
 
                 // Node node(l.dst_ids[j],kvstore,txn);
                 // cout<<"mid_create_time: "<<mid_create_time<<endl;

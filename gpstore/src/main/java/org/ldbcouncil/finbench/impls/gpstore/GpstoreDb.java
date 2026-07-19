@@ -132,7 +132,7 @@ public class GpstoreDb extends Db {
             if (record != null) {
                 long otherId = record.get(0).asLong();
                 double sumLoanAmount = record.get(1).asDouble();
-                double sumLoanBalance = record.get(2).asDateLong();
+                double sumLoanBalance = record.get(2).asDouble();
                 return new ComplexRead2Result(otherId, sumLoanAmount, sumLoanBalance);
             } else {
                 return null;

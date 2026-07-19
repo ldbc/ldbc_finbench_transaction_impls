@@ -10,25 +10,25 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
   if (src["isBlocked"]->data_.Boolean || dst["isBlocked"]->data_.Boolean)
     return;
 
-  TYPE_ENTITY_LITERAL_ID* in_neighborList = nullptr; unsigned in_neighbor_len = 0;
-  long long* in_prop_list = nullptr; unsigned in_prop_len = 0;
-  dst.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", in_neighborList,
-                                  in_prop_list, in_prop_len, in_neighbor_len, Util::EDGE_OUT);
+  TYPE_ENTITY_LITERAL_ID* dst_out_neighborList = nullptr; unsigned dst_out_neighbor_len = 0;
+  long long* dst_out_prop_list = nullptr; unsigned dst_out_prop_len = 0;
+  dst.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", dst_out_neighborList,
+                                  dst_out_prop_list, dst_out_prop_len, dst_out_neighbor_len, Util::EDGE_OUT);
 
-  TYPE_ENTITY_LITERAL_ID* out_neighborList = nullptr; unsigned out_neighbor_len = 0;
-  long long* out_prop_list = nullptr; unsigned out_prop_len = 0;
-  src.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", out_neighborList,
-                                  out_prop_list, out_prop_len, out_neighbor_len, Util::EDGE_IN);
+  TYPE_ENTITY_LITERAL_ID* src_in_neighborList = nullptr; unsigned src_in_neighbor_len = 0;
+  long long* src_in_prop_list = nullptr; unsigned src_in_prop_len = 0;
+  src.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", src_in_neighborList,
+                                  src_in_prop_list, src_in_prop_len, src_in_neighbor_len, Util::EDGE_IN);
 
 
   bool has_same_account = false;
-  for(unsigned i = 0; i < in_neighbor_len; ++i) {
-    double edge_time_in = GPStore::Value(in_prop_list[i * in_prop_len + 1]).data_.Long;
-    if(edge_time_in <= args[4].data_.Long || edge_time_in >= args[5].data_.Long) continue;
-    for(unsigned j = 0; j < out_neighbor_len; ++j) {
-      double edge_time_out = GPStore::Value(out_prop_list[j * out_prop_len + 1]).data_.Long;
-      if(edge_time_out > args[4].data_.Long && edge_time_out < args[5].data_.Long &&
-         in_prop_list[i] == out_prop_list[j]) {
+  for(unsigned i = 0; i < dst_out_neighbor_len; ++i) {
+    double dst_out_edge_time = GPStore::Value(dst_out_prop_list[i * dst_out_prop_len + 1]).data_.Long;
+    if(dst_out_edge_time <= args[4].data_.Long || dst_out_edge_time >= args[5].data_.Long) continue;
+    for(unsigned j = 0; j < src_in_neighbor_len; ++j) {
+      double src_in_edge_time = GPStore::Value(src_in_prop_list[j * src_in_prop_len + 1]).data_.Long;
+      if(src_in_edge_time > args[4].data_.Long && src_in_edge_time < args[5].data_.Long &&
+         dst_out_neighborList[i] == src_in_neighborList[j]) {
         has_same_account = true;
         break;
       }

@@ -29,14 +29,14 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
         if(amount <= threshold2) continue;
         
         unsigned mid_id = neighborList[i];
-        if(mid_id_to_edge2amount.count(mid_id))
+        if(!mid_id_to_edge2amount.count(mid_id))
         {
             mid_id_to_edge2amount.insert({mid_id,0});
         }
         mid_id_to_edge2amount[mid_id]+=amount;
     }
 
-    vector<tuple<double, int, double>> ans; /// -sumedge2amount, midid, sumedge1amount
+    vector<tuple<double, long long, double, double>> ans; /// -sumedge2amount, midid, sumedge1amount, sumedge2amount
     for(auto& [mid_id, edge2amount]:mid_id_to_edge2amount)
     {
         delete[] neighborList;
@@ -68,7 +68,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
         if(valid_edge1_cnt >3) 
         {
             Node node(mid_id, kvstore,txn);
-            ans.emplace_back(-edge2amount, node["id"]->data_.Long, amount_sum);
+            ans.emplace_back(-edge2amount, node["id"]->data_.Long, amount_sum, edge2amount);
         }
     }
     sort(ans.begin(), ans.end());
@@ -78,10 +78,10 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
         new_result->rows_.emplace_back();
         new_result->rows_.back().values_.reserve(3);
         new_result->rows_.back().values_.emplace_back(get<1>(t));
-        new_result->rows_.back().values_.emplace_back(-get<0>(t));
         new_result->rows_.back().values_.emplace_back(get<2>(t));
+        new_result->rows_.back().values_.emplace_back(get<3>(t));
         
-        cout << get<0>(t) << " " << get<1>(t) << " " << get<2>(t)  <<endl;
+        cout << get<0>(t) << " " << get<1>(t) << " " << get<2>(t) << " " << get<3>(t)  <<endl;
     }
 
 

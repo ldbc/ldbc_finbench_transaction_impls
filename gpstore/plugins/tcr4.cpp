@@ -1,7 +1,7 @@
 #include "../PQuery/PProcedure.h"
 using namespace std;
 struct CompareTcr4Tuples {
-    bool operator()(const tuple<int, long long, double, double, long long, double,double>& a, const tuple<int, long long, double, double, long long, double,double>& b) {
+    bool operator()(const tuple<long long, long long, double, double, long long, double,double>& a, const tuple<long long, long long, double, double, long long, double,double>& b) {
         // Compare based on the first three integers in ascending order
         if (get<2>(a) != get<2>(b)) return get<2>(a) > get<2>(b);
         if (get<5>(a) != get<5>(b)) return get<5>(a) > get<5>(b);
@@ -79,7 +79,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
         
         }
     }
-    vector<tuple<int, long long, double, double, long long, double,double>> ans;
+    vector<tuple<long long, long long, double, double, long long, double,double>> ans;
     for(auto& [other_id, info2]: other_id_src)
     {
         long long num_edge2 = get<0>(info2);
