@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ldbcouncil.finbench.driver.*;
 import org.ldbcouncil.finbench.driver.log.LoggingService;
+import org.ldbcouncil.finbench.driver.optimization.OptimizationSupport;
+import org.ldbcouncil.finbench.driver.workloads.transaction.LdbcNoResult;
 
 import java.io.IOException;
 import java.util.Map;
@@ -15,6 +18,7 @@ import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
 
 public class DummyDb extends Db {
     static Logger logger = LogManager.getLogger("DummyDb");
+    private final DummyOptimizationSupport optimizationSupport = new DummyOptimizationSupport();
 
     @Override
     protected void onInit(Map<String, String> map, LoggingService loggingService) throws DbException {
@@ -56,6 +60,12 @@ public class DummyDb extends Db {
         registerOperationHandler(Write11.class, Write11Handler.class);
         registerOperationHandler(Write12.class, Write12Handler.class);
         registerOperationHandler(Write13.class, Write13Handler.class);
+        registerOperationHandler(Write14.class, Write14Handler.class);
+        registerOperationHandler(Write15.class, Write15Handler.class);
+        registerOperationHandler(Write16.class, Write16Handler.class);
+        registerOperationHandler(Write17.class, Write17Handler.class);
+        registerOperationHandler(Write18.class, Write18Handler.class);
+        registerOperationHandler(Write19.class, Write19Handler.class);
 
         // read-writes
         registerOperationHandler(ReadWrite1.class, ReadWrite1Handler.class);
@@ -71,6 +81,21 @@ public class DummyDb extends Db {
     @Override
     protected DbConnectionState getConnectionState() throws DbException {
         return null;
+    }
+
+    @Override
+    public Optional<OptimizationSupport> optimizationSupport() {
+        return Optional.of(optimizationSupport);
+    }
+
+    private static <T> void reportEmptyList(ResultReporter resultReporter, Operation<List<T>> operation)
+        throws DbException {
+        resultReporter.report(0, Collections.<T>emptyList(), operation);
+    }
+
+    private static void reportNoResult(ResultReporter resultReporter, Operation<LdbcNoResult> operation)
+        throws DbException {
+        resultReporter.report(0, LdbcNoResult.INSTANCE, operation);
     }
 
     public static class ComplexRead1Handler implements OperationHandler<ComplexRead1, DummyDbConnectionState> {
@@ -109,6 +134,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead2 cr2, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr2.toString());
+            reportEmptyList(resultReporter, cr2);
         }
     }
 
@@ -117,6 +143,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead3 cr3, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr3.toString());
+            reportEmptyList(resultReporter, cr3);
         }
     }
 
@@ -125,6 +152,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead4 cr4, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr4.toString());
+            reportEmptyList(resultReporter, cr4);
         }
     }
 
@@ -133,6 +161,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead5 cr5, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr5.toString());
+            reportEmptyList(resultReporter, cr5);
         }
     }
 
@@ -141,6 +170,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead6 cr6, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr6.toString());
+            reportEmptyList(resultReporter, cr6);
         }
     }
 
@@ -149,6 +179,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead7 cr7, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr7.toString());
+            reportEmptyList(resultReporter, cr7);
         }
     }
 
@@ -157,6 +188,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead8 cr8, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr8.toString());
+            reportEmptyList(resultReporter, cr8);
         }
     }
 
@@ -165,6 +197,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead9 cr9, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr9.toString());
+            reportEmptyList(resultReporter, cr9);
         }
     }
 
@@ -173,6 +206,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead10 cr10, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr10.toString());
+            reportEmptyList(resultReporter, cr10);
         }
     }
 
@@ -181,6 +215,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead11 cr11, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr11.toString());
+            reportEmptyList(resultReporter, cr11);
         }
     }
 
@@ -189,6 +224,7 @@ public class DummyDb extends Db {
         public void executeOperation(ComplexRead12 cr12, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(cr12.toString());
+            reportEmptyList(resultReporter, cr12);
         }
     }
 
@@ -253,6 +289,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write1 w1, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w1.toString());
+            reportNoResult(resultReporter, w1);
         }
     }
 
@@ -261,6 +298,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write2 w2, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w2.toString());
+            reportNoResult(resultReporter, w2);
         }
     }
 
@@ -269,6 +307,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write3 w3, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w3.toString());
+            reportNoResult(resultReporter, w3);
         }
     }
 
@@ -277,6 +316,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write4 w4, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w4.toString());
+            reportNoResult(resultReporter, w4);
         }
     }
 
@@ -285,6 +325,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write5 w5, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w5.toString());
+            reportNoResult(resultReporter, w5);
         }
     }
 
@@ -293,6 +334,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write6 w6, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w6.toString());
+            reportNoResult(resultReporter, w6);
         }
     }
 
@@ -301,6 +343,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write7 w7, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w7.toString());
+            reportNoResult(resultReporter, w7);
         }
     }
 
@@ -309,6 +352,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write8 w8, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w8.toString());
+            reportNoResult(resultReporter, w8);
         }
     }
 
@@ -317,6 +361,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write9 w9, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w9.toString());
+            reportNoResult(resultReporter, w9);
         }
     }
 
@@ -325,6 +370,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write10 w10, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w10.toString());
+            reportNoResult(resultReporter, w10);
         }
     }
 
@@ -333,6 +379,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write11 w11, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w11.toString());
+            reportNoResult(resultReporter, w11);
         }
     }
 
@@ -341,6 +388,7 @@ public class DummyDb extends Db {
         public void executeOperation(Write12 w12, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w12.toString());
+            reportNoResult(resultReporter, w12);
         }
     }
 
@@ -349,6 +397,61 @@ public class DummyDb extends Db {
         public void executeOperation(Write13 w13, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(w13.toString());
+            reportNoResult(resultReporter, w13);
+        }
+    }
+
+    public static class Write14Handler implements OperationHandler<Write14, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write14 w14, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w14.toString());
+            reportNoResult(resultReporter, w14);
+        }
+    }
+
+    public static class Write15Handler implements OperationHandler<Write15, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write15 w15, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w15.toString());
+            reportNoResult(resultReporter, w15);
+        }
+    }
+
+    public static class Write16Handler implements OperationHandler<Write16, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write16 w16, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w16.toString());
+            reportNoResult(resultReporter, w16);
+        }
+    }
+
+    public static class Write17Handler implements OperationHandler<Write17, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write17 w17, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w17.toString());
+            reportNoResult(resultReporter, w17);
+        }
+    }
+
+    public static class Write18Handler implements OperationHandler<Write18, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write18 w18, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w18.toString());
+            reportNoResult(resultReporter, w18);
+        }
+    }
+
+    public static class Write19Handler implements OperationHandler<Write19, DummyDbConnectionState> {
+        @Override
+        public void executeOperation(Write19 w19, DummyDbConnectionState dummyDbConnectionState,
+                                     ResultReporter resultReporter) throws DbException {
+            DummyDb.logger.info(w19.toString());
+            reportNoResult(resultReporter, w19);
         }
     }
 
@@ -357,6 +460,7 @@ public class DummyDb extends Db {
         public void executeOperation(ReadWrite1 rw1, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(rw1.toString());
+            reportNoResult(resultReporter, rw1);
         }
     }
 
@@ -365,6 +469,7 @@ public class DummyDb extends Db {
         public void executeOperation(ReadWrite2 rw2, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(rw2.toString());
+            reportNoResult(resultReporter, rw2);
         }
     }
 
@@ -373,6 +478,7 @@ public class DummyDb extends Db {
         public void executeOperation(ReadWrite3 rw3, DummyDbConnectionState dummyDbConnectionState,
                                      ResultReporter resultReporter) throws DbException {
             DummyDb.logger.info(rw3.toString());
+            reportNoResult(resultReporter, rw3);
         }
     }
 }
