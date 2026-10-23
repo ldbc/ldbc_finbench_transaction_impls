@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Data ###
+data/sf1/
+data/sf10/
+results/
+nohup.out

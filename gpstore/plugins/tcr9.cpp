@@ -11,7 +11,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     TruncationOrderType truncationOrder = static_cast<TruncationOrderType>(args[5].data_.Int);
 
     // edge 1
-    float edge1sum = 0;
+    double edge1sum = 0;
     TYPE_ENTITY_LITERAL_ID* neighborList = nullptr; unsigned neighbor_len = 0;
     long long* prop_list = nullptr; unsigned prop_len = 0;
     account.GetLinkedNodesWithEdgeProps("LOAN_DEPOSIT_ACCOUNT", neighborList, prop_list, prop_len, neighbor_len, Util::EDGE_IN);
@@ -27,7 +27,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     delete [] prop_list;
 
     // edge 2
-    float edge2sum = 0;
+    double edge2sum = 0;
     account.GetLinkedNodesWithEdgeProps("ACCOUNT_REPAY_LOAN", neighborList, prop_list, prop_len, neighbor_len, Util::EDGE_OUT);
     numValidNeighbor = Truncate(neighborList, neighbor_len, prop_list, prop_len, truncationOrder, truncationLimit);
     for (int i = 0; i < numValidNeighbor; ++i) {
@@ -41,7 +41,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     delete [] prop_list;
 
     // edge 3
-    float edge3sum = 0;
+    double edge3sum = 0;
     account.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", neighborList, prop_list, prop_len, neighbor_len, Util::EDGE_IN);
     numValidNeighbor = Truncate(neighborList, neighbor_len, prop_list, prop_len, truncationOrder, truncationLimit);
     for (int i = 0; i < numValidNeighbor; ++i) {
@@ -55,7 +55,7 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     delete [] prop_list;
 
     // edge 4
-    float edge4sum = 0;
+    double edge4sum = 0;
     account.GetLinkedNodesWithEdgeProps("ACCOUNT_TRANSFER_ACCOUNT", neighborList, prop_list, prop_len, neighbor_len, Util::EDGE_OUT);
     numValidNeighbor = Truncate(neighborList, neighbor_len, prop_list, prop_len, truncationOrder, truncationLimit);
     for (int i = 0; i < numValidNeighbor; ++i) {
@@ -68,13 +68,13 @@ const KVstore *kvstore, Database* db, std::shared_ptr<Transaction> txn) {
     delete [] neighborList;
     delete [] prop_list;
 
-    float ratioRepay = edge2sum == 0 ? -1 : edge1sum / edge2sum;
-    float ratioDeposit = edge4sum == 0 ? -1 : edge1sum / edge4sum;
-    float ratioTransfer = edge4sum == 0 ? -1 : edge3sum / edge4sum;
+    double ratioRepay = edge2sum == 0 ? -1 : edge1sum / edge2sum;
+    double ratioDeposit = edge4sum == 0 ? -1 : edge1sum / edge4sum;
+    double ratioTransfer = edge4sum == 0 ? -1 : edge3sum / edge4sum;
     // Round to 3 decimal places
-    ratioRepay = float(std::round(1000. * ratioRepay)) / 1000.;
-    ratioDeposit = float(std::round(1000. * ratioDeposit)) / 1000.;
-    ratioTransfer = float(std::round(1000. * ratioTransfer)) / 1000.;
+    ratioRepay = std::round(1000. * ratioRepay) / 1000.;
+    ratioDeposit = std::round(1000. * ratioDeposit) / 1000.;
+    ratioTransfer = std::round(1000. * ratioTransfer) / 1000.;
     new_result->rows_.emplace_back();
     new_result->rows_.back().values_.reserve(3);
     new_result->rows_.back().values_.emplace_back(ratioRepay);
