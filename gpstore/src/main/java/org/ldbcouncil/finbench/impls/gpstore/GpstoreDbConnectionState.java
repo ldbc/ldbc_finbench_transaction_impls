@@ -20,11 +20,15 @@ public class GpstoreDbConnectionState extends DbConnectionState {
 
     protected GpstoreQueryStore queryStore;
 
+    private final String username;
+
+    private final String password;
+
     public GpstoreDbConnectionState(Map<String, String> properties, GpstoreQueryStore queryStore) {
         this.queryStore = queryStore;
         final String url = properties.get("url");
-        final String username = properties.get("username");
-        final String password = properties.get("password");
+        username = properties.get("username");
+        password = properties.get("password");
         final String dbname = properties.get("dbname");
         config = SessionConfig.withGrpc(dbname);
         // set driver log level
@@ -35,6 +39,14 @@ public class GpstoreDbConnectionState extends DbConnectionState {
 
     public GpstoreQueryStore getQueryStore() {
         return queryStore;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Session getSession() {
