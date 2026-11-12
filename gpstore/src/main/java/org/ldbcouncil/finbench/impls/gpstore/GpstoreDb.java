@@ -7,6 +7,7 @@ import org.ldbcouncil.finbench.driver.Db;
 import org.ldbcouncil.finbench.driver.DbConnectionState;
 import org.ldbcouncil.finbench.driver.DbException;
 import org.ldbcouncil.finbench.driver.log.LoggingService;
+import org.ldbcouncil.finbench.driver.optimization.OptimizationSupport;
 import org.ldbcouncil.finbench.driver.workloads.transaction.queries.*;
 import org.ldbcouncil.finbench.impls.common.QueryType;
 import org.ldbcouncil.finbench.impls.gpstore.converter.GpstoreConverter;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class GpstoreDb extends Db {
 
@@ -25,10 +27,13 @@ public class GpstoreDb extends Db {
 
     GpstoreDbConnectionState dcs;
 
+    private GpstoreOptimizationSupport optimizationSupport;
+
     @Override
     protected void onInit(Map<String, String> map, LoggingService loggingService) throws DbException {
         logger.info("GPStore initialized");
         dcs = new GpstoreDbConnectionState(map, new GpstoreQueryStore(map.get("queryDir")));
+        optimizationSupport = new GpstoreOptimizationSupport(dcs);
         // complex reads
         registerOperationHandler(ComplexRead1.class, ComplexRead1Handler.class);
         registerOperationHandler(ComplexRead2.class, ComplexRead2Handler.class);
@@ -89,6 +94,11 @@ public class GpstoreDb extends Db {
         return dcs;
     }
 
+    @Override
+    public Optional<OptimizationSupport> optimizationSupport() {
+        return Optional.of(optimizationSupport);
+    }
+
     public static class ComplexRead1Handler extends GpstoreListOperationHandler<ComplexRead1, ComplexRead1Result> {
         @Override
         public String getQueryString(GpstoreDbConnectionState state, ComplexRead1 operation) {
@@ -132,7 +142,7 @@ public class GpstoreDb extends Db {
             if (record != null) {
                 long otherId = record.get(0).asLong();
                 double sumLoanAmount = record.get(1).asDouble();
-                double sumLoanBalance = record.get(2).asDateLong();
+                double sumLoanBalance = record.get(2).asDouble();
                 return new ComplexRead2Result(otherId, sumLoanAmount, sumLoanBalance);
             } else {
                 return null;
