@@ -38,8 +38,10 @@ build/
 .DS_Store
 
 ### Data ###
-data/
-!data/intermediate/
+data/sf1/
+data/sf10/
 results/
 nohup.out
+
+### dataset backups ###
 backup/

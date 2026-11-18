@@ -23,7 +23,7 @@
     <modules>
         <module>common</module>
         <module>dummy</module>
-        <module>tugraph</module>
+        <!-- <module>tugraph</module> -->
         <module>galaxybase-cypher</module>
         <module>ultipa</module>
         <module>gpstore</module>
