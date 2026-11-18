@@ -71,3 +71,22 @@ and writes `optimization-report.md` and `optimization-report.json` under the con
 You can tune
 `optimization.top_n`, `optimization.reduction_steps`, `optimization.profile_repetitions`, and
 `optimization.repetitions` in that properties file.
+
+## Data recovery hook
+
+`DummyDb.resetDatabaseState()` logs each recovery request. Dummy has no persistent graph, so
+there is nothing to restore. A real adapter can override the same method to synchronously
+restore its data; leaving the inherited `Db` method unchanged is also supported.
+
+Optimization mode invokes it before the baseline, every scenario repetition, and every
+representative-operation profiling repetition. Automatic testing invokes it before each round.
+Warmup and measurement share one recovery; a recovery failure aborts the test. Ordinary benchmark
+mode does not request recovery.
+
+`DummyDatabaseResetTest` runs the driver against a stateful Dummy subclass with real Write1
+parameters to check repeated inserts, warmup continuity, failure propagation, and both repeated
+execution modes. Run it after installing the updated driver:
+
+```bash
+mvn -pl dummy -am test -Dtest=DummyDatabaseResetTest -Dsurefire.failIfNoSpecifiedTests=false
+```

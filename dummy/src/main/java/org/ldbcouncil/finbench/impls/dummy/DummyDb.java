@@ -83,6 +83,15 @@ public class DummyDb extends Db {
         return null;
     }
 
+    /**
+     * Example SUT recovery hook. Dummy has no persistent graph to restore.
+     * Real adapters should synchronously restore their test data here.
+     */
+    @Override
+    public void resetDatabaseState() throws DbException {
+        logger.info("DummyDb resetDatabaseState: no persistent data to restore");
+    }
+
     @Override
     public Optional<OptimizationSupport> optimizationSupport() {
         return Optional.of(optimizationSupport);
