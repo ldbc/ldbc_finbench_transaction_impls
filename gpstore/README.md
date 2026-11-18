@@ -12,77 +12,109 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 ```
 
+In the following instructions, `${FINBENCH_HOME}` denotes the FinBench installation root.
+
+
 ## 1.2 Download & install dependencies
 
 ```bash
 # install driver
-cd /data
+cd ${FINBENCH_HOME}
 git clone https://github.com/ldbc/ldbc_finbench_driver.git
-cd /data/ldbc_finbench_driver
+cd ${FINBENCH_HOME}/ldbc_finbench_driver
 mvn install
 
 # install impl
-cd /data
+cd ${FINBENCH_HOME}
 git clone https://github.com/ldbc/ldbc_finbench_transaction_impls.git
-cd /data/ldbc_finbench_transaction_impls
-mvn clean package
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls
+
+git checkout feature/optimization-recommendation        # remove this line after merging feature/optimization-recommendation into main
+
+mvn clean package -DskipTests
+
+# compile gpstore only
+# mvn -pl gpstore -am clean package -DskipTests
 ```
 
-Please download our compressed docker image `gpstore-finbench-docker.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA387A00AC18BB464FA58F26F3C37E5CE0).
+Please download our compressed docker image `gpstore-finbench-261113.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA60B89B60ED6B444B8A348F3CC9B238FD).
 
 # 2. Loading and preprocessing
 
-## 2.1 Data
+## 2.1 Download, Verify, and Extract Data
 
-Download FinBench data, decompress it and integrate it into the existing `data/` directory so that the directory hierarchy looks like the following:
+The following instructions use sf30 as an example unless stated otherwise.
 
-```bash
-$ cp -r data/intermediate data/finbench-sf1/intermediate
-$ cp -r data/intermediate data/finbench-sf10/intermediate
-$ tree -d /data/ldbc_finbench_transaction_impls/gpstore/data
-/data/ldbc_finbench_transaction_impls/gpstore/data
-├── finbench-sf1
-│   ├── incremental
-│   ├── intermedidate
-│   ├── read_params
-│   └── snapshot
-└── finbench-sf10
-    ├── incremental
-    ├── intermediate
-    ├── read_params
-    └── snapshot
+Download the sf30 dataset from [this link](https://www.modelscope.cn/datasets/GDC/ldbc-finbench-sf30-latest). The downloaded directory has the following structure:
+
+```text
+ldbc-finbench-sf30-latest
+├── MD5SUMS.txt
+├── README.md
+├── sf30.tar.gz.md5
+├── sf30.tar.gz.part00
+└── sf30.tar.gz.part01
 ```
 
-## 2.2 Convert data
-
-Use sf10 as an example. (Same below without further specification)
+The following command verifies the two archive parts and the combined archive, concatenates them in order, and extracts the complete dataset to `ldbc_finbench_transaction_impls/gpstore/data/sf30`:
 
 ```bash
-# pwd ldbc_finbench_transaction_impls/gpstore
-cp -r scripts data/finbench-sf10/snapshot
-mv data/finbench-sf10/intermediate data/sf10/snapshot
-cd data/finbench-sf10/snapshot
-sh scripts/full.sh
+cd ${FINBENCH_HOME}
+bash ldbc_finbench_transaction_impls/gpstore/scripts/extract_sf30.sh \
+  "${FINBENCH_HOME}/ldbc-finbench-sf30-latest"
+```
+
+At this point, `ldbc_finbench_transaction_impls/gpstore/data/sf30` contains:
+
+```text
+data/sf30
+├── factor_table/
+├── incremental/
+├── read_params/
+└── snapshot/            # 18 raw snapshot CSV files
+```
+
+The `read_params`, `incremental`, and `factor_table` directories are already complete and should not be modified in the next step.
+
+## 2.2 Convert Snapshot Data to GPStore Format
+
+```bash
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore/data/sf30/snapshot
+bash ../../../scripts/full.sh
+```
+
+The resulting data directory must have the following layout:
+
+```text
+data/sf30
+├── factor_table/
+├── incremental/
+├── read_params/
+└── snapshot/
+    ├── content_datetime/    # data rows without headers
+    ├── content_long/        # data rows with millisecond timestamps
+    ├── headers/             # GPStore node/relationship headers
+    └── orig_headers/        # original column names
 ```
 
 ## 2.3 Docker image installation & startup
 
 ```bash
 # Load the image
-tar -xzvf gpstore-finbench-docker.tar.gz
-docker load -i gpstore-finbench-docker.tar
+tar -xzvf gpstore-finbench-261113.tar.gz
+docker load -i gpstore-finbench-261113.tar
 docker image list	# Check that you see REPOSITORY gpstore & TAG finbench
 
 # Startup the container
-# Please feel free to replace 9009 by any other available port on your machine; change driver's configuration accordingly (We assume the port is 9090 in the following instructions)
+# Please feel free to replace 9022 by any other available port on your machine; change driver's configuration accordingly (We assume the port is 9022 in the following instructions)
 # path/to/datasets: absolute path to ldbc_finbench_transaction_impls/gpstore/data/
 # path/to/logs: any path that you have read & write access to
-docker run -itd -p 9009:9000 --privileged --cap-add=SYS_PTRACE \
+docker run -itd -p 9022:9000 --privileged --cap-add=SYS_PTRACE \
 --security-opt seccomp=unconfined --restart always \
 -e TZ=Asia/Shanghai \
 -v path/to/datasets:/gpstore/datasets \
 -v path/to/logs:/gpstore/logs \
---name gpstore-server gpstore:finbench
+--name gpstore-server gpstore:finbench-261113
 docker ps -a	# Check the STATUS of gpstore-server; it should be UP
 ```
 
@@ -106,16 +138,77 @@ exit
 docker restart gpstore-server
 ```
 
-## 2.3 Build & load database
+## 2.5 Build & load database
 
 ```bash
 # Build database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
+curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
 # Load database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
+curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
+```
+
+Building the database can take a long time. We recommend running the build command with `nohup` and sending it to the background with `&`.
+
+
+### 2.5.1 Back up database [OPTIONAL] [RECOMMENDED]
+
+The following steps are optional but recommended. They allow you to avoid rebuilding the database when creating a new container.
+
+Copy the built database from the Docker container as a backup.
+
+```bash
+# After the database has been built
+# curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
+
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore
+mkdir -p backup
+docker cp gpstore-server:/gpstore/sf30.db ./backup/sf30.db
+```
+
+Restore the backup into a new or existing container.
+
+The database directory and its metadata are stored separately:
+
+- `/gpstore/sf30.db` contains the database data.
+- `/gpstore/system.db` records that `sf30` has been built.
+
+Stop the server before removing or copying the database. Removing a loaded database can invalidate pointers held by running query threads and terminate the server.
+
+```bash
+docker stop gpstore-server
+
+# Remove any old or partial database directory.
+docker run --rm --volumes-from gpstore-server \
+  --entrypoint /bin/bash gpstore:finbench-261113 -lc \
+  'rm -rf /gpstore/sf30.db'
+
+# Copy the backup into the stopped server container.
+docker cp ./backup/sf30.db gpstore-server:/gpstore/sf30.db
+
+# Register sf30 in system.db. backup.json is missing from some packaged images and must exist before ginit calls add_backuplog().
+docker run --rm --volumes-from gpstore-server \
+  --entrypoint /bin/bash gpstore:finbench-261113 -lc \
+  'cd /gpstore
+   if [ ! -s backup.json ]; then
+     printf "{\"db_name\":\"system\",\"backup_timer\":\"600\"}\n" > backup.json
+   fi
+   bin/ginit -db sf30'
+
+# Start the server and load the registered backup.
+docker start gpstore-server
+curl -sS -X POST -H 'Content-Type: application/json' \
+  -d '{"operation":"load","username":"root","password":"123456","db_name":"sf30"}' \
+  http://127.0.0.1:9022/grpc/api
+
+# Check that sf30 is registered and loaded.
+curl -sS -X POST -H 'Content-Type: application/json' \
+  -d '{"operation":"show","username":"root","password":"123456"}' \
+  http://127.0.0.1:9022/grpc/api
 ```
 
 # 3. Benchmark
+
+Running the driver usually takes a long time. We recommend redirecting its output with `>>` and running it in the background with `&`.
 
 ## 3.1 Validate
 
@@ -127,22 +220,27 @@ Please note that, typically, *either 3.1.1 or 3.1.2 will be executed across a ru
 ### 3.1.1 Create validation
 
 ```shell
-# create validation
-cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf1_finbench_create_validation.sh
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+bash run.sh example_create_validation
 ```
 
 ### 3.1.2 Validate
 
 ```shell
-cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf1_finbench_validation_database.sh
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+bash run.sh example_validate
 ```
 
-## 3.2 Run benchmark
+## 3.2 Run Benchmark
 
 ```shell
-# run benchmark
-cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf10_finbench_benchmark.sh
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+bash run.sh example_benchmark
+```
+
+## 3.3 Run Optimization Recommendation
+
+```shell
+cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+bash run.sh example_opt
 ```
