@@ -29,11 +29,14 @@ public class GpstoreDb extends Db {
 
     private GpstoreOptimizationSupport optimizationSupport;
 
+    private GpstoreResetSupport resetSupport;
+
     @Override
     protected void onInit(Map<String, String> map, LoggingService loggingService) throws DbException {
         logger.info("GPStore initialized");
         dcs = new GpstoreDbConnectionState(map, new GpstoreQueryStore(map.get("queryDir")));
         optimizationSupport = new GpstoreOptimizationSupport(dcs);
+        resetSupport = new GpstoreResetSupport(dcs);
         // complex reads
         registerOperationHandler(ComplexRead1.class, ComplexRead1Handler.class);
         registerOperationHandler(ComplexRead2.class, ComplexRead2Handler.class);
@@ -97,6 +100,11 @@ public class GpstoreDb extends Db {
     @Override
     public Optional<OptimizationSupport> optimizationSupport() {
         return Optional.of(optimizationSupport);
+    }
+
+    @Override
+    public void resetDatabaseState() throws DbException {
+        resetSupport.resetDatabaseState();
     }
 
     public static class ComplexRead1Handler extends GpstoreListOperationHandler<ComplexRead1, ComplexRead1Result> {

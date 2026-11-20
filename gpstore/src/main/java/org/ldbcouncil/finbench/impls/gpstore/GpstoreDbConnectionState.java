@@ -24,13 +24,15 @@ public class GpstoreDbConnectionState extends DbConnectionState {
 
     private final String password;
 
+    private final String dbName;
+
     public GpstoreDbConnectionState(Map<String, String> properties, GpstoreQueryStore queryStore) {
         this.queryStore = queryStore;
         final String url = properties.get("url");
         username = properties.get("username");
         password = properties.get("password");
-        final String dbname = properties.get("dbname");
-        config = SessionConfig.withGrpc(dbname);
+        dbName = properties.get("dbname");
+        config = SessionConfig.withGrpc(dbName);
         // set driver log level
         ConsoleLog.setLevel(LogLevel.DEBUG);
         driver = GpstoreDatabase.Driver(url, AuthTokens.basic(username, password));
@@ -47,6 +49,10 @@ public class GpstoreDbConnectionState extends DbConnectionState {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getDbName() {
+        return dbName;
     }
 
     public Session getSession() {
