@@ -5,7 +5,6 @@ import org.ldbcouncil.finbench.driver.optimization.OptimizationSupport;
 import org.ldbcouncil.finbench.driver.optimization.SyntheticExecutionResult;
 import org.ldbcouncil.finbench.driver.optimization.SyntheticLoadSpec;
 import org.pkumod.gpstore.Result;
-import org.pkumod.gpstore.driver.Session;
 
 /**
  * Optimization support for the GPStore SUT.
@@ -53,24 +52,10 @@ public class GpstoreOptimizationSupport implements OptimizationSupport {
      * Sends a JSON request to the GPStore server through the shared driver.
      */
     private Result send(String operation, String extraJsonFields) throws DbException {
-        try (final Session session = connectionState.getSession()) {
-            String body = "{\"operation\":\"" + operation + "\",\"username\":\""
-                    + connectionState.getUsername() + "\",\"password\":\""
-                    + connectionState.getPassword() + "\"" + extraJsonFields + "}";
-            Result result = session.send(body);
-            if (result == null || !result.success()) {
-                String message = result == null ? "empty response" : result.statusMsg();
-                throw new DbException("Optimization operation " + operation + " failed: " + message);
-            }
-            return result;
-        } catch (DbException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new DbException("Optimization operation " + operation + " failed", e);
-        }
+        return GpstoreRequestSupport.send(connectionState, operation, extraJsonFields);
     }
 
     private static String escapeJson(String value) {
-        return value.replace("\\", "\\\\").replace("\"", "\\\"");
+        return GpstoreRequestSupport.escapeJson(value);
     }
 }

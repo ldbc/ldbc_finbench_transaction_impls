@@ -25,64 +25,92 @@ mvn install
 cd /data
 git clone https://github.com/ldbc/ldbc_finbench_transaction_impls.git
 cd /data/ldbc_finbench_transaction_impls
-mvn clean package
+
+mvn clean package -DskipTests
+
+# compile gpstore only
+# mvn -pl gpstore -am clean package -DskipTests
 ```
 
-Please download our compressed docker image `gpstore-finbench-docker.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA387A00AC18BB464FA58F26F3C37E5CE0).
+Please download our compressed docker image `gpstore-finbench-261120.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA4BED26770E41446BA6C02863D8FDF4D0).
 
 # 2. Loading and preprocessing
 
-## 2.1 Data
+## 2.1 Download, Verify, and Extract Data
 
-Download FinBench data, decompress it and integrate it into the existing `data/` directory so that the directory hierarchy looks like the following:
+The following instructions use sf30 as an example unless stated otherwise.
 
-```bash
-$ cp -r data/intermediate data/finbench-sf1/intermediate
-$ cp -r data/intermediate data/finbench-sf10/intermediate
-$ tree -d /data/ldbc_finbench_transaction_impls/gpstore/data
-/data/ldbc_finbench_transaction_impls/gpstore/data
-├── finbench-sf1
-│   ├── incremental
-│   ├── intermedidate
-│   ├── read_params
-│   └── snapshot
-└── finbench-sf10
-    ├── incremental
-    ├── intermediate
-    ├── read_params
-    └── snapshot
+Download the sf30 dataset from [this link](https://www.modelscope.cn/datasets/GDC/ldbc-finbench-sf30-latest). The downloaded directory has the following structure:
+
+```text
+ldbc-finbench-sf30-latest
+├── MD5SUMS.txt
+├── README.md
+├── sf30.tar.gz.md5
+├── sf30.tar.gz.part00
+└── sf30.tar.gz.part01
 ```
 
-## 2.2 Convert data
-
-Use sf10 as an example. (Same below without further specification)
+The following command verifies the two archive parts and the combined archive, concatenates them in order, and extracts the complete dataset to `ldbc_finbench_transaction_impls/gpstore/data/sf30`:
 
 ```bash
-# pwd ldbc_finbench_transaction_impls/gpstore
-cp -r scripts data/finbench-sf10/snapshot
-mv data/finbench-sf10/intermediate data/sf10/snapshot
-cd data/finbench-sf10/snapshot
-sh scripts/full.sh
+cd /data
+bash ldbc_finbench_transaction_impls/gpstore/scripts/extract_sf30.sh \
+  /data/ldbc-finbench-sf30-latest
+```
+
+At this point, `ldbc_finbench_transaction_impls/gpstore/data/sf30` contains:
+
+```text
+data/sf30
+├── factor_table/
+├── incremental/
+├── read_params/
+└── snapshot/            # 18 raw snapshot CSV files
+```
+
+The `read_params`, `incremental`, and `factor_table` directories are already complete and should not be modified in the next step.
+
+## 2.2 Convert Snapshot Data to GPStore Format
+
+```bash
+cd /data/ldbc_finbench_transaction_impls/gpstore/data/sf30/snapshot
+bash ../../../scripts/full.sh
+```
+
+The resulting data directory must have the following layout:
+
+```text
+data/sf30
+├── factor_table/
+├── incremental/
+├── read_params/
+└── snapshot/
+    ├── content_datetime/    # data rows without headers
+    ├── content_long/        # data rows with millisecond timestamps
+    ├── headers/             # GPStore node/relationship headers
+    └── orig_headers/        # original column names
 ```
 
 ## 2.3 Docker image installation & startup
 
 ```bash
 # Load the image
-tar -xzvf gpstore-finbench-docker.tar.gz
-docker load -i gpstore-finbench-docker.tar
-docker image list	# Check that you see REPOSITORY gpstore & TAG finbench
+tar -xzvf gpstore-finbench-261120.tar.gz
+docker load -i gpstore-finbench-261120.tar
+docker image list	# Check that gpstore:finbench-261120 is present
 
 # Startup the container
-# Please feel free to replace 9009 by any other available port on your machine; change driver's configuration accordingly (We assume the port is 9090 in the following instructions)
+# Replace 9022 with another available host port if necessary and update the
+# driver configuration accordingly.
 # path/to/datasets: absolute path to ldbc_finbench_transaction_impls/gpstore/data/
 # path/to/logs: any path that you have read & write access to
-docker run -itd -p 9009:9000 --privileged --cap-add=SYS_PTRACE \
---security-opt seccomp=unconfined --restart always \
--e TZ=Asia/Shanghai \
--v path/to/datasets:/gpstore/datasets \
--v path/to/logs:/gpstore/logs \
---name gpstore-server gpstore:finbench
+docker run -itd -p 9022:9000 --privileged --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined --restart always \
+  -e TZ=Asia/Shanghai \
+  -v path/to/datasets:/gpstore/datasets \
+  -v path/to/logs:/gpstore/logs \
+  --name gpstore-server gpstore:finbench-261120
 docker ps -a	# Check the STATUS of gpstore-server; it should be UP
 ```
 
@@ -106,16 +134,182 @@ exit
 docker restart gpstore-server
 ```
 
-## 2.3 Build & load database
+## 2.5 Build & load database
 
 ```bash
 # Build database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "build",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+
 # Load database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","username":"root","password":"123456","db_name":"finbench-sf10"}' http://127.0.0.1:9009/grpc/api
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "load",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+Building the database can take a long time. We recommend running the build command with `nohup` and sending it to the background with `&`.
+
+### 2.5.1 Back up and restore within the same container
+
+Use `createResetSnapshot` and `restoreResetSnapshot` when the container will not be replaced and the database must be restored to a known state between benchmark runs:
+
+```bash
+# Before the first benchmark run, capture the current clean database.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "createResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+
+# Restore the snapshot after a workload modifies the database.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "restoreResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+`createResetSnapshot` returns after the container-local snapshot `backups/<db_name>.db.reset` has been created. It captures the current database state, so create it only when the database is clean. `restoreResetSnapshot` copies that snapshot, unloads the current database, installs the copy, and reloads the database before returning; the snapshot itself is never modified. No manual `unload` or `load` request is required.
+
+If needed, call `createResetSnapshot` again to replace the snapshot with a new state.
+
+### 2.5.2 Export a backup and restore it into a new container
+
+The reset snapshot is fixed to the current container. Before deleting or replacing the container, create a timestamped portable backup:
+
+```bash
+# The database must be loaded when backup is called.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "backup",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30",
+    "backup_path": "/gpstore/backups"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+The response contains a `backupfilepath`, for example:
+
+```json
+{
+  "StatusCode": 0,
+  "StatusMsg": "Database backup successfully.",
+  "backupfilepath": "/gpstore/backups/sf30.db_YYMMDDHHMMSS"
+}
+```
+
+Make sure that no workload is running, then export both the timestamped backup and `/gpstore/system.db` before removing the old container:
+
+```bash
+cd /data/ldbc_finbench_transaction_impls/gpstore
+mkdir -p backup
+
+docker cp \
+  gpstore-server:/gpstore/backups/sf30.db_YYMMDDHHMMSS \
+  ./backup/sf30.db_YYMMDDHHMMSS
+
+docker cp \
+  gpstore-server:/gpstore/system.db \
+  ./backup/system.db
+
+# you can stop & delete the container now
+docker stop gpstore-server
+docker rm gpstore-server
+```
+
+The system database stores the registration and permissions of the built database. The database data and `system.db` must be restored together.
+
+Create, but do not start, a new container:
+
+```bash
+docker create -p 9022:9000 --privileged --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined --restart always \
+  -e TZ=Asia/Shanghai \
+  -v path/to/datasets:/gpstore/datasets \
+  -v path/to/logs:/gpstore/logs \
+  --name gpstore-server gpstore:finbench-261120
+```
+
+Import the database and its registration before the first server start:
+
+```bash
+docker cp ./backup/system.db/. gpstore-server:/gpstore/system.db
+
+docker cp ./backup/sf30.db_YYMMDDHHMMSS gpstore-server:/gpstore/sf30.db
+```
+
+Start the server, load the restored database, and verify its status:
+
+```bash
+docker start gpstore-server
+
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "load",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "show",
+    "username": "root",
+    "password": "123456"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+Do not copy only `/gpstore/<db_name>.db` into a new container and call `load`. The data files then exist, but the fresh container's system database does not know that the database was built:
+
+```json
+{"StatusCode":1004,"StatusMsg":"The database [sf30] not built yet."}
+```
+
+Importing the exported `system.db` together with the backup avoids this error. After loading the restored database, create a new reset snapshot if repeated same-container resets are needed:
+
+```bash
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "createResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
 ```
 
 # 3. Benchmark
+
+Running the driver usually takes a long time. We recommend running with `nohup`, redirecting its output with `>>` and running it in the background with `&`.
 
 ## 3.1 Validate
 
@@ -127,22 +321,27 @@ Please note that, typically, *either 3.1.1 or 3.1.2 will be executed across a ru
 ### 3.1.1 Create validation
 
 ```shell
-# create validation
 cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf1_finbench_create_validation.sh
+bash run.sh example_create_validation
 ```
 
 ### 3.1.2 Validate
 
 ```shell
 cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf1_finbench_validation_database.sh
+bash run.sh example_validate
 ```
 
-## 3.2 Run benchmark
+## 3.2 Run Benchmark
 
 ```shell
-# run benchmark
 cd /data/ldbc_finbench_transaction_impls/gpstore && sync
-bash sf10_finbench_benchmark.sh
+bash run.sh example_benchmark
+```
+
+## 3.3 Run Optimization Recommendation
+
+```shell
+cd /data/ldbc_finbench_transaction_impls/gpstore && sync
+bash run.sh example_opt
 ```
