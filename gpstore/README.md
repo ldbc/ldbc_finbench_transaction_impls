@@ -12,24 +12,19 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 ```
 
-In the following instructions, `${FINBENCH_HOME}` denotes the FinBench installation root.
-
-
 ## 1.2 Download & install dependencies
 
 ```bash
 # install driver
-cd ${FINBENCH_HOME}
+cd /data
 git clone https://github.com/ldbc/ldbc_finbench_driver.git
-cd ${FINBENCH_HOME}/ldbc_finbench_driver
+cd /data/ldbc_finbench_driver
 mvn install
 
 # install impl
-cd ${FINBENCH_HOME}
+cd /data
 git clone https://github.com/ldbc/ldbc_finbench_transaction_impls.git
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls
-
-git checkout feature/optimization-recommendation        # remove this line after merging feature/optimization-recommendation into main
+cd /data/ldbc_finbench_transaction_impls
 
 mvn clean package -DskipTests
 
@@ -37,7 +32,7 @@ mvn clean package -DskipTests
 # mvn -pl gpstore -am clean package -DskipTests
 ```
 
-Please download our compressed docker image `gpstore-finbench-261113.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA60B89B60ED6B444B8A348F3CC9B238FD).
+Please download our compressed docker image `gpstore-finbench-261120.tar.gz` via [this link](https://disk.pku.edu.cn/link/AA4BED26770E41446BA6C02863D8FDF4D0).
 
 # 2. Loading and preprocessing
 
@@ -59,9 +54,9 @@ ldbc-finbench-sf30-latest
 The following command verifies the two archive parts and the combined archive, concatenates them in order, and extracts the complete dataset to `ldbc_finbench_transaction_impls/gpstore/data/sf30`:
 
 ```bash
-cd ${FINBENCH_HOME}
+cd /data
 bash ldbc_finbench_transaction_impls/gpstore/scripts/extract_sf30.sh \
-  "${FINBENCH_HOME}/ldbc-finbench-sf30-latest"
+  /data/ldbc-finbench-sf30-latest
 ```
 
 At this point, `ldbc_finbench_transaction_impls/gpstore/data/sf30` contains:
@@ -79,7 +74,7 @@ The `read_params`, `incremental`, and `factor_table` directories are already com
 ## 2.2 Convert Snapshot Data to GPStore Format
 
 ```bash
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore/data/sf30/snapshot
+cd /data/ldbc_finbench_transaction_impls/gpstore/data/sf30/snapshot
 bash ../../../scripts/full.sh
 ```
 
@@ -101,20 +96,21 @@ data/sf30
 
 ```bash
 # Load the image
-tar -xzvf gpstore-finbench-261113.tar.gz
-docker load -i gpstore-finbench-261113.tar
-docker image list	# Check that you see REPOSITORY gpstore & TAG finbench
+tar -xzvf gpstore-finbench-261120.tar.gz
+docker load -i gpstore-finbench-261120.tar
+docker image list	# Check that gpstore:finbench-261120 is present
 
 # Startup the container
-# Please feel free to replace 9022 by any other available port on your machine; change driver's configuration accordingly (We assume the port is 9022 in the following instructions)
+# Replace 9022 with another available host port if necessary and update the
+# driver configuration accordingly.
 # path/to/datasets: absolute path to ldbc_finbench_transaction_impls/gpstore/data/
 # path/to/logs: any path that you have read & write access to
 docker run -itd -p 9022:9000 --privileged --cap-add=SYS_PTRACE \
---security-opt seccomp=unconfined --restart always \
--e TZ=Asia/Shanghai \
--v path/to/datasets:/gpstore/datasets \
--v path/to/logs:/gpstore/logs \
---name gpstore-server gpstore:finbench-261113
+  --security-opt seccomp=unconfined --restart always \
+  -e TZ=Asia/Shanghai \
+  -v path/to/datasets:/gpstore/datasets \
+  -v path/to/logs:/gpstore/logs \
+  --name gpstore-server gpstore:finbench-261120
 docker ps -a	# Check the STATUS of gpstore-server; it should be UP
 ```
 
@@ -142,73 +138,178 @@ docker restart gpstore-server
 
 ```bash
 # Build database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "build",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+
 # Load database
-curl -X POST -H 'Content-Type: application/json' -d '{"operation":"load","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "load",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
 ```
 
 Building the database can take a long time. We recommend running the build command with `nohup` and sending it to the background with `&`.
 
+### 2.5.1 Back up and restore within the same container
 
-### 2.5.1 Back up database [OPTIONAL] [RECOMMENDED]
-
-The following steps are optional but recommended. They allow you to avoid rebuilding the database when creating a new container.
-
-Copy the built database from the Docker container as a backup.
+Use `createResetSnapshot` and `restoreResetSnapshot` when the container will not be replaced and the database must be restored to a known state between benchmark runs:
 
 ```bash
-# After the database has been built
-# curl -X POST -H 'Content-Type: application/json' -d '{"operation":"build","username":"root","password":"123456","db_name":"sf30"}' http://127.0.0.1:9022/grpc/api
-
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore
-mkdir -p backup
-docker cp gpstore-server:/gpstore/sf30.db ./backup/sf30.db
-```
-
-Restore the backup into a new or existing container.
-
-The database directory and its metadata are stored separately:
-
-- `/gpstore/sf30.db` contains the database data.
-- `/gpstore/system.db` records that `sf30` has been built.
-
-Stop the server before removing or copying the database. Removing a loaded database can invalidate pointers held by running query threads and terminate the server.
-
-```bash
-docker stop gpstore-server
-
-# Remove any old or partial database directory.
-docker run --rm --volumes-from gpstore-server \
-  --entrypoint /bin/bash gpstore:finbench-261113 -lc \
-  'rm -rf /gpstore/sf30.db'
-
-# Copy the backup into the stopped server container.
-docker cp ./backup/sf30.db gpstore-server:/gpstore/sf30.db
-
-# Register sf30 in system.db. backup.json is missing from some packaged images and must exist before ginit calls add_backuplog().
-docker run --rm --volumes-from gpstore-server \
-  --entrypoint /bin/bash gpstore:finbench-261113 -lc \
-  'cd /gpstore
-   if [ ! -s backup.json ]; then
-     printf "{\"db_name\":\"system\",\"backup_timer\":\"600\"}\n" > backup.json
-   fi
-   bin/ginit -db sf30'
-
-# Start the server and load the registered backup.
-docker start gpstore-server
-curl -sS -X POST -H 'Content-Type: application/json' \
-  -d '{"operation":"load","username":"root","password":"123456","db_name":"sf30"}' \
+# Before the first benchmark run, capture the current clean database.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "createResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
   http://127.0.0.1:9022/grpc/api
 
-# Check that sf30 is registered and loaded.
-curl -sS -X POST -H 'Content-Type: application/json' \
-  -d '{"operation":"show","username":"root","password":"123456"}' \
+# Restore the snapshot after a workload modifies the database.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "restoreResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+`createResetSnapshot` returns after the container-local snapshot `backups/<db_name>.db.reset` has been created. It captures the current database state, so create it only when the database is clean. `restoreResetSnapshot` copies that snapshot, unloads the current database, installs the copy, and reloads the database before returning; the snapshot itself is never modified. No manual `unload` or `load` request is required.
+
+If needed, call `createResetSnapshot` again to replace the snapshot with a new state.
+
+### 2.5.2 Export a backup and restore it into a new container
+
+The reset snapshot is fixed to the current container. Before deleting or replacing the container, create a timestamped portable backup:
+
+```bash
+# The database must be loaded when backup is called.
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "backup",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30",
+    "backup_path": "/gpstore/backups"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+The response contains a `backupfilepath`, for example:
+
+```json
+{
+  "StatusCode": 0,
+  "StatusMsg": "Database backup successfully.",
+  "backupfilepath": "/gpstore/backups/sf30.db_YYMMDDHHMMSS"
+}
+```
+
+Make sure that no workload is running, then export both the timestamped backup and `/gpstore/system.db` before removing the old container:
+
+```bash
+cd /data/ldbc_finbench_transaction_impls/gpstore
+mkdir -p backup
+
+docker cp \
+  gpstore-server:/gpstore/backups/sf30.db_YYMMDDHHMMSS \
+  ./backup/sf30.db_YYMMDDHHMMSS
+
+docker cp \
+  gpstore-server:/gpstore/system.db \
+  ./backup/system.db
+
+# you can stop & delete the container now
+docker stop gpstore-server
+docker rm gpstore-server
+```
+
+The system database stores the registration and permissions of the built database. The database data and `system.db` must be restored together.
+
+Create, but do not start, a new container:
+
+```bash
+docker create -p 9022:9000 --privileged --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined --restart always \
+  -e TZ=Asia/Shanghai \
+  -v path/to/datasets:/gpstore/datasets \
+  -v path/to/logs:/gpstore/logs \
+  --name gpstore-server gpstore:finbench-261120
+```
+
+Import the database and its registration before the first server start:
+
+```bash
+docker cp ./backup/system.db/. gpstore-server:/gpstore/system.db
+
+docker cp ./backup/sf30.db_YYMMDDHHMMSS gpstore-server:/gpstore/sf30.db
+```
+
+Start the server, load the restored database, and verify its status:
+
+```bash
+docker start gpstore-server
+
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "load",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "show",
+    "username": "root",
+    "password": "123456"
+  }' \
+  http://127.0.0.1:9022/grpc/api
+```
+
+Do not copy only `/gpstore/<db_name>.db` into a new container and call `load`. The data files then exist, but the fresh container's system database does not know that the database was built:
+
+```json
+{"StatusCode":1004,"StatusMsg":"The database [sf30] not built yet."}
+```
+
+Importing the exported `system.db` together with the backup avoids this error. After loading the restored database, create a new reset snapshot if repeated same-container resets are needed:
+
+```bash
+curl -sS -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "operation": "createResetSnapshot",
+    "username": "root",
+    "password": "123456",
+    "db_name": "sf30"
+  }' \
   http://127.0.0.1:9022/grpc/api
 ```
 
 # 3. Benchmark
 
-Running the driver usually takes a long time. We recommend redirecting its output with `>>` and running it in the background with `&`.
+Running the driver usually takes a long time. We recommend running with `nohup`, redirecting its output with `>>` and running it in the background with `&`.
 
 ## 3.1 Validate
 
@@ -220,27 +321,27 @@ Please note that, typically, *either 3.1.1 or 3.1.2 will be executed across a ru
 ### 3.1.1 Create validation
 
 ```shell
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+cd /data/ldbc_finbench_transaction_impls/gpstore && sync
 bash run.sh example_create_validation
 ```
 
 ### 3.1.2 Validate
 
 ```shell
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+cd /data/ldbc_finbench_transaction_impls/gpstore && sync
 bash run.sh example_validate
 ```
 
 ## 3.2 Run Benchmark
 
 ```shell
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+cd /data/ldbc_finbench_transaction_impls/gpstore && sync
 bash run.sh example_benchmark
 ```
 
 ## 3.3 Run Optimization Recommendation
 
 ```shell
-cd ${FINBENCH_HOME}/ldbc_finbench_transaction_impls/gpstore && sync
+cd /data/ldbc_finbench_transaction_impls/gpstore && sync
 bash run.sh example_opt
 ```
