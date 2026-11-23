@@ -1,0 +1,35 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tcr10(
+  VERTEX<Person> pid1,
+  VERTEX<Person> pid2,
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  OrAccum @pid1_visited;
+  OrAccum @pid2_visited;
+  SumAccum<DOUBLE> @@sum_intersect;
+  SumAccum<DOUBLE> @@sum_union;
+  SumAccum<DOUBLE> @@jaccardSimilarity;
+  Nodes = {pid1, pid2};
+  Nodes =
+    SELECT s
+    FROM   Nodes:s -(invest:e)- :t
+    WHERE  e.timestamp > startTime
+           AND e.timestamp < endTime
+    ACCUM  IF s == pid1 THEN
+             t.@pid1_visited = TRUE
+           END,
+           IF s == pid2 THEN
+             t.@pid2_visited = TRUE
+           END
+    POST-ACCUM
+           IF t.@pid1_visited == TRUE AND t.@pid2_visited == TRUE THEN
+             @@sum_intersect += 1
+           END,
+           @@sum_union += 1
+  ;
+  IF @@sum_union > 0 AND @@sum_intersect > 0 THEN
+    @@jaccardSimilarity = round(@@sum_intersect / @@sum_union, 3);
+  END;
+  PRINT @@jaccardSimilarity AS jaccardSimilarity;
+}

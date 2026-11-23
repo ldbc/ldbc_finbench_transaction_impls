@@ -1,0 +1,59 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tcr2(
+  VERTEX<Person> id,
+  UINT startTime,
+  UINT endTime,
+  INT truncationLimit,
+  STRING truncationOrder
+) FOR GRAPH ldbc_fin syntax v1{
+
+  TYPEDEF TUPLE <UINT otherId, DOUBLE sumLoanAmount, DOUBLE sumLoanBalance> RESULT;
+  HeapAccum<RESULT>(sumLoanAmount DESC, otherId ASC) @@result;
+
+  MapAccum<int, MaxAccum<UINT>> @max_time_map;
+
+  MapAccum<UINT,INT> @multi_edge_cnt;
+  MapAccum<UINT,DOUBLE> @sumLoanAmount;
+  MapAccum<UINT,DOUBLE> @sumLoanBalance;
+
+  P = {id};
+  StepNodes =
+        SELECT t from P:s - (own:e) -> Account:t
+        ACCUM t.@max_time_map += (0 -> GSQL_UINT_MAX);
+
+  OtherAccounts (Account) = {};
+  INT i = 1;
+  WHILE StepNodes.size() > 0 and i <= 3 DO
+    StepNodes =
+      SELECT t
+      FROM StepNodes:s - (transfer_REVERSE:e) -> Account:t
+      WHERE e.timestamp > startTime and e.timestamp < endTime
+          and e.timestamp < s.@max_time_map.get(i-1)
+      ACCUM t.@max_time_map += (i -> e.timestamp);
+
+    OtherAccounts = OtherAccounts UNION StepNodes;
+
+    i = i + 1;
+
+  END;
+
+  R =
+    SELECT s
+    FROM OtherAccounts:s - (deposit_REVERSE:e) -> Loan:t
+    WHERE e.timestamp > startTime and e.timestamp < endTime
+    ACCUM
+      s.@multi_edge_cnt += (t.id -> 1),
+      s.@sumLoanAmount += (t.id -> t.loanAmount),
+      s.@sumLoanBalance += (t.id -> t.balance)
+    POST-ACCUM
+      DOUBLE sumLoanAmount = 0,
+      DOUBLE sumLoanBalance = 0,
+      FOREACH (t_id, cnt) in s.@multi_edge_cnt DO
+        sumLoanAmount = sumLoanAmount + s.@sumLoanAmount.get(t_id)/cnt,
+        sumLoanBalance = sumLoanBalance + s.@sumLoanBalance.get(t_id)/cnt
+      END,
+      @@result += RESULT(s.id, round(sumLoanAmount,3), round(sumLoanBalance,3))
+    ;
+
+  PRINT @@result;
+}

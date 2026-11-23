@@ -1,0 +1,8 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tw16(
+  UINT mediumId,
+  UINT accountId,
+  UINT time
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  INSERT INTO signIn VALUES (mediumId, accountId, time, _);
+}

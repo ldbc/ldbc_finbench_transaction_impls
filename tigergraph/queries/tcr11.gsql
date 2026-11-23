@@ -1,0 +1,38 @@
+USE GRAPH ldbc_fin
+CREATE QUERY tcr11(
+  VERTEX<Person> id,
+  UINT startTime,
+  UINT endTime,
+  INT truncationLimit,
+  STRING truncationOrder = "TIMESTAMP_DESCENDING"
+) FOR GRAPH ldbc_fin SYNTAX V1 {
+  OrAccum @visited;
+  SumAccum<DOUBLE> @@sumLoanAmount;
+  Nodes = {id};
+  Nodes =
+    SELECT s
+    FROM   Nodes:s
+    POST-ACCUM
+           s.@visited = TRUE
+  ;
+  All_Nodes = {};
+  WHILE Nodes.size() > 0 LIMIT 5 DO
+    Nodes =
+      SELECT t
+      FROM   Nodes:s -(guarantee:e)- :t
+      WHERE  t.@visited == FALSE
+             AND e.timestamp > startTime
+             AND e.timestamp < endTime
+      POST-ACCUM
+             t.@visited = TRUE
+    ;
+    All_Nodes = All_Nodes UNION Nodes;
+  END;
+  All_Nodes =
+    SELECT t
+    FROM   All_Nodes:s -(apply:e)- :t
+    POST-ACCUM
+           @@sumLoanAmount += t.loanAmount
+  ;
+  PRINT round(@@sumLoanAmount, 3) AS sumLoanAmount,All_Nodes.size() AS numLoans;
+}

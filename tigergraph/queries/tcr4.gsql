@@ -1,0 +1,59 @@
+USE GRAPH ldbc_fin
+CREATE or REPLACE QUERY tcr4(
+  VERTEX<Account> id1, 
+  VERTEX<Account> id2, 
+  UINT startTime,
+  UINT endTime
+) FOR GRAPH ldbc_fin syntax v1 {
+  # define the result TUPLE, and HeapAccum for sort
+  TYPEDEF TUPLE <UINT otherId, INT numEdge2, DOUBLE sumEdge2Amount, DOUBLE maxEdge2Amount,
+                INT numEdge3, DOUBLE sumEdge3Amount, DOUBLE maxEdge3Amount> RESULT;
+  HeapAccum<RESULT>(sumEdge2Amount DESC, sumEdge3Amount DESC, otherId ASC) @@result;
+  
+  SumAccum<INT> @numEdge2;
+  SumAccum<DOUBLE> @sumEdge2Amount;
+  MaxAccum<DOUBLE> @maxEdge2Amount;
+  SumAccum<INT> @numEdge3;
+  SumAccum<DOUBLE> @sumEdge3Amount;
+  MaxAccum<DOUBLE> @maxEdge3Amount;
+
+  Src = {id1};
+  Dst = {id2};
+  
+  TMP = SELECT t from Src:s - (transfer:e) -> Account:t
+        WHERE e.timestamp > startTime and e.timestamp < endTime and t == id2;
+  
+  IF TMP.size() == 0 THEN
+    PRINT @@result;
+    RETURN;
+  END;
+  
+  MidDst = 
+    SELECT m 
+    FROM Dst:t - (transfer:e3) -> Account:m
+    WHERE e3.timestamp > startTime and e3.timestamp < endTime
+    ACCUM 
+      m.@numEdge3 +=1,
+      m.@sumEdge3Amount += e3.amount,
+      m.@maxEdge3Amount += e3.amount
+    ;
+  MidSrc = 
+    SELECT m
+    FROM Src:s - (transfer_REVERSE:e2) -> Account:m
+    WHERE e2.timestamp > startTime and e2.timestamp < endTime
+    ACCUM 
+      m.@numEdge2 +=1, 
+      m.@sumEdge2Amount += e2.amount,
+      m.@maxEdge2Amount += e2.amount
+    ;
+  Other = MidDst INTERSECT MidSrc; 
+  
+  Other = 
+    SELECT m FROM Other:m
+    POST-ACCUM
+      @@result += RESULT(m.id, m.@numEdge2, round(m.@sumEdge2Amount,3), round(m.@maxEdge2Amount,3), 
+        m.@numEdge3, round(m.@sumEdge3Amount,3), round(m.@maxEdge3Amount,3))
+    ;
+
+  PRINT @@result;
+}
